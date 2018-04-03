@@ -1,5 +1,7 @@
 package utils;
 
+import java.util.ArrayList;
+
 import com.mongodb.DB;
 import com.mongodb.MongoClient;
 
@@ -19,6 +21,13 @@ public class Database {
 		//Change ip and port later
 		client = new MongoClient("178.62.236.241", 27017);
 		database = client.getDB("hotel");
+		// If database doesn't contain any collections,
+		// initialize them
+		if (isDbEmpty()) {
+			// What else to add?
+			database.getCollection("guests");
+			database.getCollection("rooms");
+		}
 	}
 	
 	public boolean isConnected() {
@@ -30,6 +39,15 @@ public class Database {
 			return false;
 		}
 		return true;
+	}
+	
+	
+	/**
+	 * Check if database has not been initialized
+	 * @return true if db is empty
+	 */
+	private boolean isDbEmpty() {
+		return !(client.listDatabaseNames().iterator().hasNext());
 	}
 	
 	// For whatever reason

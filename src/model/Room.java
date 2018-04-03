@@ -11,6 +11,7 @@ public class Room {
 	private int price = 0;
 	private RoomState state;
 	private RoomQuality quality;
+	private int floor;
 	
 	
 	public Room() {
@@ -107,6 +108,13 @@ public class Room {
 		this.quality = quality;
 	}
 	
-	
+	public int getFloor() {
+		return floor;
+	}
+
+
+	public void setFloor(int floor) {
+		this.floor = floor;
+	}
 
 }
