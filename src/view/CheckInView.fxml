@@ -1,8 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.layout.AnchorPane?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.text.*?>
 
-<AnchorPane xmlns:fx="http://javafx.com/fxml/1">
-	<!-- TODO Add Nodes -->
-</AnchorPane>
-
+<VBox prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.CheckInView">
+	<children>
+	   <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
+	        <children>
+	           <TextField fx:id="searchField" layoutX="43.0" layoutY="31.0" prefHeight="25.0" prefWidth="570.0" promptText="Search guest.." />
+	           <Button fx:id="checkInButton" layoutX="291.0" layoutY="310.0" mnemonicParsing="false" onAction="#buttonClick" text="Check in" />
+            <ListView id="guestList" layoutX="43.0" layoutY="56.0" prefHeight="238.0" prefWidth="570.0" />
+	        </children>
+	   </AnchorPane>
+	</children>
+</VBox>
