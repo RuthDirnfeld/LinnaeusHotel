@@ -21,4 +21,39 @@ public class ReservationView extends Application {
 		launch(args);
 	}
 	
+	public void singleRoomClick() {
+		System.out.println("Single Room");
+	}
+	
+	public void doubleRoomClick() {
+		System.out.println("Double Room");
+	}
+	
+	public void tripleRoomClick() {
+		System.out.println("Triple Room");
+	}
+	
+	public void fourBedClick() {
+		System.out.println("Four Bed Room");
+	}
+	
+	public void apartmentClick() {
+		System.out.println("Apartment");
+	}
+	
+	public void chooseGuestClick() {
+		System.out.println("Choose Guest");
+	}
+	
+	public void clearFieldsClick() {
+		System.out.println("Clear Fields");
+	}
+	
+	public void OkBtnClick() {
+		System.out.println("OK");
+	}
+	
+	public void showBtnClick() {
+		System.out.println("Show");
+	}
 }

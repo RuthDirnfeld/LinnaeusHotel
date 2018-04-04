@@ -50,4 +50,5 @@ public class OptionsView extends Application {
 	public void onClickManageRooms() {
 		System.out.println("Manage Rooms");
 	}
+	
 }
