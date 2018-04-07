@@ -74,5 +74,8 @@ public class MainView extends Application {
 			e.printStackTrace();
 		}
 	}
-
+	
+	public void onPreferencesClick() {
+		System.out.println("Preferences");
+	}
 }

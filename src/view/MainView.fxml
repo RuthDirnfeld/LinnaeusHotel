@@ -45,7 +45,7 @@
           </Menu>
           <Menu mnemonicParsing="false" text="Options">
             <items>
-              <MenuItem fx:id="menuPreferences" mnemonicParsing="false" text="Preferences" />
+              <MenuItem fx:id="menuPreferences" mnemonicParsing="false" onAction="#onPreferencesClick" text="Preferences" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Help">

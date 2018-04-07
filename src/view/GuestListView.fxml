@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="584.0" prefWidth="479.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.GuestListView">
+   <children>
+      <Button fx:id="searchBtn" layoutX="341.0" layoutY="35.0" mnemonicParsing="false" onAction="#searchClick" prefHeight="31.0" prefWidth="96.0" text="Search" />
+      <TextField layoutX="32.0" layoutY="35.0" prefHeight="31.0" prefWidth="298.0" />
+      <ListView layoutX="32.0" layoutY="81.0" prefHeight="344.0" prefWidth="406.0" />
+      <Button fx:id="addGuestBtn" layoutX="336.0" layoutY="463.0" mnemonicParsing="false" onAction="#newClick" prefHeight="31.0" prefWidth="107.0" text="New" />
+      <Button fx:id="loadBtn" layoutX="336.0" layoutY="513.0" mnemonicParsing="false" onAction="#loadClick" prefHeight="31.0" prefWidth="107.0" text="Load" />
+      <Button fx:id="cancelBtn" layoutX="32.0" layoutY="513.0" mnemonicParsing="false" onAction="#cancelClick" prefHeight="31.0" prefWidth="107.0" text="Cancel" />
+   </children>
+</AnchorPane>
