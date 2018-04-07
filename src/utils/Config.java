@@ -29,7 +29,6 @@ public class Config {
 			} catch (JSONException | FileNotFoundException e) {
 				e.printStackTrace();
 			}
-			
 		}
 	}
 	
