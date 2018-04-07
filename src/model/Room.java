@@ -1,30 +1,44 @@
 package model;
 
 public class Room {
-	
-	private int numBeds = 0;
+
+	private String numBeds;
 	private boolean smoking = false;
 	private String arrival = "";
 	private String departure = "";
 	private boolean single = false;
 	private String location = "";
-	private int price = 0;
+	private String price;
 	private RoomState state;
 	private RoomQuality quality;
-	private int floor;
+	private String floor;
 	
+	
+	public Room(String numBeds, boolean smoking, String arrival, String departure, boolean single, String location,
+			String price, RoomState state, RoomQuality quality, String floor) {
+		this.numBeds = numBeds;
+		this.smoking = smoking;
+		this.arrival = arrival;
+		this.departure = departure;
+		this.single = single;
+		this.location = location;
+		this.price = price;
+		this.state = state;
+		this.quality = quality;
+		this.floor = floor;
+	}
 	
 	public Room() {
 		
 	}
 
 
-	public int getNumBeds() {
+	public String getNumBeds() {
 		return numBeds;
 	}
 
 
-	public void setNumBeds(int numBeds) {
+	public void setNumBeds(String numBeds) {
 		this.numBeds = numBeds;
 	}
 
@@ -79,12 +93,12 @@ public class Room {
 	}
 
 
-	public int getPrice() {
+	public String getPrice() {
 		return price;
 	}
 
 
-	public void setPrice(int price) {
+	public void setPrice(String price) {
 		this.price = price;
 	}
 
@@ -108,12 +122,12 @@ public class Room {
 		this.quality = quality;
 	}
 	
-	public int getFloor() {
+	public String getFloor() {
 		return floor;
 	}
 
 
-	public void setFloor(int floor) {
+	public void setFloor(String floor) {
 		this.floor = floor;
 	}
 
