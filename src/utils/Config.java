@@ -41,16 +41,14 @@ public class Config {
 	// Config file doesn't exist, create new one
 	private void initializeConfig() {
 		// Create json obects for city and ip
-		JSONObject city = new JSONObject();
-		city.put("city", "Vaxjo");
-		JSONObject ip = new JSONObject();
-		ip.put("ip", "0.0.0.0:000");
+		JSONObject file = new JSONObject();
+		file.put("city", "");
+		file.put("ip", "");
 		
 		// Write to new file
 		try {
 			FileWriter fr = new FileWriter(filePath + "config.json");
-			fr.write(city.toString());
-			fr.write(ip.toString());
+			fr.write(file.toString());
 			fr.close();
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -62,7 +60,10 @@ public class Config {
 		options.setDbAddress(getDbIp());
 		if (getCity().toLowerCase().equals(model.Options.City.VAXJO.toString().toLowerCase())) {
 			options.setCurrentCity(model.Options.City.VAXJO);
-		}else {
+		}else if (getCity().isEmpty()){
+			options.setCurrentCity(null);
+		}
+		else {
 			options.setCurrentCity(model.Options.City.KALMAR);
 		}
 		

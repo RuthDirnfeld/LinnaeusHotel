@@ -3,6 +3,7 @@ package model;
 public class Room {
 
 	private String numBeds;
+	private String roomNum;
 	private boolean smoking = false;
 	private String arrival = "";
 	private String departure = "";
@@ -15,8 +16,9 @@ public class Room {
 	
 	
 	public Room(String numBeds, boolean smoking, String arrival, String departure, boolean single, String location,
-			String price, RoomState state, RoomQuality quality, String floor) {
+			String price, RoomState state, RoomQuality quality, String floor, String number) {
 		this.numBeds = numBeds;
+		this.roomNum = number;
 		this.smoking = smoking;
 		this.arrival = arrival;
 		this.departure = departure;
@@ -38,9 +40,19 @@ public class Room {
 	}
 
 
+	public void setRoomNum(String roomNum) {
+		this.roomNum = roomNum;
+	}
+	
+	public String getRoomNum() {
+		return roomNum;
+	}
+
+
 	public void setNumBeds(String numBeds) {
 		this.numBeds = numBeds;
 	}
+
 
 
 	public boolean isSmoking() {
