@@ -77,5 +77,14 @@ public class MainView extends Application {
 	
 	public void onPreferencesClick() {
 		System.out.println("Preferences");
+		try {
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("OptionsView.fxml"));
+			Parent parent = (Parent) loader.load();
+			Stage stage = new Stage();
+			stage.setScene(new Scene(parent));
+			stage.show();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 }

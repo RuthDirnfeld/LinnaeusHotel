@@ -10,17 +10,18 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="444.0" prefWidth="335.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.OptionsView">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="545.0" prefWidth="370.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.OptionsView">
   <children>
-    <AnchorPane maxHeight="425.0" maxWidth="351.0" minHeight="425.0" minWidth="351.0" prefHeight="425.0" prefWidth="351.0" VBox.vgrow="ALWAYS">
+    <AnchorPane maxHeight="546.0" maxWidth="544.0" minHeight="425.0" minWidth="351.0" prefHeight="546.0" prefWidth="544.0" VBox.vgrow="ALWAYS">
       <children>
-            <Label layoutX="41.0" layoutY="115.0" text="City" />
-            <Label layoutX="23.0" layoutY="176.0" text="IP Address" />
-            <Button layoutX="113.0" layoutY="263.0" mnemonicParsing="false" onAction="#onClickManageRooms" prefHeight="34.0" prefWidth="116.0" text="Manage Rooms" />
-            <Button layoutX="187.0" layoutY="370.0" mnemonicParsing="false" onAction="#onAcceptClick" prefHeight="34.0" prefWidth="116.0" text="Accept" />
-            <Button layoutX="37.0" layoutY="370.0" mnemonicParsing="false" onAction="#onClickCancel" prefHeight="34.0" prefWidth="116.0" text="Cancel" />
-            <TextField fx:id="address" layoutX="101.0" layoutY="172.0" />
-            <ChoiceBox fx:id="cityChoice" layoutX="101.0" layoutY="111.0" prefWidth="150.0" />
+            <Label layoutX="78.0" layoutY="110.0" prefHeight="31.0" prefWidth="35.0" text="City" />
+            <Label layoutX="43.0" layoutY="171.0" prefHeight="31.0" prefWidth="70.0" text="IP Address" />
+            <Button fx:id="mngRooms" layoutX="100.0" layoutY="318.0" mnemonicParsing="false" onAction="#onClickManageRooms" prefHeight="34.0" prefWidth="170.0" text="Manage Rooms" />
+            <Button layoutX="207.0" layoutY="436.0" mnemonicParsing="false" onAction="#onAcceptClick" prefHeight="34.0" prefWidth="116.0" text="Accept" />
+            <Button layoutX="38.0" layoutY="436.0" mnemonicParsing="false" onAction="#onClickCancel" prefHeight="34.0" prefWidth="116.0" text="Cancel" />
+            <TextField fx:id="address" layoutX="132.0" layoutY="171.0" />
+            <ChoiceBox fx:id="cityChoice" layoutX="132.0" layoutY="110.0" prefWidth="150.0" />
+            <Button fx:id="mngFloors" layoutX="100.0" layoutY="258.0" mnemonicParsing="false" onAction="#onClickManageFloors" prefHeight="34.0" prefWidth="170.0" text="Manage Floors" />
       </children>
     </AnchorPane>
   </children>
