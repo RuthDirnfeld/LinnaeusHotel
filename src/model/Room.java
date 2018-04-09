@@ -12,6 +12,7 @@ public class Room {
 	private String price;
 	private RoomState state;
 	private RoomQuality quality;
+
 	private String floor;
 	
 	
@@ -29,16 +30,13 @@ public class Room {
 		this.quality = quality;
 		this.floor = floor;
 	}
-	
 	public Room() {
-		
-	}
 
+	}
 
 	public String getNumBeds() {
 		return numBeds;
 	}
-
 
 	public void setRoomNum(String roomNum) {
 		this.roomNum = roomNum;
@@ -53,57 +51,45 @@ public class Room {
 		this.numBeds = numBeds;
 	}
 
-
-
 	public boolean isSmoking() {
 		return smoking;
 	}
-
 
 	public void setSmoking(boolean smoking) {
 		this.smoking = smoking;
 	}
 
-
 	public String getArrival() {
 		return arrival;
 	}
-
 
 	public void setArrival(String arrival) {
 		this.arrival = arrival;
 	}
 
-
 	public String getDeparture() {
 		return departure;
 	}
-
 
 	public void setDeparture(String departure) {
 		this.departure = departure;
 	}
 
-
 	public boolean isSingle() {
 		return single;
 	}
-
 
 	public void setSingle(boolean single) {
 		this.single = single;
 	}
 
-
 	public String getLocation() {
 		return location;
 	}
 
-
 	public void setLocation(String location) {
 		this.location = location;
 	}
-
 
 	public String getPrice() {
 		return price;
@@ -114,25 +100,21 @@ public class Room {
 		this.price = price;
 	}
 
-
 	public RoomState getState() {
 		return state;
 	}
-
 
 	public void setState(RoomState state) {
 		this.state = state;
 	}
 
-
 	public RoomQuality getQuality() {
 		return quality;
 	}
 
-
 	public void setQuality(RoomQuality quality) {
 		this.quality = quality;
-	}
+  }
 	
 	public String getFloor() {
 		return floor;

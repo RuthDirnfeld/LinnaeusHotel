@@ -2,11 +2,11 @@ package model;
 
 public class Options {
 	public enum City {
-	   VAXJO, KALMAR
+		VAXJO, KALMAR
 	}
-	
+
 	public String dbAddress;
-	public City currentCity; 
+	public City currentCity;
 
 	public Options(String dbAddress, City currentCity) {
 		this.dbAddress = dbAddress;
@@ -28,5 +28,4 @@ public class Options {
 	public void setCurrentCity(City currentCity) {
 		this.currentCity = currentCity;
 	} 
-	
 }

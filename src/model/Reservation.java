@@ -1,15 +1,17 @@
 package model;
 
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.Date;
 
 public class Reservation {
 	private int id;
 	private Guest guest;
 	private Room room;
-	private Date startDate;
-	private Date endDate;
-
-	public Reservation(int id, Guest guest, Room room, Date startDate, Date endDate) {
+	private LocalDate startDate;
+	private LocalDate endDate;
+	
+	public Reservation(int id, Guest guest, Room room, LocalDate startDate, LocalDate endDate) {
 		this.id = id;
 		this.guest = guest;
 		this.room = room;
@@ -41,19 +43,19 @@ public class Reservation {
 		this.room = room;
 	}
 
-	public Date getStartDate() {
+	public LocalDate getStartDate() {
 		return startDate;
 	}
 
-	public void setStartDate(Date startDate) {
+	public void setStartDate(LocalDate startDate) {
 		this.startDate = startDate;
 	}
 
-	public Date getEndDate() {
+	public LocalDate getEndDate() {
 		return endDate;
 	}
 
-	public void setEndDate(Date endDate) {
+	public void setEndDate(LocalDate endDate) {
 		this.endDate = endDate;
 	}
 
