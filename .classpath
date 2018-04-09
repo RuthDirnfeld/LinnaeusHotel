@@ -17,5 +17,8 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="D:/lnu/java-json.jar"/>
+	<classpathentry kind="lib" path="D:/lnu/json-simple.jar"/>
+	<classpathentry kind="lib" path="D:/lnu/gson-1.7.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
