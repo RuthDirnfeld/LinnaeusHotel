@@ -1,11 +1,9 @@
 package view;
 
-import java.io.IOException;
 
 import controller.NetworkController;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -13,10 +11,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 
-public class DatabaseLoginView {
+public class DatabaseLoginView extends View {
 	
-    private FXMLLoader loader = new FXMLLoader(getClass().getResource("DatabaseLoginView.fxml"));
-    private NetworkController controller;
     private Stage stage;
 
     @FXML private TextField ipText;
@@ -24,10 +20,6 @@ public class DatabaseLoginView {
     @FXML private Button login;
     
     public DatabaseLoginView () {
-    }
-    
-    public void setNetController(NetworkController c) {
-    	this.controller = c;
     }
     
     @FXML
@@ -57,7 +49,7 @@ public class DatabaseLoginView {
     		showAlert("Address or port fields are empty!");
     	}
     	else {
-    		controller.setDatabase(getAddress(), getPort());
+    		((NetworkController) controller).setDatabase(getAddress(), getPort());
         	stage.close();
     	}
     }
@@ -80,13 +72,9 @@ public class DatabaseLoginView {
 	public Stage displayDbLogin() throws Exception {
 		stage = new Stage();
 		Scene scene = null;
-		try {
-			scene = new Scene (loader.load());
-	        stage.setTitle("Database login");
-	        stage.setScene(scene);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		scene = new Scene (parent);
+		stage.setTitle("Database login");
+		stage.setScene(scene);
 		
 		return stage;
 	}

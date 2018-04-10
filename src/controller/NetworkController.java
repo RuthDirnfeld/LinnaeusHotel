@@ -1,8 +1,10 @@
 package controller;
 
-public class NetworkController {
+public class NetworkController extends Controller {
+	
 	
 	public NetworkController() {
+		
 	}
 	
 	public void setDatabase(String ip, String port) {

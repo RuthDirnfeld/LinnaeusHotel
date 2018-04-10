@@ -1,28 +1,21 @@
 package view;
 
-import java.io.IOException;
-import java.util.List;
-
 import controller.GuestController;
-import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
-import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
-public class GuestView extends Application {
+public class GuestView extends View {
 	@FXML
 	private TextField fullName; 
 	@FXML
@@ -57,13 +50,14 @@ public class GuestView extends Application {
 	
 	ObservableList<String> cityList = FXCollections.observableArrayList("Vaxjo","Kalmar"); 
 
+
 	@Override
-	public void start(Stage primaryStage) throws Exception {
-		Parent root = FXMLLoader.load(getClass().getResource("GuestView.fxml"));
-		primaryStage.setTitle("Guest View");
-		primaryStage.setScene(new Scene(root));
-		primaryStage.setResizable(false);
-		primaryStage.show(); 
+	public Stage display()throws Exception {
+		Stage stage = new Stage();
+		stage.setTitle("Guest View");
+		stage.setScene(new Scene(parent));
+		stage.setResizable(false);
+		return stage;
 	}
 	
 	@FXML
@@ -84,17 +78,12 @@ public class GuestView extends Application {
 		});
 		
 	}
-	
-	
-	public static void main(String[] args) {
-		launch(args);
-	}
+
 	
 	public void onClickConfirm(){
-	if(inputCheck()) {
-	GuestController gc = new GuestController(); 
-	gc.createGuest(fullName.getText(),birthDate.getValue().toString(),company.getText(),citizenship.getText(), address.getText(),smoker.isSelected(),email.getText(), phoneNumber.getText(), favRoom.getText(), creditCardNum.getText());
-	}
+		if(inputCheck()) {
+			((GuestController) controller).createGuest(fullName.getText(),birthDate.getValue().toString(),company.getText(),citizenship.getText(), address.getText(),smoker.isSelected(),email.getText(), phoneNumber.getText(), favRoom.getText(), creditCardNum.getText());
+		}
 	}
 	public void onClickEdit(){
 		
@@ -110,12 +99,12 @@ public class GuestView extends Application {
 	
 	public boolean inputCheck(){
 		if(fullName.getText().length()<3) {
-		showError("Name is too short !","Please enter a name that is longer than 3 characters");
-		return false; 	
+			showError("Name is too short !","Please enter a name that is longer than 3 characters");
+			return false; 	
 		}
 		if(birthDate.getValue() == null) {
-		showError("No Birthdate","Please specify the birthdate");
-		return false; 	
+			showError("No Birthdate","Please specify the birthdate");
+			return false; 	
 		}
 		if(citizenship.getText() == null) {
 			showError("No Citizenship","Please specify the citizenship");

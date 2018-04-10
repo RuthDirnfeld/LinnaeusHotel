@@ -3,16 +3,14 @@ package view;
 import java.util.ArrayList;
 import java.util.List;
 
-import javafx.application.Application;
+import controller.GuestController;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
 import model.Guest;
 
-public class GuestListView extends Application{
+public class GuestListView extends View {
 	@FXML
 	Button searchBtn;
 	@FXML
@@ -24,17 +22,12 @@ public class GuestListView extends Application{
 	
 	List<Guest> guestList = new ArrayList<Guest>();
 	
-	@Override
-	public void start(Stage stage) throws Exception {
-		Parent root = FXMLLoader.load(getClass().getResource("GuestListView.fxml"));
+	public Stage display() throws Exception {
+		Stage stage = new Stage();
 		stage.setTitle("Guest List");
-		stage.setScene(new Scene(root));
+		stage.setScene(new Scene(parent));
 		stage.setResizable(false);
-		stage.show();
-	}
-	
-	public static void main(String[] args) {
-		launch(args);
+		return stage;
 	}
 	
 	public void searchClick() {
@@ -42,13 +35,8 @@ public class GuestListView extends Application{
 	}
 
 	public void newClick() {
-		System.out.println("New");
 		try {
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("GuestView.fxml"));
-			Parent parent = (Parent) loader.load();
-			Stage stage = new Stage();
-			stage.setScene(new Scene(parent));
-			stage.show();
+			((GuestController) controller).getDisplay().show();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
