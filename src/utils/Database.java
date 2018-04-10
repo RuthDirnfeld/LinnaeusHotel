@@ -61,6 +61,14 @@ public class Database {
 		return true;
 	}
 	
+	public void setPort(int port) {
+		this.dbPort = port;
+	}
+	
+	public void setIp(String ip) {
+		this.dbAddress = ip;
+	}
+	
 	public void writeGuest (model.Guest guest) {
 		Gson gson = new Gson();
 		BasicDBObject obj = (BasicDBObject)JSON.parse(gson.toJson(guest));

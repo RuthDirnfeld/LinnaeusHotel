@@ -131,6 +131,8 @@ public class MainController extends Controller {
 		resView.setParent(resParent);
 		roomView.setParent(roomParent);
 		
+		//Some additional settings
+		netController.setDatabase(database);
 	}
 	// False, init databaseview, true, init main view
 	public boolean isDatabaseInit() {
