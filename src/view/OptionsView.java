@@ -1,8 +1,5 @@
 package view;
 
-import java.io.IOException;
-import java.util.List;
-
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
