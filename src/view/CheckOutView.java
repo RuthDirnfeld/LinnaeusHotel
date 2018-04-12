@@ -17,6 +17,5 @@ public class CheckOutView extends View {
 		stage.setResizable(false);
 		return stage;
 	}
-	
-	
+
 }

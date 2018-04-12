@@ -8,13 +8,12 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ListView;
 import javafx.stage.Stage;
 
+
 public class RoomView extends View{
 	@FXML private Button closeButton;
-	@FXML private ChoiceBox floorSelector;
 	// For display
 	@FXML private ListView roomList = new ListView();
 	// Imported from database

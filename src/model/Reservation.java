@@ -4,17 +4,22 @@ import java.time.LocalDate;
 
 public class Reservation {
 	private int id;
-	private Guest guest;
-	private Room room;
+	private String guestName;
+	private String room;
 	private LocalDate startDate;
 	private LocalDate endDate;
 	
-	public Reservation(int id, Guest guest, Room room, LocalDate startDate, LocalDate endDate) {
-		this.id = id;
+	public Reservation(int id, String guestName, String room, LocalDate startDate, LocalDate endDate) {
+	/*	this.setId(++id);
 		this.guest = guest;
 		this.room = room;
 		this.startDate = startDate;
-		this.endDate = endDate;
+		this.endDate = endDate;*/
+		this.setId(++id);
+		this.setGuest(guestName);
+		this.setRoom(room);
+		this.setStartDate(startDate);
+		this.setEndDate(endDate);
 	}
 
 	public int getId() {
@@ -25,19 +30,19 @@ public class Reservation {
 		this.id = id;
 	}
 
-	public Guest getGuest() {
-		return guest;
+	public String getGuest() {
+		return guestName;
 	}
 
-	public void setGuest(Guest guest) {
-		this.guest = guest;
+	public void setGuest(String guestName) {
+		this.guestName = guestName;
 	}
 
-	public Room getRoom() {
+	public String getRoom() {
 		return room;
 	}
 
-	public void setRoom(Room room) {
+	public void setRoom(String room) {
 		this.room = room;
 	}
 

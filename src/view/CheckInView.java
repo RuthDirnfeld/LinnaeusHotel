@@ -12,12 +12,12 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
-
 public class CheckInView extends View{
 	@FXML private Button checkInButton;
 	@FXML private TextField searchField;
 	// For display
-	@FXML private ListView guestList = new ListView();
+	@FXML
+	private ListView guestList = new ListView();
 	// Imported from database
 	private ArrayList<model.Guest> guestArray = new ArrayList<model.Guest>();
 	private ObservableList<model.Guest> data = FXCollections.observableArrayList();
@@ -28,12 +28,12 @@ public class CheckInView extends View{
     }
 	
 	public void setList(ArrayList<model.Guest> arr) {
-		//TODO hide header
+		// TODO hide header
 		guestArray = arr;
 		data.setAll(guestArray);
 		guestList.setItems(data);
 	}
-    
+
 	@Override
 	public Stage display() throws Exception {
 		Stage stage = new Stage();
