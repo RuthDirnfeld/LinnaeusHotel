@@ -3,15 +3,29 @@
 <?import javafx.scene.control.*?>
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="584.0" prefWidth="479.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.GuestListView">
+<VBox prefHeight="866.0" prefWidth="1400.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.GuestListView">
    <children>
-      <Button fx:id="searchBtn" layoutX="341.0" layoutY="35.0" mnemonicParsing="false" onAction="#searchClick" prefHeight="31.0" prefWidth="96.0" text="Search" />
-      <TextField layoutX="32.0" layoutY="35.0" prefHeight="31.0" prefWidth="298.0" />
-      <ListView layoutX="32.0" layoutY="81.0" prefHeight="344.0" prefWidth="406.0" />
-      <Button fx:id="addGuestBtn" layoutX="336.0" layoutY="463.0" mnemonicParsing="false" onAction="#newClick" prefHeight="31.0" prefWidth="107.0" text="New" />
-      <Button fx:id="loadBtn" layoutX="336.0" layoutY="513.0" mnemonicParsing="false" onAction="#loadClick" prefHeight="31.0" prefWidth="107.0" text="Load" />
-      <Button fx:id="cancelBtn" layoutX="32.0" layoutY="513.0" mnemonicParsing="false" onAction="#cancelClick" prefHeight="31.0" prefWidth="107.0" text="Cancel" />
+      <AnchorPane prefHeight="866.0" prefWidth="1400.0">
+         <children>
+            <TextField layoutX="32.0" layoutY="35.0" prefHeight="31.0" prefWidth="290.0" />
+            <Button fx:id="searchBtn" layoutX="341.0" layoutY="35.0" mnemonicParsing="false" onAction="#searchClick" prefHeight="31.0" prefWidth="160.0" text="Search" />
+            <Button fx:id="addGuestBtn" layoutX="524.0" layoutY="35.0" mnemonicParsing="false" onAction="#newClick" prefHeight="31.0" prefWidth="160.0" text="New" />
+            <Button fx:id="cancelBtn" layoutX="32.0" layoutY="800.0" mnemonicParsing="false" onAction="#cancelClick" prefHeight="31.0" prefWidth="160.0" text="Cancel" />
+            <Button fx:id="loadBtn" layoutX="1172.0" layoutY="800.0" mnemonicParsing="false" onAction="#loadClick" prefHeight="31.0" prefWidth="160.0" text="Load" />
+            <TableView fx:id="guestTable" layoutX="32.0" layoutY="79.0" prefHeight="706.0" prefWidth="1300.0">
+              <columns>
+                <TableColumn fx:id="name" prefWidth="275.0" text="Name" />
+                <TableColumn fx:id="address" prefWidth="202.0" text="Address" />
+                  <TableColumn fx:id="telephone" prefWidth="162.0" text="Telephone" />
+                  <TableColumn fx:id="creditCard" prefWidth="199.0" text="Credit Card" />
+                  <TableColumn fx:id="passport" prefWidth="190.0" text="Passport" />
+                  <TableColumn fx:id="smoker" prefWidth="138.0" text="Smoker" />
+                  <TableColumn fx:id="favRoom" prefWidth="133.0" text="Pref. Room" />
+              </columns>
+            </TableView>
+         </children>
+      </AnchorPane>
    </children>
-</AnchorPane>
+</VBox>

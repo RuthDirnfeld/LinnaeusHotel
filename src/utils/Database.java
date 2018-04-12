@@ -61,6 +61,14 @@ public class Database {
 		return true;
 	}
 	
+	public void setPort(int port) {
+		this.dbPort = port;
+	}
+	
+	public void setIp(String ip) {
+		this.dbAddress = ip;
+	}
+	
 	public void writeGuest (model.Guest guest) {
 		Gson gson = new Gson();
 		BasicDBObject obj = (BasicDBObject)JSON.parse(gson.toJson(guest));
@@ -73,17 +81,20 @@ public class Database {
 		rooms.insertOne(obj);
 	}
 	
-	public void writeReservation (model.Room room) {
-		//TODO
+	public void writeReservation (model.Reservation reservation) {
+		Gson gson = new Gson();
+		BasicDBObject obj = (BasicDBObject)JSON.parse(gson.toJson(reservation));
+		reservations.insertOne(obj);
 	}
 	
+	// Returns list of guests with specified name
 	public ArrayList<model.Guest> findGuestByName(String name) {
 		ArrayList<model.Guest> guestArray = new ArrayList<model.Guest>();
 	    FindIterable<BasicDBObject> cursor = guests.find(new Document("name", name));
 	    MongoCursor<BasicDBObject> it = cursor.iterator();
 	    try {
 		   while(it.hasNext()) {
-			   BasicDBObject dbobj = (BasicDBObject) it.next();
+			   BasicDBObject dbobj = it.next();
 			   model.Guest foundGuest = (new Gson()).fromJson(dbobj.toString(), model.Guest.class);
 			   guestArray.add(foundGuest);
 	       }
@@ -94,11 +105,31 @@ public class Database {
 		return guestArray;
 	}
 	
+	// Returns list of reservation objects
+	public ArrayList<model.Reservation> findReservedRooms() {
+		ArrayList<model.Reservation> reservationArr = new ArrayList<model.Reservation>();
+	    FindIterable<BasicDBObject> cursor = reservations.find();
+	    MongoCursor<BasicDBObject> it = cursor.iterator();
+	    try {
+		   while(it.hasNext()) {
+			   BasicDBObject dbobj = it.next();
+			   model.Reservation foundReservation = (new Gson()).fromJson(dbobj.toString(), model.Reservation.class);
+			   reservationArr.add(foundReservation);
+	       }
+	    }
+	    finally {
+	    	it.close();
+	    }
+		return reservationArr;
+		
+	}
+	
+	// Returns list of free rooms
 	public ArrayList<model.Room> findFreeRooms(model.Room room) {
 		ArrayList<model.Room> foundRooms = retrieveFreeRooms(room.getLocation(), room.getNumBeds());
 		if (foundRooms.size() > 0) {
 			for (Iterator<Room> it = foundRooms.iterator(); it.hasNext() ;){
-				model.Room curRoom = (model.Room) it.next();
+				model.Room curRoom = it.next();
 				if (curRoom.isSingle() != room.isSingle()) {
 					it.remove();
 				}
@@ -115,6 +146,20 @@ public class Database {
 		
 		return foundRooms;
 	}
+	
+	// Returns all rooms
+	public ArrayList<model.Room> findRooms() {
+		ArrayList<model.Room> foundRooms = new ArrayList<model.Room>();
+	    FindIterable<BasicDBObject> cursor = rooms.find();
+	    MongoCursor<BasicDBObject> it = cursor.iterator();
+	    while (it.hasNext()) {
+	    	BasicDBObject dbobj = it.next();
+			model.Room foundRoom = (new Gson()).fromJson(dbobj.toString(), model.Room.class);
+			foundRooms.add(foundRoom);			
+	    }
+	    
+		return foundRooms;
+	} 
 	
 	private ArrayList<model.Room> retrieveFreeRooms(String city, String numBeds) {
 		// Looking for free rooms in specified city with provided number of beds.
@@ -135,14 +180,14 @@ public class Database {
 	    	cursor = rooms.find(query);
 	    	it = cursor.iterator();
 	    	while (it.hasNext()) {
-		    	BasicDBObject dbobj = (BasicDBObject) it.next();
+		    	BasicDBObject dbobj = it.next();
 				model.Room foundRoom = (new Gson()).fromJson(dbobj.toString(), model.Room.class);
 				roomArray.add(foundRoom);			
 		    }
 	    }
 	    else {
 		    while (it.hasNext()) {
-		    	BasicDBObject dbobj = (BasicDBObject) it.next();
+		    	BasicDBObject dbobj = it.next();
 				model.Room foundRoom = (new Gson()).fromJson(dbobj.toString(), model.Room.class);
 				roomArray.add(foundRoom);			
 		    }
