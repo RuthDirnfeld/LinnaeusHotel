@@ -19,13 +19,7 @@ public class RoomView extends View{
 	// Imported from database
 	private ArrayList<model.Room> roomArray = new ArrayList<model.Room>();
 	private ObservableList<model.Room> roomData = FXCollections.observableArrayList();
-	private ObservableList floorData = FXCollections.observableArrayList();
-	
-    
-    public void setFloors(int[] arr) {
-    	floorData.setAll(arr);
-    	floorSelector.setItems(floorData);
-    }
+
     
 	public void setRooms(ArrayList<model.Room> arr) {
 		//TODO hide header
