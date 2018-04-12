@@ -1,17 +1,14 @@
 package view;
 
-import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
-public class OptionsView extends Application {
+public class OptionsView extends View {
 	@FXML
 	private TextField address; 
 	@FXML 
@@ -19,18 +16,14 @@ public class OptionsView extends Application {
 	
 	ObservableList<String> cityList = FXCollections.observableArrayList("Vaxjo","Kalmar"); 
 
-	@Override
-	public void start(Stage primaryStage) throws Exception {
-		Parent root = FXMLLoader.load(getClass().getResource("OptionsView.fxml"));
-		primaryStage.setTitle("Options");
-		primaryStage.setScene(new Scene(root));
-		primaryStage.setResizable(false);
-		primaryStage.show(); 
+	public Stage display() throws Exception {
+		Stage stage = new Stage();
+		stage.setTitle("Options");
+		stage.setScene(new Scene(parent));
+		stage.setResizable(false);
+		return stage; 
 	}
 
-	public static void main(String[] args) {
-		launch(args);
-	}
 	
 	@FXML 
 	private void initialize() {

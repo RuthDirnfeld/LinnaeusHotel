@@ -1,12 +1,13 @@
 package view;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import controller.GuestController;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
@@ -15,7 +16,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import model.Guest;
 
-public class GuestListView extends Application {
+public class GuestListView extends View {
 	@FXML
 	private Button searchBtn;
 	@FXML
@@ -43,17 +44,12 @@ public class GuestListView extends Application {
 	
 	public ArrayList<Guest> guests;
 	
-	@Override
-	public void start(Stage stage) throws Exception {
-		Parent root = FXMLLoader.load(getClass().getResource("GuestListView.fxml"));
+	public Stage display() throws Exception {
+		Stage stage = new Stage();
 		stage.setTitle("Guest List");
-		stage.setScene(new Scene(root));
+		stage.setScene(new Scene(parent));
 		stage.setResizable(false);
-		stage.show();
-	}
-	
-	public static void main(String[] args) {
-		launch(args);
+		return stage;
 	}
 	
 	@FXML
@@ -88,11 +84,7 @@ public class GuestListView extends Application {
 
 	public void newClick() {
 		try {
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("GuestView.fxml"));
-			Parent parent = (Parent) loader.load();
-			Stage stage = new Stage();
-			stage.setScene(new Scene(parent));
-			stage.show();
+			((GuestController) controller).getDisplay().show();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

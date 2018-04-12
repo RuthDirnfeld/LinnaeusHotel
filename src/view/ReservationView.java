@@ -4,12 +4,11 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
+import controller.ReservationController;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.DateCell;
@@ -24,7 +23,7 @@ import javafx.util.Callback;
 import javafx.util.StringConverter;
 import model.Reservation;
 
-public class ReservationView extends Application {
+public class ReservationView extends View {
 
 	@FXML
 	private DatePicker arrivalDate;
@@ -68,12 +67,12 @@ public class ReservationView extends Application {
 	public ArrayList <Reservation> resv;
 	
 	@Override
-	public void start(Stage stage) throws Exception {
-		Parent root = FXMLLoader.load(getClass().getResource("ReservationView.fxml"));
+	public Stage display() throws Exception {
+		Stage stage = new Stage();
 		stage.setTitle("Reservation Management");
-		stage.setScene(new Scene(root));
+		stage.setScene(new Scene(parent));
 		stage.setResizable(false);
-		stage.show();
+		return stage;
 	}
 
 	public void initialize() {
@@ -91,10 +90,6 @@ public class ReservationView extends Application {
 		}
 	}
 
-	public static void main(String[] args) {
-		launch(args);
-	}
-	
 	// DatePicker choice validation
 	public void onArrivalClick() {
 		System.out.println("ArrivalClick");
@@ -163,11 +158,7 @@ public class ReservationView extends Application {
 
 	public void chooseGuestClick() {
 		try {
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("GuestListView.fxml"));
-			Parent parent = (Parent) loader.load();
-			Stage stage = new Stage();
-			stage.setScene(new Scene(parent));
-			stage.show();
+			((ReservationController) controller).getListView().show();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

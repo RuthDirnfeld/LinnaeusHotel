@@ -1,85 +1,57 @@
 package view;
 
-import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
+import controller.MainController;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-public class MainView extends Application {
+public class MainView extends View{
 
-	public void start(Stage stage) throws Exception {
-		Parent root = FXMLLoader.load(getClass().getResource("MainView.fxml"));
+	
+
+	public Stage display() throws Exception {
+		Stage stage = new Stage();
 		stage.setTitle("Main View");
-		stage.setScene(new Scene(root));
+		stage.setScene(new Scene(parent));
 		stage.setResizable(false);
-		stage.show();
-	}
-
-	public static void main(String[] args) {
-		launch(args);
+		
+		return stage;
 	}
 
 	public void onGuestManagementClick() {
-		System.out.println("Guest Management");
 		try {
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("GuestView.fxml"));
-			Parent parent = (Parent) loader.load();
-			Stage stage = new Stage();
-			stage.setScene(new Scene(parent));
-			stage.show();
+			((MainController) controller).getGuestController().getDisplay().show();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
 	public void onReservationManagementClick() {
-		System.out.println("Reservation Management");
 		try {
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("ReservationView.fxml"));
-			Parent parent = (Parent) loader.load();
-			Stage stage = new Stage();
-			stage.setScene(new Scene(parent));
-			stage.show();
+			((MainController) controller).getResController().getDisplay().show();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
 	public void onCheckInClick() {
-		System.out.println("Check In");
 		try {
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("CheckInView.fxml"));
-			Parent parent = (Parent) loader.load();
-			Stage stage = new Stage();
-			stage.setScene(new Scene(parent));
-			stage.show();
+			((MainController) controller).getGuestController().getCheckInView().show();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
 	public void onCheckOutClick() {
-		System.out.println("Check Out");
 		try {
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("CheckOutView.fxml"));
-			Parent parent = (Parent) loader.load();
-			Stage stage = new Stage();
-			stage.setScene(new Scene(parent));
-			stage.show();
+			((MainController) controller).getGuestController().getCheckOutView().show();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 	
 	public void onPreferencesClick() {
-		System.out.println("Preferences");
 		try {
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("OptionsView.fxml"));
-			Parent parent = (Parent) loader.load();
-			Stage stage = new Stage();
-			stage.setScene(new Scene(parent));
-			stage.show();
+			((MainController) controller).getOptionsController().getDisplay().show();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

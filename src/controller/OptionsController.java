@@ -1,5 +1,5 @@
 package controller;
 
-public class OptionsController {
+public class OptionsController extends Controller {
 
 }

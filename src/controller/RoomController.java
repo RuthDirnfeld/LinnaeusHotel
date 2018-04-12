@@ -1,5 +1,5 @@
 package controller;
 
-public class RoomController {
+public class RoomController extends Controller{
 
 }

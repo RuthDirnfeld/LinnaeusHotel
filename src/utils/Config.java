@@ -56,7 +56,7 @@ public class Config {
 		
 	}
 	
-	private void getFromFile() throws JSONException, FileNotFoundException {
+	public void getFromFile() throws JSONException, FileNotFoundException {
 		options.setDbAddress(getDbIp());
 		if (getCity().toLowerCase().equals(model.Options.City.VAXJO.toString().toLowerCase())) {
 			options.setCurrentCity(model.Options.City.VAXJO);
@@ -69,20 +69,33 @@ public class Config {
 		
 	}
 	
+	public void writeToFile() {
+		JSONObject file = new JSONObject();
+		file.put("city", options.getCurrentCity().name());
+		file.put("ip", options.getDbAddress());
+		try {
+			FileWriter fr = new FileWriter(filePath + "config.json");
+			fr.write(file.toString());
+			fr.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	private String getCity() throws JSONException, FileNotFoundException {
-		String resourceFolder = "";
+		String city = "";
 		JSONObject json = new JSONObject(new JSONTokener(new FileReader(filePath + "config.json")));
-		resourceFolder = (String) json.get("city");
+		city = (String) json.get("city");
 		
-		return resourceFolder;
+		return city;
 	}
 	
 	private String getDbIp() throws JSONException, FileNotFoundException {
-		String resourceFolder = "";
+		String ip = "";
 		JSONObject json = new JSONObject(new JSONTokener(new FileReader(filePath + "config.json")));
-		resourceFolder = (String) json.get("ip");
+		ip = (String) json.get("ip");
 		
-		return resourceFolder;
+		return ip;
 	}
 	
 }

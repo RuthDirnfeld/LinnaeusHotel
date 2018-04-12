@@ -1,13 +1,10 @@
 package view;
 
 import controller.GuestController;
-import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -17,7 +14,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
-public class GuestView extends Application {
+public class GuestView extends View {
 	@FXML
 	private TextField fullName;
 	@FXML
@@ -39,13 +36,14 @@ public class GuestView extends Application {
 	
 	ObservableList<String> cityList = FXCollections.observableArrayList("Vaxjo", "Kalmar");
 
+
 	@Override
-	public void start(Stage primaryStage) throws Exception {
-		Parent root = FXMLLoader.load(getClass().getResource("GuestView.fxml"));
-		primaryStage.setTitle("Guest View");
-		primaryStage.setScene(new Scene(root));
-		primaryStage.setResizable(false);
-		primaryStage.show(); 
+	public Stage display()throws Exception {
+		Stage stage = new Stage();
+		stage.setTitle("Guest View");
+		stage.setScene(new Scene(parent));
+		stage.setResizable(false);
+		return stage;
 	}
 
 	@FXML
@@ -69,14 +67,10 @@ public class GuestView extends Application {
 
 	}
 
-	public static void main(String[] args) {
-		launch(args);
-	}
 	
-	public void onClickConfirm() {
-		if (inputCheck()) {
-			GuestController gc = new GuestController();
-			gc.createGuest(fullName.getText(), address.getText(), phoneNumber.getText(), creditCardNum.getText(),
+	public void onClickConfirm(){
+		if(inputCheck()) {
+			((GuestController) controller).createGuest(fullName.getText(), address.getText(), phoneNumber.getText(), creditCardNum.getText(),
 					passportNumber.getText(), smoker.isSelected(), favRoom.getText());
 		}
 	}
