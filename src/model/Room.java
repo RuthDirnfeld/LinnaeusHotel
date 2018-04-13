@@ -11,10 +11,13 @@ public class Room {
 	private String location = "";
 	private String price;
 	private RoomState state;
-	private RoomQuality quality;	
+	private RoomQuality quality;
+
+	private String floor;
+	
 	
 	public Room(String numBeds, boolean smoking, String arrival, String departure, boolean single, String location,
-			String price, RoomState state, RoomQuality quality, String number) {
+			String price, RoomState state, RoomQuality quality, String floor, String number) {
 		this.numBeds = numBeds;
 		this.roomNum = number;
 		this.smoking = smoking;
@@ -25,6 +28,7 @@ public class Room {
 		this.price = price;
 		this.state = state;
 		this.quality = quality;
+		this.floor = floor;
 	}
 	public Room() {
 
@@ -111,5 +115,14 @@ public class Room {
 	public void setQuality(RoomQuality quality) {
 		this.quality = quality;
   }
+	
+	public String getFloor() {
+		return floor;
+	}
+
+
+	public void setFloor(String floor) {
+		this.floor = floor;
+	}
 
 }

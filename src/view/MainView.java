@@ -1,7 +1,6 @@
 package view;
 
 import controller.MainController;
-import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 public class MainView extends View{
@@ -9,17 +8,12 @@ public class MainView extends View{
 	
 
 	public Stage display() throws Exception {
-		Stage stage = new Stage();
-		stage.setTitle("Main View");
-		stage.setScene(new Scene(parent));
-		stage.setResizable(false);
-		
 		return stage;
 	}
 
 	public void onGuestManagementClick() {
 		try {
-			((MainController) controller).getGuestController().getDisplay().show();
+			((MainController) controller).getApp().getGuestController().getGuestListView().show();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -27,7 +21,7 @@ public class MainView extends View{
 
 	public void onReservationManagementClick() {
 		try {
-			((MainController) controller).getResController().getDisplay().show();
+			((MainController) controller).getApp().getResController().getResView().show();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -35,7 +29,7 @@ public class MainView extends View{
 
 	public void onCheckInClick() {
 		try {
-			((MainController) controller).getGuestController().getCheckInView().show();
+			((MainController) controller).getCheckInView().show();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -43,7 +37,7 @@ public class MainView extends View{
 
 	public void onCheckOutClick() {
 		try {
-			((MainController) controller).getGuestController().getCheckOutView().show();
+			((MainController) controller).getCheckOutView().show();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -51,7 +45,7 @@ public class MainView extends View{
 	
 	public void onPreferencesClick() {
 		try {
-			((MainController) controller).getOptionsController().getDisplay().show();
+			((MainController) controller).getApp().getOptionsController().getOptionsView().show();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

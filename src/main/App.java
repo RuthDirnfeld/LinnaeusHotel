@@ -1,11 +1,11 @@
 package main;
 
-import controller.MainController;
+import controller.AppController;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
 public class App extends Application{
-	MainController mc = new MainController();
+	AppController app = new AppController();
 
 	public static void main(String[] args) {
 		launch(args);
@@ -14,13 +14,7 @@ public class App extends Application{
 
 	@Override
 	public void start(Stage arg0) throws Exception {
-		mc.initialize();
-		//if (mc.isDatabaseInit()) {
-			mc.getDisplay().show();
-		//}
-		//else {
-		//	mc.getDatabaseViewStage().show();
-		//}
+		app.initialize().show();
 	}
 
 }
