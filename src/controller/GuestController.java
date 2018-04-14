@@ -44,11 +44,11 @@ public class GuestController extends Controller {
 		guestListView.setStage("Guest List View");
 	}
 	
-	public void createGuest(String name, String birthDate, String company, String citizenship, String address, boolean smoker, String email, String phoneNum, String favRoom, String creditNumber) {
-		Guest g = new Guest(name,birthDate,company,citizenship,address,smoker,email, phoneNum,favRoom,creditNumber);
-		System.out.println(g.toString());
-		guestList.add(g);
-	}
+	public void createGuest(String name, String address, String phoneNum, String creditNum, String passportNum,
+			boolean smoker, String favRoom) {
+		Guest g = new Guest(name, address, phoneNum, creditNum, passportNum, smoker, favRoom);
+		guestList.add(g);	
+  }
 	
 	public Stage getGuestView() throws Exception {
 		return guestView.display();
