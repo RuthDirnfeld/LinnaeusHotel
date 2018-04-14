@@ -26,6 +26,7 @@ public class GuestController extends Controller {
 	private Parent guestListParent;
 	private Database database;
 	Controller controller = null;
+	private ArrayList<Guest> guests;
 	
 	public GuestController() {
 		try {
@@ -61,10 +62,27 @@ public class GuestController extends Controller {
 	}
 	
 	public Stage getGuestListView() throws Exception {
+		this.database = app.getDatabase();
+		database.connect();
+		guests = database.findGuests();
+		guestListView.setTable(guests);
+		guestListView.initialize();
 		return guestListView.display();
 	}
 	
-	public void setDatabase(Database database){
-		this.database = database; 
+	public void updateGuestList(){
+		this.database = app.getDatabase();
+		database.connect();
+		guests = database.findGuests();
+		guestListView.setTable(guests);
+		guestListView.initialize();
 	}
+	public void updateGuestList(String s){
+		this.database = app.getDatabase();
+		database.connect();
+		guests = database.findGuestByName(s);
+		guestListView.setTable(guests);
+		guestListView.initialize();
+	}
+	
 }

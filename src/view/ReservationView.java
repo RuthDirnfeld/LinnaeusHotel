@@ -2,55 +2,70 @@ package view;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoUnit;
-import java.util.Objects;
+import java.util.ArrayList;
 
 import controller.ReservationController;
+import javafx.application.Application;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.DateCell;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 import javafx.util.StringConverter;
+import model.Reservation;
 
 public class ReservationView extends View {
 
 	@FXML
-	DatePicker arrivalDate;
+	private DatePicker arrivalDate;
 	@FXML
-	DatePicker departureDate;
+	private DatePicker departureDate;
 	@FXML
-	Label calcNights;
+	private Label calcNights;
 	@FXML
-	Label calcRoom;
+	private Label calcRoom;
 	@FXML
-	RadioButton oneBed;
+	private RadioButton oneBed;
 	@FXML
-	RadioButton twoBeds;
+	private RadioButton twoBeds;
 	@FXML
-	RadioButton threeBeds;
+	private RadioButton threeBeds;
 	@FXML
-	RadioButton fourBeds;
+	private RadioButton fourBeds;
 	@FXML
-	RadioButton apartment;
+	private RadioButton apartment;
 	@FXML
-	Button chooseGuestBtn;
+	private Button chooseGuestBtn;
 	@FXML
-	Button clearFieldsBtn;
+	private Button clearFieldsBtn;
 	@FXML
-	Button OkBtn;
+	private Button OkBtn;
 	@FXML
-	Button ShowBtn;
+	private Button ShowBtn;
 	@FXML
-	ComboBox monthBox;
+	private TableView<Reservation> resTable;
 	@FXML
-	ComboBox yearBox;
-
-
+	private TableColumn <Reservation, String> id;
+	@FXML
+	private TableColumn <Reservation, String> guestName;
+	@FXML
+	private TableColumn<Reservation, String>  room;
+	@FXML
+	private TableColumn<Reservation, String>  startDate;
+	@FXML
+	private TableColumn<Reservation, String> endDate;
+	
+	public ArrayList <Reservation> resv;
+	
 	@Override
 	public Stage display() throws Exception {
 		return stage;
@@ -59,8 +74,17 @@ public class ReservationView extends View {
 	public void initialize() {
 		onArrivalClick();
 		onDepartureClick();
+		if (resv != null) {
+			ObservableList<Reservation> resvList = FXCollections.observableList(resv);
+			resTable.setItems(resvList);
+			
+			id.setCellValueFactory(new PropertyValueFactory<Reservation, String> ("id"));
+			guestName.setCellValueFactory(new PropertyValueFactory<Reservation, String> ("guestName"));
+			room.setCellValueFactory(new PropertyValueFactory<Reservation, String> ("room"));
+			startDate.setCellValueFactory(new PropertyValueFactory<Reservation, String> ("startDate"));
+			endDate.setCellValueFactory(new PropertyValueFactory<Reservation, String> ("endDate"));
+		}
 	}
-
 
 	// DatePicker choice validation
 	public void onArrivalClick() {
@@ -101,10 +125,6 @@ public class ReservationView extends View {
 							setDisable(true);
 							setStyle("-fx-background-color: #a6a6a6");
 						}
-						// FIXME currently calculating weird stuff
-						long totalNights = ChronoUnit.DAYS.between(arrivalDate.getValue(), item);
-						String temp = Objects.toString(totalNights, null);
-						calcNights.setText(temp);
 					}
 				};
 			}
@@ -134,12 +154,12 @@ public class ReservationView extends View {
 
 	public void chooseGuestClick() {
 		try {
-			((ReservationController) controller).getApp().getGuestController().getGuestView().show();
+			((ReservationController) controller).getApp().getGuestController().getGuestListView().show();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-
+	
 	public void clearFieldsClick() {
 		System.out.println("Clear Fields");
 	}

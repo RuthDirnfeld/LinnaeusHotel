@@ -70,9 +70,14 @@ public class GuestView extends View {
 			((GuestController) controller).createGuest(fullName.getText(), address.getText(), phoneNumber.getText(), creditCardNum.getText(),
 					passportNumber.getText(), smoker.isSelected(), favRoom.getText());
 		}
+		((GuestController) controller).updateGuestList();
+		clearAll();
+		Stage stage = (Stage) cancelButton.getScene().getWindow();
+		stage.close();
 	}
 
 	public void onClickCancel() {
+		clearAll();
 		Stage stage = (Stage) cancelButton.getScene().getWindow();
 		stage.close();
 	}
@@ -105,6 +110,16 @@ public class GuestView extends View {
 		alert.setContentText(message);
 
 		alert.showAndWait();
+	}
+	
+	public void clearAll(){
+    fullName.clear();
+    address.clear();
+	phoneNumber.clear();
+	passportNumber.clear();
+    creditCardNum.clear();
+    favRoom.clear();
+	smoker.setSelected(false);
 	}
 
 }

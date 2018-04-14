@@ -4,60 +4,69 @@
 <?import javafx.scene.control.*?>
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="903.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.ReservationView">
+<VBox prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.ReservationView">
    <children>
-      <VBox fx:id="radioButtonContainer" layoutX="14.0" layoutY="152.0" prefHeight="177.0" prefWidth="174.0">
+      <AnchorPane prefHeight="800.0" prefWidth="1.00512E7">
          <children>
-            <RadioButton fx:id="oneBed" mnemonicParsing="false" onAction="#singleRoomClick" text="Single Room">
-               <VBox.margin>
-                  <Insets left="10.0" top="10.0" />
-               </VBox.margin>
-            </RadioButton>
-            <RadioButton fx:id="twoBeds" mnemonicParsing="false" onAction="#doubleRoomClick" text="Double Room">
-               <VBox.margin>
-                  <Insets left="10.0" top="10.0" />
-               </VBox.margin>
-            </RadioButton>
-            <RadioButton fx:id="threeBeds" mnemonicParsing="false" onAction="#tripleRoomClick" text="Triple Room">
-               <VBox.margin>
-                  <Insets left="10.0" top="10.0" />
-               </VBox.margin>
-            </RadioButton>
-            <RadioButton fx:id="fourBeds" mnemonicParsing="false" onAction="#fourBedClick" text="Four-bed room">
-               <VBox.margin>
-                  <Insets left="10.0" top="10.0" />
-               </VBox.margin>
-            </RadioButton>
-            <RadioButton fx:id="apartment" mnemonicParsing="false" onAction="#apartmentClick" text="Apartment/Suite">
-               <VBox.margin>
-                  <Insets left="10.0" top="10.0" />
-               </VBox.margin>
-            </RadioButton>
+            <Label layoutX="497.0" layoutY="66.0" text="Departure">
+               <padding>
+                  <Insets left="30.0" right="5.0" />
+               </padding>
+            </Label>
+            <Label layoutX="101.0" layoutY="66.0" prefHeight="21.0" prefWidth="53.0" text="Arrival" />
+            <Label layoutX="710.0" layoutY="174.0" prefHeight="30.0" text="Rooms" />
+            <Label layoutX="767.0" layoutY="174.0" prefHeight="30.0" prefWidth="334.0" />
+            <Button fx:id="chooseGuestBtn" layoutX="605.0" layoutY="121.0" mnemonicParsing="false" onAction="#chooseGuestClick" prefHeight="30.0" prefWidth="145.0" text="Choose Guest" />
+            <Button fx:id="clearFieldsBtn" layoutX="658.0" layoutY="287.0" mnemonicParsing="false" onAction="#clearFieldsClick" prefHeight="30.0" prefWidth="150.0" text="Clear Fields" />
+            <Button fx:id="OkBtn" layoutX="990.0" layoutY="287.0" mnemonicParsing="false" onAction="#OkBtnClick" prefHeight="30.0" prefWidth="150.0" text="OK" />
+            <Button fx:id="ShowBtn" layoutX="825.0" layoutY="287.0" mnemonicParsing="false" onAction="#showBtnClick" prefHeight="30.0" prefWidth="150.0" text="Show" />
+            <TextField layoutX="767.0" layoutY="225.0" prefHeight="31.0" prefWidth="137.0" />
+            <TextField layoutX="767.0" layoutY="121.0" prefHeight="31.0" prefWidth="334.0" />
+            <DatePicker fx:id="arrivalDate" layoutX="166.0" layoutY="61.0" onAction="#onArrivalClick" />
+            <DatePicker fx:id="departureDate" layoutX="605.0" layoutY="61.0" onAction="#onDepartureClick" />
+            <VBox layoutX="14.0" layoutY="152.0" prefHeight="177.0" prefWidth="174.0">
+               <children>
+                  <RadioButton fx:id="oneBed" mnemonicParsing="false" onAction="#singleRoomClick" text="Single Room">
+                     <VBox.margin>
+                        <Insets left="10.0" top="10.0" />
+                     </VBox.margin>
+                  </RadioButton>
+                  <RadioButton fx:id="twoBeds" mnemonicParsing="false" onAction="#doubleRoomClick" text="Double Room">
+                     <VBox.margin>
+                        <Insets left="10.0" top="10.0" />
+                     </VBox.margin>
+                  </RadioButton>
+                  <RadioButton fx:id="threeBeds" mnemonicParsing="false" onAction="#tripleRoomClick" text="Triple Room">
+                     <VBox.margin>
+                        <Insets left="10.0" top="10.0" />
+                     </VBox.margin>
+                  </RadioButton>
+                  <RadioButton fx:id="fourBeds" mnemonicParsing="false" onAction="#fourBedClick" text="Four-Bed Room">
+                     <VBox.margin>
+                        <Insets left="10.0" top="10.0" />
+                     </VBox.margin>
+                  </RadioButton>
+                  <RadioButton fx:id="apartment" mnemonicParsing="false" onAction="#apartmentClick" text="Apartment/Suite">
+                     <VBox.margin>
+                        <Insets left="10.0" top="10.0" />
+                     </VBox.margin>
+                  </RadioButton>
+               </children>
+            </VBox>
+            <Label layoutX="714.0" layoutY="226.0" prefHeight="30.0" prefWidth="38.0" text="Price" />
+            <Label layoutX="909.0" layoutY="230.0" text="SEK" />
+            <TableView fx:id="resTable" layoutX="8.0" layoutY="335.0" prefHeight="458.0" prefWidth="1181.0">
+              <columns>
+                <TableColumn fx:id="idColumn" prefWidth="196.0" text="ID" />
+                <TableColumn fx:id="nameColumn" prefWidth="348.0" text="Name" />
+                  <TableColumn fx:id="roomColumn" prefWidth="218.0" text="Room" />
+                  <TableColumn fx:id="checkInColumn" prefWidth="214.0" text="Check In" />
+                  <TableColumn fx:id="checkOutColumn" prefWidth="204.0" text="Check Out" />
+              </columns>
+            </TableView>
          </children>
-      </VBox>
-      <Label layoutX="315.0" layoutY="66.0" text="Departure">
-         <padding>
-            <Insets left="30.0" right="5.0" />
-         </padding>
-      </Label>
-      <Label layoutX="36.0" layoutY="65.0" prefHeight="21.0" prefWidth="53.0" text="Arrival" />
-      <Label layoutX="669.0" layoutY="61.0" prefHeight="30.0" text="Nights" />
-      <Label layoutX="668.0" layoutY="103.0" prefHeight="30.0" text="Rooms" />
-      <Label fx:id="calcNights" layoutX="731.0" layoutY="61.0" prefHeight="30.0" prefWidth="129.0" />
-      <Label fx:id="calcRoom" layoutX="731.0" layoutY="103.0" prefHeight="30.0" prefWidth="129.0" />
-      <Button fx:id="chooseGuestBtn" layoutX="351.0" layoutY="152.0" mnemonicParsing="false" onAction="#chooseGuestClick" prefHeight="30.0" prefWidth="145.0" text="Choose Guest" />
-      <TextField layoutX="510.0" layoutY="204.0" prefHeight="31.0" prefWidth="137.0" />
-      <Label layoutX="443.0" layoutY="205.0" prefHeight="30.0" prefWidth="53.0" text="Price" />
-      <TextField layoutX="510.0" layoutY="152.0" prefHeight="31.0" prefWidth="334.0" />
-      <Label layoutX="658.0" layoutY="209.0" text="SEK" />
-      <ComboBox fx:id="monthBox" layoutX="377.0" layoutY="341.0" onAction="#onMonthBoxClick" prefWidth="150.0" />
-      <Button fx:id="clearFieldsBtn" layoutX="541.0" layoutY="287.0" mnemonicParsing="false" onAction="#clearFieldsClick" prefHeight="30.0" prefWidth="150.0" text="Clear Fields" />
-      <ComboBox fx:id="yearBox" layoutX="541.0" layoutY="341.0" onAction="#onYearBoxClick" prefWidth="150.0" />
-      <Button fx:id="OkBtn" layoutX="710.0" layoutY="287.0" mnemonicParsing="false" onAction="#OkBtnClick" prefHeight="30.0" prefWidth="150.0" text="OK" />
-      <Button fx:id="ShowBtn" layoutX="710.0" layoutY="341.0" mnemonicParsing="false" onAction="#showBtnClick" prefHeight="30.0" prefWidth="150.0" text="Show" />
-      <DatePicker fx:id="arrivalDate" layoutX="89.0" layoutY="61.0" onAction="#onArrivalClick" />
-      <DatePicker fx:id="departureDate" layoutX="424.0" layoutY="60.0" onAction="#onDepartureClick" />
+      </AnchorPane>
    </children>
-</AnchorPane>
+</VBox>
