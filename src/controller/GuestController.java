@@ -9,6 +9,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.stage.Stage;
 import model.Guest;
+import utils.Database;
 import view.GuestListView;
 import view.GuestView;
 
@@ -23,6 +24,8 @@ public class GuestController extends Controller {
 	private GuestListView guestListView;
 	private Parent guestParent;
 	private Parent guestListParent;
+	private Database database;
+	Controller controller = null;
 	
 	public GuestController() {
 		try {
@@ -47,7 +50,10 @@ public class GuestController extends Controller {
 	public void createGuest(String name, String address, String phoneNum, String creditNum, String passportNum,
 			boolean smoker, String favRoom) {
 		Guest g = new Guest(name, address, phoneNum, creditNum, passportNum, smoker, favRoom);
-		guestList.add(g);	
+		guestList.add(g);
+	   this.database =  app.getDatabase();
+	   database.connect(); 
+	   database.writeGuest(g);
   }
 	
 	public Stage getGuestView() throws Exception {
@@ -56,5 +62,9 @@ public class GuestController extends Controller {
 	
 	public Stage getGuestListView() throws Exception {
 		return guestListView.display();
+	}
+	
+	public void setDatabase(Database database){
+		this.database = database; 
 	}
 }

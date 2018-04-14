@@ -46,6 +46,9 @@ public class MainController extends Controller {
 		mainView.setController(this);
 		checkIn.setController(this);
 		checkOut.setController(this);
+		
+		//Set databases
+		
 
 		// Set parents
 		mainView.setParent(mainParent);

@@ -77,5 +77,9 @@ public class NetworkController extends Controller {
 		}
 		return true;
 	}
+	
+	public Database getDatabase(){
+		return db; 
+	}
 
 }
