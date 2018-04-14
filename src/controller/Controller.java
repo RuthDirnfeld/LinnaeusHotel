@@ -1,17 +1,14 @@
 package controller;
 
-import javafx.stage.Stage;
-import view.View;
-
 public abstract class Controller {
 	
-	protected View view;
+	protected AppController app;
 	
-	public void setView(View view) {
-		this.view = view;
+	public void setApp(AppController app) {
+		this.app = app;
 	}
 	
-	public Stage getDisplay() throws Exception {
-		return view.display();
+	public AppController getApp() {
+		return app;
 	}
 }
