@@ -39,10 +39,7 @@ public class GuestView extends View {
 
 	@Override
 	public Stage display()throws Exception {
-		Stage stage = new Stage();
-		stage.setTitle("Guest View");
-		stage.setScene(new Scene(parent));
-		stage.setResizable(false);
+		
 		return stage;
 	}
 
