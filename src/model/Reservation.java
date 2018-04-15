@@ -3,41 +3,33 @@ package model;
 import java.time.LocalDate;
 
 public class Reservation {
-	private int id;
-	private Guest guest;
-	private Room room;
+	private String guestName;
+	private String room;
 	private LocalDate startDate;
 	private LocalDate endDate;
+	private String price;
 	
-	public Reservation(int id, Guest guest, Room room, LocalDate startDate, LocalDate endDate) {
-		this.id = id;
-		this.guest = guest;
+	public Reservation(String guestName, String room, LocalDate startDate, LocalDate endDate, String price) {
+		this.guestName = guestName;
 		this.room = room;
 		this.startDate = startDate;
 		this.endDate = endDate;
+		this.price = price;
 	}
 
-	public int getId() {
-		return id;
+	public String getGuest() {
+		return guestName;
 	}
 
-	public void setId(int id) {
-		this.id = id;
+	public void setGuest(String guestName) {
+		this.guestName = guestName;
 	}
 
-	public Guest getGuest() {
-		return guest;
-	}
-
-	public void setGuest(Guest guest) {
-		this.guest = guest;
-	}
-
-	public Room getRoom() {
+	public String getRoom() {
 		return room;
 	}
 
-	public void setRoom(Room room) {
+	public void setRoom(String room) {
 		this.room = room;
 	}
 
@@ -56,5 +48,11 @@ public class Reservation {
 	public void setEndDate(LocalDate endDate) {
 		this.endDate = endDate;
 	}
+	public String getPrice() {
+		return price;
+	}
 
+	public void setPrice(String price) {
+		this.price = price;
+	}
 }
