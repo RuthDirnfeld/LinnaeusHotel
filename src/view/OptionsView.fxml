@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
@@ -17,8 +14,8 @@
             <Label layoutX="78.0" layoutY="110.0" prefHeight="31.0" prefWidth="35.0" text="City" />
             <Label layoutX="43.0" layoutY="171.0" prefHeight="31.0" prefWidth="70.0" text="IP Address" />
             <Button fx:id="mngRooms" layoutX="100.0" layoutY="318.0" mnemonicParsing="false" onAction="#onClickManageRooms" prefHeight="34.0" prefWidth="170.0" text="Manage Rooms" />
-            <Button layoutX="207.0" layoutY="436.0" mnemonicParsing="false" onAction="#onAcceptClick" prefHeight="34.0" prefWidth="116.0" text="Accept" />
-            <Button layoutX="38.0" layoutY="436.0" mnemonicParsing="false" onAction="#onClickCancel" prefHeight="34.0" prefWidth="116.0" text="Cancel" />
+            <Button fx:id="acceptButton" layoutX="207.0" layoutY="436.0" mnemonicParsing="false" onAction="#onAcceptClick" prefHeight="34.0" prefWidth="116.0" text="Accept" />
+            <Button fx:id="cancelButton" layoutX="38.0" layoutY="436.0" mnemonicParsing="false" onAction="#onClickCancel" prefHeight="34.0" prefWidth="116.0" text="Cancel" />
             <TextField fx:id="address" layoutX="132.0" layoutY="171.0" />
             <ChoiceBox fx:id="cityChoice" layoutX="132.0" layoutY="110.0" prefWidth="150.0" />
             <Button fx:id="mngFloors" layoutX="100.0" layoutY="258.0" mnemonicParsing="false" onAction="#onClickManageFloors" prefHeight="34.0" prefWidth="170.0" text="Manage Floors" />

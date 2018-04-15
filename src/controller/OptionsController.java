@@ -5,6 +5,7 @@ import java.io.IOException;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.stage.Stage;
+import model.Options.City;
 import view.OptionsView;
 
 public class OptionsController extends Controller {
@@ -28,6 +29,13 @@ public class OptionsController extends Controller {
 	
 	public Stage getOptionsView() throws Exception {
 		return optionsView.display();
+	}
+	
+	public void createConfigFile(String city,String ip) {
+		app.getOptions().setDbAddress(ip);
+		app.getOptions().setCurrentCity(City.valueOf(city.toUpperCase()));
+		app.getConfig().writeToFile();
+		
 	}
 
 }
