@@ -174,6 +174,19 @@ public class Database {
 		return foundGuests;
 	} 
 	
+	public ArrayList<model.Reservation> findReservation() {
+		ArrayList<model.Reservation> foundReservations = new ArrayList<model.Reservation>();
+	    FindIterable<BasicDBObject> cursor = reservations.find();
+	    MongoCursor<BasicDBObject> it = cursor.iterator();
+	    while (it.hasNext()) {
+	    	BasicDBObject dbobj = it.next();
+			model.Reservation foundReservation = (new Gson()).fromJson(dbobj.toString(), model.Reservation.class);
+			foundReservations.add(foundReservation);			
+	    }
+	    
+		return foundReservations;
+	} 
+	
 	private ArrayList<model.Room> retrieveFreeRooms(String city, String numBeds) {
 		// Looking for free rooms in specified city with provided number of beds.
 		// Document class is used to provide what to search in database

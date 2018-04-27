@@ -17,13 +17,12 @@
             </Label>
             <Label layoutX="101.0" layoutY="66.0" prefHeight="21.0" prefWidth="53.0" text="Arrival" />
             <Label layoutX="710.0" layoutY="174.0" prefHeight="30.0" text="Rooms" />
-            <Label layoutX="767.0" layoutY="174.0" prefHeight="30.0" prefWidth="334.0" />
             <Button fx:id="chooseGuestBtn" layoutX="605.0" layoutY="121.0" mnemonicParsing="false" onAction="#chooseGuestClick" prefHeight="30.0" prefWidth="145.0" text="Choose Guest" />
             <Button fx:id="clearFieldsBtn" layoutX="658.0" layoutY="287.0" mnemonicParsing="false" onAction="#clearFieldsClick" prefHeight="30.0" prefWidth="150.0" text="Clear Fields" />
             <Button fx:id="OkBtn" layoutX="990.0" layoutY="287.0" mnemonicParsing="false" onAction="#OkBtnClick" prefHeight="30.0" prefWidth="150.0" text="OK" />
             <Button fx:id="ShowBtn" layoutX="825.0" layoutY="287.0" mnemonicParsing="false" onAction="#showBtnClick" prefHeight="30.0" prefWidth="150.0" text="Show" />
-            <TextField layoutX="767.0" layoutY="225.0" prefHeight="31.0" prefWidth="137.0" />
-            <TextField layoutX="767.0" layoutY="121.0" prefHeight="31.0" prefWidth="334.0" />
+            <TextField fx:id="calcPrice" layoutX="767.0" layoutY="225.0" prefHeight="31.0" prefWidth="137.0" />
+            <TextField fx:id="chosenGuest" layoutX="767.0" layoutY="121.0" prefHeight="31.0" prefWidth="334.0" />
             <DatePicker fx:id="arrivalDate" layoutX="166.0" layoutY="61.0" onAction="#onArrivalClick" />
             <DatePicker fx:id="departureDate" layoutX="605.0" layoutY="61.0" onAction="#onDepartureClick" />
             <VBox layoutX="14.0" layoutY="152.0" prefHeight="177.0" prefWidth="174.0">
@@ -59,13 +58,14 @@
             <Label layoutX="909.0" layoutY="230.0" text="SEK" />
             <TableView fx:id="resTable" layoutX="8.0" layoutY="335.0" prefHeight="458.0" prefWidth="1181.0">
               <columns>
-                <TableColumn fx:id="idColumn" prefWidth="196.0" text="ID" />
                 <TableColumn fx:id="nameColumn" prefWidth="348.0" text="Name" />
                   <TableColumn fx:id="roomColumn" prefWidth="218.0" text="Room" />
                   <TableColumn fx:id="checkInColumn" prefWidth="214.0" text="Check In" />
                   <TableColumn fx:id="checkOutColumn" prefWidth="204.0" text="Check Out" />
+                <TableColumn fx:id="priceColumn" prefWidth="196.0" text="Price" />
               </columns>
             </TableView>
+            <TextField fx:id="calcRoom" layoutX="767.0" layoutY="174.0" prefHeight="31.0" prefWidth="334.0" />
          </children>
       </AnchorPane>
    </children>

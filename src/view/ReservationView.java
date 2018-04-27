@@ -5,22 +5,21 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 import controller.ReservationController;
-import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.DateCell;
 import javafx.scene.control.DatePicker;
-import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 import javafx.util.StringConverter;
+import model.Guest;
 import model.Reservation;
 
 public class ReservationView extends View {
@@ -30,9 +29,11 @@ public class ReservationView extends View {
 	@FXML
 	private DatePicker departureDate;
 	@FXML
-	private Label calcNights;
+	private TextField chosenGuest;
 	@FXML
-	private Label calcRoom;
+	private TextField calcRoom;
+	@FXML
+	private TextField calcPrice;
 	@FXML
 	private RadioButton oneBed;
 	@FXML
@@ -54,18 +55,19 @@ public class ReservationView extends View {
 	@FXML
 	private TableView<Reservation> resTable;
 	@FXML
-	private TableColumn <Reservation, String> id;
+	private TableColumn<Reservation, String> nameColumn;
 	@FXML
-	private TableColumn <Reservation, String> guestName;
+	private TableColumn<Reservation, String> roomColumn;
 	@FXML
-	private TableColumn<Reservation, String>  room;
+	private TableColumn<Reservation, String> checkInColumn;
 	@FXML
-	private TableColumn<Reservation, String>  startDate;
+	private TableColumn<Reservation, String> checkOutColumn;
 	@FXML
-	private TableColumn<Reservation, String> endDate;
-	
-	public ArrayList <Reservation> resv;
-	
+	private TableColumn<Reservation, String> priceColumn;
+
+	public ArrayList<Reservation> resv;
+	GuestListView guestListView;
+
 	@Override
 	public Stage display() throws Exception {
 		return stage;
@@ -74,21 +76,11 @@ public class ReservationView extends View {
 	public void initialize() {
 		onArrivalClick();
 		onDepartureClick();
-		if (resv != null) {
-			ObservableList<Reservation> resvList = FXCollections.observableList(resv);
-			resTable.setItems(resvList);
-			
-			id.setCellValueFactory(new PropertyValueFactory<Reservation, String> ("id"));
-			guestName.setCellValueFactory(new PropertyValueFactory<Reservation, String> ("guestName"));
-			room.setCellValueFactory(new PropertyValueFactory<Reservation, String> ("room"));
-			startDate.setCellValueFactory(new PropertyValueFactory<Reservation, String> ("startDate"));
-			endDate.setCellValueFactory(new PropertyValueFactory<Reservation, String> ("endDate"));
-		}
+		setTable();
 	}
 
 	// DatePicker choice validation
 	public void onArrivalClick() {
-		System.out.println("ArrivalClick");
 		dateConverter();
 		final Callback<DatePicker, DateCell> sdayCellFactory = new Callback<DatePicker, DateCell>() {
 			@Override
@@ -111,7 +103,6 @@ public class ReservationView extends View {
 
 	// DatePicker choice validation
 	public void onDepartureClick() {
-		System.out.println("DepartureClick");
 		dateConverter();
 		final Callback<DatePicker, DateCell> edayCellFactory = new Callback<DatePicker, DateCell>() {
 			@Override
@@ -130,6 +121,20 @@ public class ReservationView extends View {
 			}
 		};
 		departureDate.setDayCellFactory(edayCellFactory);
+	}
+
+	// Set Cell Values of the TableView
+	public void setTable() {
+		if (resv != null) {
+			ObservableList<Reservation> resvList = FXCollections.observableList(resv);
+			resTable.setItems(resvList);
+
+			nameColumn.setCellValueFactory(new PropertyValueFactory<Reservation, String>("guestName"));
+			roomColumn.setCellValueFactory(new PropertyValueFactory<Reservation, String>("room"));
+			checkInColumn.setCellValueFactory(new PropertyValueFactory<Reservation, String>("startDate"));
+			checkOutColumn.setCellValueFactory(new PropertyValueFactory<Reservation, String>("endDate"));
+			priceColumn.setCellValueFactory(new PropertyValueFactory<Reservation, String>("price"));
+		}
 	}
 
 	public void singleRoomClick() {
@@ -152,32 +157,50 @@ public class ReservationView extends View {
 		System.out.println("Apartment");
 	}
 
+	// Opens a List of all Guests
 	public void chooseGuestClick() {
 		try {
-			((ReservationController) controller).getApp().getGuestController().getGuestListView().show();
+			((ReservationController) controller).getApp().getGuestController().getGuestListView().showAndWait();
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-	
+
+	// Clears all Fields
 	public void clearFieldsClick() {
-		System.out.println("Clear Fields");
+		clearAll();
 	}
 
+	// Adds the new Reservation to TableView
 	public void OkBtnClick() {
-		System.out.println("OK");
+		((ReservationController) controller).createReservation(chosenGuest.getText(), calcRoom.getText(),
+				arrivalDate.getValue(), departureDate.getValue(), calcPrice.getText());
+
+		((ReservationController) controller).updateReservationList();
+		clearAll();
 	}
 
+	// TODO button will be probably moved to show rooms or smtg or removed, not sure
+	// yet
 	public void showBtnClick() {
 		System.out.println("Show");
 	}
 
-	public void onMonthBoxClick() {
-		System.out.println("Months");
+	public void setTable(ArrayList<Reservation> list) {
+		this.resv = list;
+	}
+	
+	public void getReservationList() {
+		((ReservationController) controller).updateReservationList();
 	}
 
-	public void onYearBoxClick() {
-		System.out.println("Years");
+	public void clearAll() {
+		arrivalDate.setValue(null);
+		departureDate.setValue(null);
+		chosenGuest.clear();
+		calcRoom.clear();
+		calcPrice.clear();
 	}
 
 	// DatePicker uses by default MM-dd-yyyy :(
