@@ -3,11 +3,11 @@ package model;
 import java.time.LocalDate;
 
 public class Reservation {
-	private String guestName;
-	private String room;
-	private LocalDate startDate;
-	private LocalDate endDate;
-	private String price;
+	public String guestName;
+	public String room;
+	public LocalDate startDate;
+	public LocalDate endDate;
+	public String price;
 	
 	public Reservation(String guestName, String room, LocalDate startDate, LocalDate endDate, String price) {
 		this.guestName = guestName;
@@ -17,11 +17,11 @@ public class Reservation {
 		this.price = price;
 	}
 
-	public String getName() {
+	public String getGuestName() {
 		return guestName;
 	}
 
-	public void setName(String guestName) {
+	public void setGuestName(String guestName) {
 		this.guestName = guestName;
 	}
 
