@@ -94,6 +94,7 @@ public class GuestListView extends View {
 	public void loadClick() {
 		Guest guest = guestTable.getSelectionModel().getSelectedItem();
 		System.out.println(guest.getName());
+		((GuestController) controller).getApp().getResController().setSelectedGuest(guest.getName());
 		Stage stage = (Stage) loadBtn.getScene().getWindow();
 		stage.close();
 	}

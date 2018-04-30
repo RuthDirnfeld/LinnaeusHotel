@@ -51,9 +51,7 @@ public class GuestController extends Controller {
 	public void createGuest(String name, String address, String phoneNum, String creditNum, String passportNum,
 			boolean smoker, String favRoom) {
 		Guest g = new Guest(name, address, phoneNum, creditNum, passportNum, smoker, favRoom);
-		guestList.add(g);
 	   this.database =  app.getDatabase();
-	   database.connect(); 
 	   database.writeGuest(g);
   }
 	
@@ -63,7 +61,6 @@ public class GuestController extends Controller {
 	
 	public Stage getGuestListView() throws Exception {
 		this.database = app.getDatabase();
-		database.connect();
 		guests = database.findGuests();
 		guestListView.setTable(guests);
 		guestListView.initialize();
@@ -72,14 +69,12 @@ public class GuestController extends Controller {
 	
 	public void updateGuestList(){
 		this.database = app.getDatabase();
-		database.connect();
 		guests = database.findGuests();
 		guestListView.setTable(guests);
 		guestListView.initialize();
 	}
 	public void updateGuestList(String s){
 		this.database = app.getDatabase();
-		database.connect();
 		guests = database.findGuestByName(s);
 		guestListView.setTable(guests);
 		guestListView.initialize();

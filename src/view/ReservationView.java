@@ -128,7 +128,6 @@ public class ReservationView extends View {
 		if (resv != null) {
 			ObservableList<Reservation> resvList = FXCollections.observableList(resv);
 			resTable.setItems(resvList);
-
 			nameColumn.setCellValueFactory(new PropertyValueFactory<Reservation, String>("guestName"));
 			roomColumn.setCellValueFactory(new PropertyValueFactory<Reservation, String>("room"));
 			checkInColumn.setCellValueFactory(new PropertyValueFactory<Reservation, String>("startDate"));
@@ -176,7 +175,6 @@ public class ReservationView extends View {
 	public void OkBtnClick() {
 		((ReservationController) controller).createReservation(chosenGuest.getText(), calcRoom.getText(),
 				arrivalDate.getValue(), departureDate.getValue(), calcPrice.getText());
-
 		((ReservationController) controller).updateReservationList();
 		clearAll();
 	}
@@ -236,4 +234,10 @@ public class ReservationView extends View {
 		departureDate.requestFocus();
 
 	}
+
+	public void setSelectedGuest(String name) {
+		chosenGuest.setText(name);
+		
+	}
+	
 }

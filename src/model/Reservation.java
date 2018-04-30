@@ -17,11 +17,11 @@ public class Reservation {
 		this.price = price;
 	}
 
-	public String getGuest() {
+	public String getName() {
 		return guestName;
 	}
 
-	public void setGuest(String guestName) {
+	public void setName(String guestName) {
 		this.guestName = guestName;
 	}
 

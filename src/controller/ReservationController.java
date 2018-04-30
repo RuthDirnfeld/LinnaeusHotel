@@ -38,22 +38,31 @@ public class ReservationController extends Controller {
 	}
 
 	public Stage getResView() throws Exception {
+		this.database = app.getDatabase();
+		resvList = database.findReservation();
+		resView.setTable(resvList);
+		resView.initialize();
 		return resView.display();
 	}
 
 	public void createReservation(String guestName, String room, LocalDate startDate, LocalDate endDate, String price) {
 		Reservation res = new Reservation(guestName, room, startDate, endDate, price);
-		reservations.add(res);
 		this.database = app.getDatabase();
-		database.connect();
 		database.writeReservation(res);
 	}
 	public void updateReservationList(){
 		this.database = app.getDatabase();
-		database.connect();
 		resvList = database.findReservation();
 		resView.setTable(resvList);
 		resView.initialize();
 	}
+
+	public void setSelectedGuest(String name) {
+		resView.setSelectedGuest(name);
+		resView.initialize();
+		
+	}
+	
+
 
 }
