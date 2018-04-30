@@ -15,6 +15,7 @@ import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.util.JSON;
 
+import model.Reservation;
 import model.Room;
 
 public class Database {
@@ -186,6 +187,17 @@ public class Database {
 	    
 		return foundReservations;
 	} 
+	public void deleteReservation(model.Reservation reservation) {
+		Gson gson = new Gson();
+		BasicDBObject obj = (BasicDBObject)JSON.parse(gson.toJson(reservation));
+		reservations.deleteOne(obj);
+		
+	    }
+	    
+	 
+	
+	
+	
 	
 	private ArrayList<model.Room> retrieveFreeRooms(String city, String numBeds) {
 		// Looking for free rooms in specified city with provided number of beds.

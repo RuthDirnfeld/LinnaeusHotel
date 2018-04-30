@@ -1,10 +1,12 @@
 package controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.stage.Stage;
+import model.Reservation;
 import view.CheckInView;
 import view.CheckOutView;
 import view.MainView;
@@ -25,6 +27,9 @@ public class MainController extends Controller {
 	private Parent mainParent;
 	private Parent checkInParent;
 	private Parent checkOutParent;
+	
+	
+	private ArrayList<Reservation> resvList;
 
 	public MainController() {
 		
@@ -71,12 +76,41 @@ public class MainController extends Controller {
 		return app.getNetController().getDbView();
 	}
 	
+	public ArrayList<Reservation> checkedOutRes(ArrayList<Reservation> resvList) {
+		 ArrayList<Reservation> temp = new ArrayList<Reservation>(); 
+		if(!resvList.isEmpty())
+		for(int i = 0; i < resvList.size(); i++){
+			if(resvList.get(i).getCheckedIn() == false) {
+				temp.add(resvList.get(i));
+			}
+		}
+		return temp;
+	}
+	
+	public void refreshCheckInView(){
+		resvList = app.getDatabase().findReservation();
+		resvList = checkedOutRes(resvList);
+		checkIn.setTable(resvList);
+		checkIn.initialize();
+	}
+	
 	public Stage getCheckInView() throws Exception {
+		resvList = app.getDatabase().findReservation();
+		resvList = checkedOutRes(resvList);
+		checkIn.setTable(resvList);
+		checkIn.initialize();
 		return checkIn.display();
 	}
 	
 	public Stage getCheckOutView() throws Exception {
 		return checkOut.display();
+	}
+
+	public void checkIn(Reservation res) {
+	app.getDatabase().deleteReservation(res);
+	res.setCheckedIn(true);
+	app.getDatabase().writeReservation(res);
+		
 	}
 
 }

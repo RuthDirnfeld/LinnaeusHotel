@@ -8,6 +8,7 @@ public class Reservation {
 	public LocalDate startDate;
 	public LocalDate endDate;
 	public String price;
+	public Boolean checkedIn; 
 	
 	public Reservation(String guestName, String room, LocalDate startDate, LocalDate endDate, String price) {
 		this.guestName = guestName;
@@ -15,7 +16,9 @@ public class Reservation {
 		this.startDate = startDate;
 		this.endDate = endDate;
 		this.price = price;
+		checkedIn = false; 
 	}
+	
 
 	public String getGuestName() {
 		return guestName;
@@ -54,5 +57,12 @@ public class Reservation {
 
 	public void setPrice(String price) {
 		this.price = price;
+	}
+	
+	public void setCheckedIn(Boolean bool) {
+		checkedIn = bool; 
+	}
+	public boolean getCheckedIn() {
+		return checkedIn; 
 	}
 }
