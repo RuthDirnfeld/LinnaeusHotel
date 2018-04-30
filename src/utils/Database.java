@@ -3,6 +3,7 @@ package utils;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Iterator;
+import java.util.regex.Pattern;
 
 import org.bson.Document;
 
@@ -246,6 +247,23 @@ public class Database {
 	// For whatever reason
 	public void closeConnection() {
 		client.close();
+	}
+
+	public ArrayList<Reservation> findReservationByName(String guestName) {
+		ArrayList<model.Reservation> resArray = new ArrayList<model.Reservation>();
+	    FindIterable<BasicDBObject> cursor = reservations.find(new Document("guestName", guestName));
+	    MongoCursor<BasicDBObject> it = cursor.iterator();
+	    try {
+		   while(it.hasNext()) {
+			   BasicDBObject dbobj = it.next();
+			   model.Reservation reservation = (new Gson()).fromJson(dbobj.toString(), model.Reservation.class);
+			   resArray.add(reservation);
+	       }
+	    }
+	    finally {
+	    	it.close();
+	    }
+		return resArray;
 	}
 
 }

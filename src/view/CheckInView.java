@@ -52,11 +52,22 @@ public class CheckInView extends View{
 		}
 	}
 	
+	
+	@FXML
+	public void searchBox(){
+		if(!searchField.getText().isEmpty()) {
+		((MainController) controller).refreshCheckInView(searchField.getText());	
+		}else {
+		((MainController) controller).refreshCheckInView();
+		}
+	}
+	
 	@FXML
 	public void buttonClick() {
 		Reservation res = resTable.getSelectionModel().getSelectedItem();
 		((MainController) controller).checkIn(res); 
 		((MainController) controller).refreshCheckInView();
+		searchField.clear();
 	    }
 	
 	

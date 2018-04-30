@@ -94,6 +94,13 @@ public class MainController extends Controller {
 		checkIn.initialize();
 	}
 	
+	public void refreshCheckInView(String s){
+		resvList = app.getDatabase().findReservationByName(s);
+		resvList = checkedOutRes(resvList);
+		checkIn.setTable(resvList);
+		checkIn.initialize();
+	}
+	
 	public Stage getCheckInView() throws Exception {
 		resvList = app.getDatabase().findReservation();
 		resvList = checkedOutRes(resvList);
