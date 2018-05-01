@@ -1,6 +1,7 @@
 package controller;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 import javafx.fxml.FXMLLoader;
@@ -77,10 +78,10 @@ public class MainController extends Controller {
 	}
 	
 	public ArrayList<Reservation> checkedOutRes(ArrayList<Reservation> resvList) {
-		 ArrayList<Reservation> temp = new ArrayList<Reservation>(); 
+		ArrayList<Reservation> temp = new ArrayList<Reservation>(); 
 		if(!resvList.isEmpty())
 		for(int i = 0; i < resvList.size(); i++){
-			if(resvList.get(i).getCheckedIn() == false) {
+			if(resvList.get(i).getCheckedIn() == false && resvList.get(i).getStartDate().equals(LocalDate.now())) {
 				temp.add(resvList.get(i));
 			}
 		}
