@@ -3,6 +3,8 @@ package utils;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Iterator;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.bson.Document;
 
@@ -26,6 +28,7 @@ public class Database {
 	private MongoCollection<BasicDBObject> guests;
 	private MongoCollection<BasicDBObject> rooms;
 	private MongoCollection<BasicDBObject> reservations;
+	private Logger logger;
 	
 	public Database(String address, int port) {
 		this.dbAddress = address;
@@ -35,11 +38,14 @@ public class Database {
 	public void connect() {
 		//Change ip and port later
 		client = new MongoClient("178.62.236.241", 27017);
+		// Set to log only severe messages
+		logger = Logger.getLogger("org.mongodb.driver");
+		logger.setLevel(Level.SEVERE);
+		//Get hotel database
 		database = client.getDatabase("hotel");
 		// If database doesn't contain any collections,
 		// initialize them
 		if (isDbEmpty()) {
-			// What else to add?
 			database.createCollection("guests");
 			database.createCollection("rooms");
 			database.createCollection("reservations");
@@ -50,6 +56,7 @@ public class Database {
 		reservations = database.getCollection("reservations", BasicDBObject.class);
 	}
 	
+	//TODO attempt to connect again
 	public boolean isConnected() {
 		try {
 			client.getAddress();

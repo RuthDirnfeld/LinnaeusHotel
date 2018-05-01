@@ -67,7 +67,6 @@ public class MainController extends Controller {
 	}
 	
 	public Stage getDatabaseViewStage() throws Exception {
-		System.out.println(app.getNetController().getDbView() == null);
 		return app.getNetController().getDbView();
 	}
 	
