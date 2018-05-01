@@ -9,9 +9,9 @@
   <children>
     <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="400.0" prefWidth="459.0" VBox.vgrow="ALWAYS">
          <children>
-            <Button layoutX="273.0" layoutY="456.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="85.0" text="Checkout" />
-            <ListView layoutX="26.0" layoutY="26.0" prefHeight="409.0" prefWidth="331.0" />
-            <Button layoutX="26.0" layoutY="456.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="85.0" text="Cancel" />
+            <Button fx:id="checkOut" layoutX="273.0" layoutY="456.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="85.0" text="Checkout" onAction="#onCheckoutClick"/>
+            <ListView fx:id="checkInRes" layoutX="26.0" layoutY="26.0" prefHeight="409.0" prefWidth="331.0" />
+            <Button fx:id="cancel" layoutX="26.0" layoutY="456.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="85.0" text="Cancel" onAction="#onCancelClick"/>
          </children>
     </AnchorPane>
   </children>

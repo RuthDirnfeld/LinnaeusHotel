@@ -94,6 +94,14 @@ public class Database {
 		reservations.insertOne(obj);
 	}
 	
+	//Update room status (free, allocated, reserved)
+	//TODO check if works
+	public void updateRoom (String roomNr, model.RoomState state) {
+		Document old = new Document("roomNum", roomNr);
+		Document newRoom = new Document ("RoomState", state);
+		rooms.updateOne(old, newRoom);
+	}
+	
 	// Returns list of guests with specified name
 	public ArrayList<model.Guest> findGuestByName(String name) {
 		ArrayList<model.Guest> guestArray = new ArrayList<model.Guest>();
@@ -114,6 +122,25 @@ public class Database {
 	
 	// Returns list of reservation objects
 	public ArrayList<model.Reservation> findReservedRooms() {
+		ArrayList<model.Reservation> reservationArr = new ArrayList<model.Reservation>();
+	    FindIterable<BasicDBObject> cursor = reservations.find();
+	    MongoCursor<BasicDBObject> it = cursor.iterator();
+	    try {
+		   while(it.hasNext()) {
+			   BasicDBObject dbobj = it.next();
+			   model.Reservation foundReservation = (new Gson()).fromJson(dbobj.toString(), model.Reservation.class);
+			   reservationArr.add(foundReservation);
+	       }
+	    }
+	    finally {
+	    	it.close();
+	    }
+		return reservationArr;
+		
+	}
+	
+	//Finds checked in reservations for check-out 
+	public ArrayList<model.Reservation> findCheckedInReservations() {
 		ArrayList<model.Reservation> reservationArr = new ArrayList<model.Reservation>();
 	    FindIterable<BasicDBObject> cursor = reservations.find();
 	    MongoCursor<BasicDBObject> it = cursor.iterator();
