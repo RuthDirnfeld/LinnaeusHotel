@@ -102,7 +102,6 @@ public class MainController extends Controller {
 		String printableBill = bill.getBill();
 		app.getDatabase().deleteReservation(res);
 		//TODO app.getDatabase().updateRoom(room.getRoomNum(), RoomState.free);
-		System.out.println("Success");
 	}
 	
 	public ArrayList<Reservation> getCheckedInReservations() {

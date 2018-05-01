@@ -43,7 +43,6 @@ public class CheckOutView extends View {
 		}
 		
 		if (res != null) {
-			System.out.println("Name" + res.getName() + " start" +  res.getStartDate() + " end" + res.getEndDate() + " price" + res.getPrice());
 			((MainController) controller).checkOut(res);
 			stage.close();
 		}
