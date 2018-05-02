@@ -35,23 +35,15 @@ public class ReservationView extends View {
 	@FXML
 	private TextField calcPrice;
 	@FXML
-	private RadioButton oneBed;
-	@FXML
-	private RadioButton twoBeds;
-	@FXML
-	private RadioButton threeBeds;
-	@FXML
-	private RadioButton fourBeds;
-	@FXML
-	private RadioButton apartment;
-	@FXML
 	private Button chooseGuestBtn;
 	@FXML
 	private Button clearFieldsBtn;
 	@FXML
 	private Button OkBtn;
 	@FXML
-	private Button ShowBtn;
+	private Button deleteBtn;
+	@FXML
+	private Button roomsBtn;
 	@FXML
 	private TableView<Reservation> resTable;
 	@FXML
@@ -136,26 +128,6 @@ public class ReservationView extends View {
 		}
 	}
 
-	public void singleRoomClick() {
-		System.out.println("Single Room");
-	}
-
-	public void doubleRoomClick() {
-		System.out.println("Double Room");
-	}
-
-	public void tripleRoomClick() {
-		System.out.println("Triple Room");
-	}
-
-	public void fourBedClick() {
-		System.out.println("Four Bed Room");
-	}
-
-	public void apartmentClick() {
-		System.out.println("Apartment");
-	}
-
 	// Opens a List of all Guests
 	public void chooseGuestClick() {
 		try {
@@ -179,12 +151,17 @@ public class ReservationView extends View {
 		clearAll();
 	}
 
-	// TODO button will be probably moved to show rooms or smtg or removed, not sure
-	// yet
-	public void showBtnClick() {
-		System.out.println("Show");
+	public void onDeleteBtnClick() {
+		
 	}
-
+	public void onRoomsBtnClick() {
+		try {
+			((ReservationController) controller).getApp().getRoomController().getRoomView().show();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 	public void setTable(ArrayList<Reservation> list) {
 		this.resv = list;
 	}
