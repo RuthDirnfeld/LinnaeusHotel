@@ -1,8 +1,11 @@
 package utils;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Iterator;
+import java.util.regex.Pattern;
 
 import org.bson.Document;
 
@@ -15,6 +18,7 @@ import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.util.JSON;
 
+import model.Reservation;
 import model.Room;
 
 public class Database {
@@ -186,6 +190,17 @@ public class Database {
 	    
 		return foundReservations;
 	} 
+	public void deleteReservation(model.Reservation reservation) {
+		Gson gson = new Gson();
+		BasicDBObject obj = (BasicDBObject)JSON.parse(gson.toJson(reservation));
+		reservations.deleteOne(obj);
+		
+	    }
+	    
+	 
+	
+	
+	
 	
 	private ArrayList<model.Room> retrieveFreeRooms(String city, String numBeds) {
 		// Looking for free rooms in specified city with provided number of beds.
@@ -236,7 +251,26 @@ public class Database {
 		client.close();
 	}
 
+	public ArrayList<Reservation> findReservationByName(String guestName) {
+		ArrayList<model.Reservation> resArray = new ArrayList<model.Reservation>();
+	    FindIterable<BasicDBObject> cursor = reservations.find(new Document("guestName", guestName));
+	    MongoCursor<BasicDBObject> it = cursor.iterator();
+	    try {
+		   while(it.hasNext()) {
+			   BasicDBObject dbobj = it.next();
+			   model.Reservation reservation = (new Gson()).fromJson(dbobj.toString(), model.Reservation.class);
+			   resArray.add(reservation);
+	       }
+	    }
+	    finally {
+	    	it.close();
+	    }
+		return resArray;
+	}
+
 }
+
+
 
 class PriceComparator implements Comparator<model.Room> {
 
