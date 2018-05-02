@@ -6,9 +6,9 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="420.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.MainView">
+<AnchorPane prefHeight="483.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.MainView">
    <children>
-      <VBox fx:id="buttonsContainer" layoutX="76.0" layoutY="70.0">
+      <VBox fx:id="buttonsContainer" layoutX="76.0" layoutY="70.0" prefHeight="377.0" prefWidth="462.0">
          <children>
             <Button fx:id="guest" mnemonicParsing="false" onAction="#onGuestManagementClick" prefHeight="40.0" prefWidth="460.0" text="Guest Management" textAlignment="CENTER">
                <VBox.margin>
@@ -26,6 +26,11 @@
                </VBox.margin>
             </Button>
             <Button fx:id="checkOut" mnemonicParsing="false" onAction="#onCheckOutClick" prefHeight="41.0" prefWidth="462.0" text="Check Out" textAlignment="CENTER">
+               <VBox.margin>
+                  <Insets top="30.0" />
+               </VBox.margin>
+            </Button>
+            <Button fx:id="rooms" mnemonicParsing="false" onAction="#onRoomsClick" prefHeight="41.0" prefWidth="462.0" text="Rooms">
                <VBox.margin>
                   <Insets top="30.0" />
                </VBox.margin>

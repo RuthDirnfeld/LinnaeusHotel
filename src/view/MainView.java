@@ -43,6 +43,14 @@ public class MainView extends View{
 		}
 	}
 	
+	public void onRoomsClick() {
+		try {
+			((MainController) controller).getApp().getRoomController().getRoomView().show();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
 	public void onPreferencesClick() {
 		try {
 			((MainController) controller).getApp().getOptionsController().getOptionsView().show();
