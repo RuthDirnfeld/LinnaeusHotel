@@ -7,7 +7,11 @@ import java.util.ArrayList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.stage.Stage;
+
+import model.Bill;
 import model.Reservation;
+import model.Room;
+import model.RoomState;
 import view.CheckInView;
 import view.CheckOutView;
 import view.MainView;
@@ -73,7 +77,6 @@ public class MainController extends Controller {
 	}
 	
 	public Stage getDatabaseViewStage() throws Exception {
-		System.out.println(app.getNetController().getDbView() == null);
 		return app.getNetController().getDbView();
 	}
 	
@@ -112,6 +115,31 @@ public class MainController extends Controller {
 	
 	public Stage getCheckOutView() throws Exception {
 		return checkOut.display();
+	}
+	
+	//TODO
+	public void checkOut(Reservation res) {
+		// Find reserved room for price
+		ArrayList<Room> rooms = app.getDatabase().findRooms();
+		Room room = null;
+		if (!rooms.isEmpty()) {
+			for (int i =0; i < rooms.size(); i++) {
+				if (rooms.get(i).getRoomNum().equals(res.getRoom())) {
+					room = rooms.get(i);
+					break;
+				}
+			}
+		}
+		// Create bill obect
+		Bill bill = new Bill(res.getName(), Integer.parseInt(res.getPrice()), res.getStartDate(), res.getEndDate());
+		// Create printable strig
+		String printableBill = bill.getBill();
+		app.getDatabase().deleteReservation(res);
+		//TODO app.getDatabase().updateRoom(room.getRoomNum(), RoomState.free);
+	}
+	
+	public ArrayList<Reservation> getCheckedInReservations() {
+		return app.getDatabase().findCheckedInReservations();
 	}
 
 	public void checkIn(Reservation res) {

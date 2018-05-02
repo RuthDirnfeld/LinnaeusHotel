@@ -5,6 +5,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Iterator;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
 import org.bson.Document;
@@ -30,6 +32,7 @@ public class Database {
 	private MongoCollection<BasicDBObject> guests;
 	private MongoCollection<BasicDBObject> rooms;
 	private MongoCollection<BasicDBObject> reservations;
+	private Logger logger;
 	
 	public Database(String address, int port) {
 		this.dbAddress = address;
@@ -39,11 +42,14 @@ public class Database {
 	public void connect() {
 		//Change ip and port later
 		client = new MongoClient("178.62.236.241", 27017);
+		// Set to log only severe messages
+		logger = Logger.getLogger("org.mongodb.driver");
+		logger.setLevel(Level.SEVERE);
+		//Get hotel database
 		database = client.getDatabase("hotel");
 		// If database doesn't contain any collections,
 		// initialize them
 		if (isDbEmpty()) {
-			// What else to add?
 			database.createCollection("guests");
 			database.createCollection("rooms");
 			database.createCollection("reservations");
@@ -54,6 +60,7 @@ public class Database {
 		reservations = database.getCollection("reservations", BasicDBObject.class);
 	}
 	
+	//TODO attempt to connect again
 	public boolean isConnected() {
 		try {
 			client.getAddress();
@@ -91,6 +98,14 @@ public class Database {
 		reservations.insertOne(obj);
 	}
 	
+	//Update room status (free, allocated, reserved)
+	//TODO check if works
+	public void updateRoom (String roomNr, model.RoomState state) {
+		Document old = new Document("roomNum", roomNr);
+		Document newRoom = new Document ("RoomState", state);
+		rooms.updateOne(old, newRoom);
+	}
+	
 	// Returns list of guests with specified name
 	public ArrayList<model.Guest> findGuestByName(String name) {
 		ArrayList<model.Guest> guestArray = new ArrayList<model.Guest>();
@@ -111,6 +126,25 @@ public class Database {
 	
 	// Returns list of reservation objects
 	public ArrayList<model.Reservation> findReservedRooms() {
+		ArrayList<model.Reservation> reservationArr = new ArrayList<model.Reservation>();
+	    FindIterable<BasicDBObject> cursor = reservations.find();
+	    MongoCursor<BasicDBObject> it = cursor.iterator();
+	    try {
+		   while(it.hasNext()) {
+			   BasicDBObject dbobj = it.next();
+			   model.Reservation foundReservation = (new Gson()).fromJson(dbobj.toString(), model.Reservation.class);
+			   reservationArr.add(foundReservation);
+	       }
+	    }
+	    finally {
+	    	it.close();
+	    }
+		return reservationArr;
+		
+	}
+	
+	//Finds checked in reservations for check-out 
+	public ArrayList<model.Reservation> findCheckedInReservations() {
 		ArrayList<model.Reservation> reservationArr = new ArrayList<model.Reservation>();
 	    FindIterable<BasicDBObject> cursor = reservations.find();
 	    MongoCursor<BasicDBObject> it = cursor.iterator();
