@@ -25,7 +25,7 @@ public class CheckOutView extends View {
 		ArrayList<Reservation> checkedIns = ((MainController) controller).getCheckedInReservations();
 		if (!checkedIns.isEmpty()) {
 			for (Reservation r : checkedIns) {
-				reservationList.add(r.getName());
+				reservationList.add(r.getGuestName());
 			}
 		}
 		checkInRes.setItems(reservationList);
@@ -37,7 +37,7 @@ public class CheckOutView extends View {
 		ArrayList<Reservation> checkedIns = ((MainController) controller).getCheckedInReservations();
 		Reservation res = null;
 		for (Reservation r : checkedIns) {
-			if (r.getName().equals(name)) {
+			if (r.getGuestName().equals(name)) {
 				res = r;
 			}
 		}

@@ -131,9 +131,10 @@ public class MainController extends Controller {
 			}
 		}
 		// Create bill obect
-		Bill bill = new Bill(res.getName(), Integer.parseInt(res.getPrice()), res.getStartDate(), res.getEndDate());
+		Bill bill = new Bill(res.getGuestName(), Integer.parseInt(res.getPrice()), res.getStartDate(), res.getEndDate());
 		// Create printable strig
 		String printableBill = bill.getBill();
+		System.out.println(printableBill);
 		app.getDatabase().deleteReservation(res);
 		//TODO app.getDatabase().updateRoom(room.getRoomNum(), RoomState.free);
 	}
