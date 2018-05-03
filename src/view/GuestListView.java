@@ -92,11 +92,13 @@ public class GuestListView extends View {
 	}
 
 	public void loadClick() {
+		if(guestTable.getSelectionModel().getSelectedItem() != null) {
 		Guest guest = guestTable.getSelectionModel().getSelectedItem();
 		System.out.println(guest.getName());
 		((GuestController) controller).getApp().getResController().setSelectedGuest(guest.getName());
 		Stage stage = (Stage) loadBtn.getScene().getWindow();
 		stage.close();
+		}
 	}
 
 	/* Cant fetch the arraylist for some reason */

@@ -56,6 +56,10 @@ public class ReservationController extends Controller {
 		resView.setTable(resvList);
 		resView.initialize();
 	}
+	
+	public void deleteReservation(Reservation res) {
+		app.getDatabase().deleteReservation(res);
+	}
 
 	public void setSelectedGuest(String name) {
 		resView.setSelectedGuest(name);

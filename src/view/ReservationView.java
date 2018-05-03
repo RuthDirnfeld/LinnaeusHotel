@@ -1,5 +1,7 @@
 package view;
 
+import java.io.FileNotFoundException;
+import java.io.UnsupportedEncodingException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -43,7 +45,7 @@ public class ReservationView extends View {
 	@FXML
 	private Button OkBtn;
 	@FXML
-	private Button deleteBtn;
+	private Button cancelBtn;
 	@FXML
 	private Button roomsBtn;
 	@FXML
@@ -155,8 +157,19 @@ public class ReservationView extends View {
 		}
 	}
 
-	public void onDeleteBtnClick() {
-		
+	public void onCancelBtnClick() {
+		if(resTable.getSelectionModel().getSelectedItem() != null) {
+		Reservation res = resTable.getSelectionModel().getSelectedItem();
+		try {
+			((ReservationController)controller).getApp().getMainController().printBill(res,true);
+			((ReservationController)controller).deleteReservation(res);
+			((ReservationController)controller).updateReservationList();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		}
 	}
 	public void onRoomsBtnClick() {
 		try {

@@ -135,9 +135,8 @@ public class MainController extends Controller {
 				}
 			}
 		}
-		// Create bill object
-		Bill bill = new Bill(res.getGuestName(), Integer.parseInt(res.getPrice()), res.getStartDate(), res.getEndDate(),false);
-		printBill(bill);
+		// print bill
+		printBill(res,false);
 		app.getDatabase().deleteReservation(res);
 		//TODO app.getDatabase().updateRoom(room.getRoomNum(), RoomState.free);
 	}
@@ -155,8 +154,8 @@ public class MainController extends Controller {
 	
 	
 	
-	public void printBill(Bill bill) throws FileNotFoundException, UnsupportedEncodingException {
-		
+	public void printBill(Reservation res, Boolean cancellation) throws FileNotFoundException, UnsupportedEncodingException {
+		Bill bill = new Bill(res.getGuestName(), Integer.parseInt(res.getPrice()), res.getStartDate(), res.getEndDate(),cancellation);
 		String fileName = bill.getGuestName() + bill.getArrival().toString() + "-" + bill.getDeparture() + ".txt";
 		
 		PrintWriter writer = new PrintWriter(fileName, "UTF-8");
@@ -165,13 +164,14 @@ public class MainController extends Controller {
 		writer.println("-------------------------------------");
 		if(bill.isCancellation()) {
 		writer.println("Cancelled Reservation from " + bill.getArrival().toString() + " to " + bill.getDeparture().toString());
-		writer.println("Room price : 0");
+		writer.println("Room Price : " + bill.getRoomPrice());
 		writer.println("Cancellation fee (15% of total room reservation price) : " + bill.calculateBill());
 		writer.println("Total : " + bill.calculateBill() + "SEK");
 		}else{
 		writer.println("Stay from " + bill.getArrival().toString() + "to " + bill.getDeparture().toString());
 		writer.println("Room price : " + bill.getRoomPrice() + " SEK (per night)"); 
 		writer.println("Total Price : " + bill.calculateBill() + "SEK"); 
+		}
 		writer.close();
 		Desktop desktop = Desktop.getDesktop();
 		try {
@@ -182,4 +182,4 @@ public class MainController extends Controller {
 		}
 	}
 
-}
+
