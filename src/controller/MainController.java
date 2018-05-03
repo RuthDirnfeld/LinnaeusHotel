@@ -1,6 +1,11 @@
 package controller;
 
+import java.awt.Desktop;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
@@ -118,7 +123,7 @@ public class MainController extends Controller {
 	}
 	
 	//TODO
-	public void checkOut(Reservation res) {
+	public void checkOut(Reservation res) throws FileNotFoundException, UnsupportedEncodingException {
 		// Find reserved room for price
 		ArrayList<Room> rooms = app.getDatabase().findRooms();
 		Room room = null;
@@ -130,11 +135,9 @@ public class MainController extends Controller {
 				}
 			}
 		}
-		// Create bill obect
-		Bill bill = new Bill(res.getGuestName(), Integer.parseInt(res.getPrice()), res.getStartDate(), res.getEndDate());
-		// Create printable strig
-		String printableBill = bill.getBill();
-		System.out.println(printableBill);
+		// Create bill object
+		Bill bill = new Bill(res.getGuestName(), Integer.parseInt(res.getPrice()), res.getStartDate(), res.getEndDate(),false);
+		printBill(bill);
 		app.getDatabase().deleteReservation(res);
 		//TODO app.getDatabase().updateRoom(room.getRoomNum(), RoomState.free);
 	}
@@ -148,6 +151,35 @@ public class MainController extends Controller {
 	res.setCheckedIn(true);
 	app.getDatabase().writeReservation(res);
 		
+	}
+	
+	
+	
+	public void printBill(Bill bill) throws FileNotFoundException, UnsupportedEncodingException {
+		
+		String fileName = bill.getGuestName() + bill.getArrival().toString() + "-" + bill.getDeparture() + ".txt";
+		
+		PrintWriter writer = new PrintWriter(fileName, "UTF-8");
+		
+		writer.println("Bill for " + bill.getGuestName());
+		writer.println("-------------------------------------");
+		if(bill.isCancellation()) {
+		writer.println("Cancelled Reservation from " + bill.getArrival().toString() + " to " + bill.getDeparture().toString());
+		writer.println("Room price : 0");
+		writer.println("Cancellation fee (15% of total room reservation price) : " + bill.calculateBill());
+		writer.println("Total : " + bill.calculateBill() + "SEK");
+		}else{
+		writer.println("Stay from " + bill.getArrival().toString() + "to " + bill.getDeparture().toString());
+		writer.println("Room price : " + bill.getRoomPrice() + " SEK (per night)"); 
+		writer.println("Total Price : " + bill.calculateBill() + "SEK"); 
+		writer.close();
+		Desktop desktop = Desktop.getDesktop();
+		try {
+			desktop.open(new File(fileName));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		}
 	}
 
 }

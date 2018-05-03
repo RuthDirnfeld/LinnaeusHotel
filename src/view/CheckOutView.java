@@ -1,5 +1,7 @@
 package view;
 
+import java.io.FileNotFoundException;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 
 import controller.MainController;
@@ -32,7 +34,7 @@ public class CheckOutView extends View {
     } 
 	
 	@FXML
-	public void onCheckoutClick () {
+	public void onCheckoutClick () throws FileNotFoundException, UnsupportedEncodingException {
 		String name = checkInRes.getSelectionModel().getSelectedItem().toString();
 		ArrayList<Reservation> checkedIns = ((MainController) controller).getCheckedInReservations();
 		Reservation res = null;
