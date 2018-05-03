@@ -8,6 +8,7 @@ import controller.ReservationController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.DateCell;
 import javafx.scene.control.DatePicker;
@@ -17,6 +18,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.util.Callback;
 import javafx.util.StringConverter;
 import model.Guest;
@@ -145,10 +147,12 @@ public class ReservationView extends View {
 
 	// Adds the new Reservation to TableView
 	public void OkBtnClick() {
+		if(inputCheck()) {
 		((ReservationController) controller).createReservation(chosenGuest.getText(), calcRoom.getText(),
 				arrivalDate.getValue(), departureDate.getValue(), calcPrice.getText());
 		((ReservationController) controller).updateReservationList();
 		clearAll();
+		}
 	}
 
 	public void onDeleteBtnClick() {
@@ -215,6 +219,41 @@ public class ReservationView extends View {
 	public void setSelectedGuest(String name) {
 		chosenGuest.setText(name);
 		
+	}
+	
+	
+	public boolean inputCheck() {
+		if (calcRoom.getText().isEmpty()) {
+			showError("No room selected","Please select a room");
+			return false;
+		}
+		if (chosenGuest.getText().isEmpty()) {
+			showError("No guest selected", "Please select a guest");
+			return false;
+		}
+		if (arrivalDate.getValue() == null) {
+			showError("No arrival date selected", "Please specify the arrival date");
+			return false;
+		}
+		if (departureDate.getValue() == null) {
+			showError("No departure date selected", "Please specify the departure date");
+			return false;
+		}
+		if(calcPrice.getText().isEmpty()) {
+			showError("No price entered", "Please specify the price per night");
+			return false;
+		}
+		return true;
+	}
+
+	public static void showError(String title, String message) {
+		Alert alert = new Alert(Alert.AlertType.ERROR);
+		alert.initStyle(StageStyle.UTILITY);
+		alert.setTitle("Error");
+		alert.setHeaderText(title);
+		alert.setContentText(message);
+
+		alert.showAndWait();
 	}
 	
 }
