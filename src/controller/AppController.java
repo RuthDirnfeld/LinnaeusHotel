@@ -54,7 +54,7 @@ public class AppController {
 	}
 	
 	public void setDatabaseAddress(String ip, String port) {
-		options.setDbAddress(ip+port);
+		options.setDbAddress(ip+":"+port);
 	}
 	
 	public Database getDatabase() {

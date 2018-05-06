@@ -1,6 +1,7 @@
 package utils;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.logging.Level;
@@ -107,11 +108,12 @@ public class Database {
 	}
 	
 	public void updateReservationState (model.Reservation res) {
+		findReservations();
 		Document old = new Document();
 		old.put("guestName", res.getGuestName());
 		old.put("room", res.getRoom());
-		Document newRes = new Document("checkedIn", "true");
-		reservations.updateMany(old, newRes);
+		Document newRes = new Document("$set", new Document("checkedIn", true));
+		reservations.updateOne(old, newRes);
 	}
 	
 	// Returns list of guests with specified name
