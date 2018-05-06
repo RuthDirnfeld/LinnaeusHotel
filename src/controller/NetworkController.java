@@ -36,7 +36,6 @@ public class NetworkController extends Controller {
 	}
 	
 	public boolean setDatabaseAddress(String ip, String port) {
-		System.out.println(db == null);
 		if (isCorrectPort(port) && isCorrectIp(ip)) {
 			db.setIp(ip);
 			db.setPort(Integer.parseInt(port));

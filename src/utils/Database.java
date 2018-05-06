@@ -1,7 +1,6 @@
 package utils;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.logging.Level;
@@ -91,10 +90,9 @@ public class Database {
 	}
 	
 	//Update room status (free, allocated, reserved)
-	//TODO check if works
 	public void updateRoomState (String roomNr, model.RoomState state) {
 		Document old = new Document("roomNum", roomNr);
-		Document newRoom = new Document ("RoomState", state);
+		Document newRoom = new Document ("$set", new Document("RoomState", state));
 		rooms.updateOne(old, newRoom);
 	}
 	
@@ -103,7 +101,7 @@ public class Database {
 		old.put("name", guest.getName());
 		old.put("creditNumer", guest.getCreditNumber());
 		
-		Document newGuest = new Document("favRoom", room);
+		Document newGuest = new Document("$set", new Document("favRoom", room));
 		guests.updateOne(old, newGuest);
 	}
 	
