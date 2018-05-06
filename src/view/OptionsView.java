@@ -32,7 +32,18 @@ public class OptionsView extends View {
 	@FXML
 	public void initialize() {
 		cityChoice.setItems(cityList);
-		cityChoice.getSelectionModel().select(0);
+	}
+	
+	public void setCity(String city) {
+		for (int i =0; i < cityList.size(); i++) {
+			if (cityList.get(i).toLowerCase().equals(city.toLowerCase())) {
+				cityChoice.getSelectionModel().select(i);
+			}
+		}
+	}
+	
+	public void setIp(String ip) {
+		address.setText(ip);
 	}
 	
 	public void onAcceptClick() {

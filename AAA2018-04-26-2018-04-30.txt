@@ -1,6 +1,0 @@
-Bill for AAA
--------------------------------------
-Cancelled Reservation from 2018-04-26 to 2018-04-30
-Room price : 0
-Cancellation fee (15% of total room reservation price) : 4666
-Total : 4666SEK

@@ -53,6 +53,8 @@ public class MainView extends View{
 	
 	public void onPreferencesClick() {
 		try {
+			((MainController) controller).getApp().getOptionsController().setCity(((MainController) controller).getApp().getOptions().getCurrentCity().name());
+			((MainController) controller).getApp().getOptionsController().setIp(((MainController) controller).getApp().getOptions().getDbAddress());
 			((MainController) controller).getApp().getOptionsController().getOptionsView().show();
 		} catch (Exception e) {
 			e.printStackTrace();

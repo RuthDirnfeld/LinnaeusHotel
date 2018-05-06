@@ -91,13 +91,22 @@ public class Database {
 	
 	//Update room status (free, allocated, reserved)
 	//TODO check if works
-	public void updateRoom (String roomNr, model.RoomState state) {
+	public void updateRoomState (String roomNr, model.RoomState state) {
 		Document old = new Document("roomNum", roomNr);
 		Document newRoom = new Document ("RoomState", state);
 		rooms.updateOne(old, newRoom);
 	}
 	
-	public void updateReservation(model.Reservation res) {
+	public void updateGuestFavRoom(String room, model.Guest guest) {
+		Document old = new Document();
+		old.put("name", guest.getName());
+		old.put("creditNumer", guest.getCreditNumber());
+		
+		Document newGuest = new Document("favRoom", room);
+		guests.updateOne(old, newGuest);
+	}
+	
+	public void updateReservationState (model.Reservation res) {
 		Document old = new Document();
 		old.put("guestName", res.getGuestName());
 		old.put("room", res.getRoom());
@@ -211,7 +220,7 @@ public class Database {
 		return foundGuests;
 	} 
 	
-	public ArrayList<model.Reservation> findReservation() {
+	public ArrayList<model.Reservation> findReservations() {
 		ArrayList<model.Reservation> foundReservations = new ArrayList<model.Reservation>();
 	    FindIterable<BasicDBObject> cursor = reservations.find();
 	    MongoCursor<BasicDBObject> it = cursor.iterator();

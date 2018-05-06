@@ -14,7 +14,7 @@ public class AppController {
 	private ReservationController resController = new ReservationController();
 	private RoomController roomController = new RoomController();
 	
-	private Database database;
+	private Database database = new Database("", 0);
 	private Config config;
 	private Options options = new Options("", null);
 	
@@ -30,8 +30,7 @@ public class AppController {
 		
 		netController.setDatabase(database);
 		if (!isDatabaseInit()) {
-			database = new Database("", 0);
-			netController.getDbView().show();
+			return netController.getDbView();
 		}
 		else {
 			String[] address = options.getDbAddress().split(":");
@@ -40,7 +39,7 @@ public class AppController {
 
 			if(!database.setUpDatabase()) {
 				database = new Database("", 0);
-				netController.getDbView().show();
+				return netController.getDbView();
 			}
 		}
 		return mainController.getMainView();
@@ -52,6 +51,10 @@ public class AppController {
 			return false;
 		}
 		return true;
+	}
+	
+	public void setDatabaseAddress(String ip, String port) {
+		options.setDbAddress(ip+port);
 	}
 	
 	public Database getDatabase() {

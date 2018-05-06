@@ -36,13 +36,15 @@ public class NetworkController extends Controller {
 	}
 	
 	public boolean setDatabaseAddress(String ip, String port) {
+		System.out.println(db == null);
 		if (isCorrectPort(port) && isCorrectIp(ip)) {
 			db.setIp(ip);
 			db.setPort(Integer.parseInt(port));
-			db.setUpDatabase();;
+			db.setUpDatabase();
 			if (!db.updateConnection()) {
 				return false;
 			}
+			app.setDatabaseAddress(ip, port);
 			return true;
 		}
 		return false;
@@ -55,12 +57,11 @@ public class NetworkController extends Controller {
 			System.err.println(e);
 			return false;
 		}
-		
 		return true;
 	}
 	
 	private boolean isCorrectIp (String ip) {
-		String[] parts = ip.split(".");
+		String[] parts = ip.split("[^A-Za-z0-9]");
 		if (parts.length != 4) {
 			return false;
 		}

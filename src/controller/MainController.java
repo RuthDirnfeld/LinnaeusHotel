@@ -60,9 +60,6 @@ public class MainController extends Controller {
 		checkIn.setController(this);
 		checkOut.setController(this);
 		
-		//Set databases
-		
-
 		// Set parents
 		mainView.setParent(mainParent);
 		checkIn.setParent(checkInParent);
@@ -95,7 +92,7 @@ public class MainController extends Controller {
 	}
 	
 	public void refreshCheckInView(){
-		resvList = app.getDatabase().findReservation();
+		resvList = app.getDatabase().findReservations();
 		resvList = checkedOutRes(resvList);
 		checkIn.setTable(resvList);
 		checkIn.initialize();
@@ -109,7 +106,7 @@ public class MainController extends Controller {
 	}
 	
 	public Stage getCheckInView() throws Exception {
-		resvList = app.getDatabase().findReservation();
+		resvList = app.getDatabase().findReservations();
 		resvList = checkedOutRes(resvList);
 		checkIn.setTable(resvList);
 		checkIn.initialize();
@@ -161,7 +158,7 @@ public class MainController extends Controller {
 			}
 		}
 		res.setCheckedIn(true);
-		app.getDatabase().updateReservation(res);
+		app.getDatabase().updateReservationState(res);
 		//TODOapp.getDatabase().updateRoom(room.getRoomNum(), RoomState.allocated);
 	}
 	

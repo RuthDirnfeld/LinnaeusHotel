@@ -105,4 +105,12 @@ public class OptionsController extends Controller {
 		}
     	return true;
     }
+    
+    public void setIp(String ip) {
+    	optionsView.setIp(ip);
+    }
+    
+    public void setCity(String city) {
+    	optionsView.setCity(city);
+    }
 }
