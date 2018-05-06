@@ -66,6 +66,14 @@ public class ReservationController extends Controller {
 		resView.initialize();
 		
 	}
+	public void setSelectedRoom(String roomNum) {
+		resView.setSelectedRoom(roomNum);
+		resView.initialize();		
+	}
+	public void setSelectedPrice(String price) {
+		resView.setSelectedPrice(price);
+		resView.initialize();		
+	}
 	
 
 

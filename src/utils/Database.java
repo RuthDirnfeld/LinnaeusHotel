@@ -163,7 +163,7 @@ public class Database {
 	}
 	
 	// Returns list of free rooms
-	public ArrayList<model.Room> findFreeRooms(model.Room room) {
+/*	public ArrayList<model.Room> findFreeRooms(model.Room room) {
 		ArrayList<model.Room> foundRooms = retrieveFreeRooms(room.getLocation(), room.getNumBeds());
 		if (foundRooms.size() > 0) {
 			for (Iterator<Room> it = foundRooms.iterator(); it.hasNext() ;){
@@ -171,7 +171,7 @@ public class Database {
 				if (curRoom.isSingle() != room.isSingle()) {
 					it.remove();
 				}
-				if (curRoom.isSmoking() != room.isSmoking()) {
+				if (curRoom.isSmoker() != room.isSmoker()) {
 					it.remove();
 				}
 			}
@@ -183,7 +183,7 @@ public class Database {
 		}
 		
 		return foundRooms;
-	}
+	}*/
 	
 	// Returns all rooms
 	public ArrayList<model.Room> findRooms() {

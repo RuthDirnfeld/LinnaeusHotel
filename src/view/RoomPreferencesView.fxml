@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox prefHeight="594.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.RoomPreferencesView">
+   <children>
+      <AnchorPane prefHeight="596.0" prefWidth="500.0">
+         <children>
+            <TextField fx:id="roomNum" layoutX="175.0" layoutY="70.0" />
+            <TextField fx:id="price" layoutX="175.0" layoutY="461.0" />
+            <CheckBox fx:id="singleRoom" layoutX="175.0" layoutY="135.0" mnemonicParsing="false" text="Single Room" />
+            <CheckBox fx:id="doubleRoom" layoutX="175.0" layoutY="180.0" mnemonicParsing="false" text="Double Room (Single Beds)" />
+            <CheckBox fx:id="doubleKingRoom" layoutX="175.0" layoutY="225.0" mnemonicParsing="false" text="Double Room (Kingsize Bed)" />
+            <CheckBox fx:id="apartment" layoutX="175.0" layoutY="270.0" mnemonicParsing="false" text="Apartment" />
+            <CheckBox fx:id="view" layoutX="175.0" layoutY="360.0" mnemonicParsing="false" text="View" />
+            <CheckBox fx:id="largeRooms" layoutX="175.0" layoutY="315.0" mnemonicParsing="false" text="Large Rooms" />
+            <Label layoutX="63.0" layoutY="75.0" text="Room Number" />
+            <Label layoutX="129.0" layoutY="466.0" text="Price" />
+            <Label layoutX="372.0" layoutY="466.0" text="SEK" />
+            <CheckBox fx:id="smokerRoom" layoutX="175.0" layoutY="405.0" mnemonicParsing="false" text="Smoker" />
+            <Button fx:id="saveBtn" layoutX="365.0" layoutY="535.0" mnemonicParsing="false" onAction="#onSaveBtnClick" prefHeight="31.0" prefWidth="110.0" text="Save" />
+            <Button fx:id="cancelBtn" layoutX="31.0" layoutY="535.0" mnemonicParsing="false" onAction="#onCancelBtnClick" prefHeight="31.0" prefWidth="110.0" text="Cancel" />
+         </children>
+      </AnchorPane>
+   </children>
+</VBox>

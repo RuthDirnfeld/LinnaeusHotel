@@ -136,7 +136,14 @@ public class ReservationView extends View {
 	public void chooseGuestClick() {
 		try {
 			((ReservationController) controller).getApp().getGuestController().getGuestListView().showAndWait();
-			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void onRoomsBtnClick() {
+		try {
+			((ReservationController) controller).getApp().getRoomController().getRoomView().show();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -149,40 +156,33 @@ public class ReservationView extends View {
 
 	// Adds the new Reservation to TableView
 	public void OkBtnClick() {
-		if(inputCheck()) {
-		((ReservationController) controller).createReservation(chosenGuest.getText(), calcRoom.getText(),
-				arrivalDate.getValue(), departureDate.getValue(), calcPrice.getText());
-		((ReservationController) controller).updateReservationList();
-		clearAll();
+		if (inputCheck()) {
+			((ReservationController) controller).createReservation(chosenGuest.getText(), calcRoom.getText(),
+					arrivalDate.getValue(), departureDate.getValue(), calcPrice.getText());
+			((ReservationController) controller).updateReservationList();
+			clearAll();
 		}
 	}
 
 	public void onCancelBtnClick() {
-		if(resTable.getSelectionModel().getSelectedItem() != null) {
-		Reservation res = resTable.getSelectionModel().getSelectedItem();
-		try {
-			((ReservationController)controller).getApp().getMainController().printBill(res,true);
-			((ReservationController)controller).deleteReservation(res);
-			((ReservationController)controller).updateReservationList();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
-		}
-		}
-	}
-	public void onRoomsBtnClick() {
-		try {
-			((ReservationController) controller).getApp().getRoomController().getRoomView().show();
-			
-		} catch (Exception e) {
-			e.printStackTrace();
+		if (resTable.getSelectionModel().getSelectedItem() != null) {
+			Reservation res = resTable.getSelectionModel().getSelectedItem();
+			try {
+				((ReservationController) controller).getApp().getMainController().printBill(res, true);
+				((ReservationController) controller).deleteReservation(res);
+				((ReservationController) controller).updateReservationList();
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			} catch (UnsupportedEncodingException e) {
+				e.printStackTrace();
+			}
 		}
 	}
+
 	public void setTable(ArrayList<Reservation> list) {
 		this.resv = list;
 	}
-	
+
 	public void getReservationList() {
 		((ReservationController) controller).updateReservationList();
 	}
@@ -231,13 +231,20 @@ public class ReservationView extends View {
 
 	public void setSelectedGuest(String name) {
 		chosenGuest.setText(name);
-		
+
 	}
 	
+	public void setSelectedRoom(String roomNum) {
+		calcRoom.setText(roomNum);
+	}
 	
+	public void setSelectedPrice(String price) {
+		calcPrice.setText(price);
+	}
+
 	public boolean inputCheck() {
 		if (calcRoom.getText().isEmpty()) {
-			showError("No room selected","Please select a room");
+			showError("No room selected", "Please select a room");
 			return false;
 		}
 		if (chosenGuest.getText().isEmpty()) {
@@ -252,7 +259,7 @@ public class ReservationView extends View {
 			showError("No departure date selected", "Please specify the departure date");
 			return false;
 		}
-		if(calcPrice.getText().isEmpty()) {
+		if (calcPrice.getText().isEmpty()) {
 			showError("No price entered", "Please specify the price per night");
 			return false;
 		}
@@ -268,5 +275,5 @@ public class ReservationView extends View {
 
 		alert.showAndWait();
 	}
-	
+
 }
