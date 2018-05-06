@@ -39,8 +39,8 @@ public class NetworkController extends Controller {
 		if (isCorrectPort(port) && isCorrectIp(ip)) {
 			db.setIp(ip);
 			db.setPort(Integer.parseInt(port));
-			db.connect();
-			if (!db.isConnected()) {
+			db.setUpDatabase();;
+			if (!db.updateConnection()) {
 				return false;
 			}
 			return true;

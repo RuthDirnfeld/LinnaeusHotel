@@ -1,7 +1,5 @@
 package controller;
 
-import java.awt.Desktop;
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -123,7 +121,7 @@ public class MainController extends Controller {
 	}
 	
 	//TODO
-	public void checkOut(Reservation res) throws FileNotFoundException, UnsupportedEncodingException {
+	public boolean checkOut(Reservation res) {
 		// Find reserved room for price
 		ArrayList<Room> rooms = app.getDatabase().findRooms();
 		Room room = null;
@@ -136,9 +134,15 @@ public class MainController extends Controller {
 			}
 		}
 		// print bill
-		printBill(res,false);
-		app.getDatabase().deleteReservation(res);
-		//TODO app.getDatabase().updateRoom(room.getRoomNum(), RoomState.free);
+		try {
+			printBill(res,false);
+			app.getDatabase().deleteReservation(res);
+			//TODOapp.getDatabase().updateRoom(room.getRoomNum(), RoomState.free);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+		return true;
 	}
 	
 	public ArrayList<Reservation> getCheckedInReservations() {
@@ -146,10 +150,19 @@ public class MainController extends Controller {
 	}
 
 	public void checkIn(Reservation res) {
-	app.getDatabase().deleteReservation(res);
-	res.setCheckedIn(true);
-	app.getDatabase().writeReservation(res);
-		
+		ArrayList<Room> rooms = app.getDatabase().findRooms();
+		Room room = null;
+		if (!rooms.isEmpty()) {
+			for (int i =0; i < rooms.size(); i++) {
+				if (rooms.get(i).getRoomNum().equals(res.getRoom())) {
+					room = rooms.get(i);
+					break;
+				}
+			}
+		}
+		res.setCheckedIn(true);
+		app.getDatabase().updateReservation(res);
+		//TODOapp.getDatabase().updateRoom(room.getRoomNum(), RoomState.allocated);
 	}
 	
 	
@@ -163,23 +176,17 @@ public class MainController extends Controller {
 		writer.println("Bill for " + bill.getGuestName());
 		writer.println("-------------------------------------");
 		if(bill.isCancellation()) {
-		writer.println("Cancelled Reservation from " + bill.getArrival().toString() + " to " + bill.getDeparture().toString());
-		writer.println("Room Price : " + bill.getRoomPrice());
-		writer.println("Cancellation fee (15% of total room reservation price) : " + bill.calculateBill());
-		writer.println("Total : " + bill.calculateBill() + "SEK");
+			writer.println("Cancelled Reservation from " + bill.getArrival().toString() + " to " + bill.getDeparture().toString());
+			writer.println("Room Price : " + bill.getRoomPrice());
+			writer.println("Cancellation fee (15% of total room reservation price) : " + bill.calculateBill());
+			writer.println("Total : " + bill.calculateBill() + "SEK");
 		}else{
-		writer.println("Stay from " + bill.getArrival().toString() + "to " + bill.getDeparture().toString());
-		writer.println("Room price : " + bill.getRoomPrice() + " SEK (per night)"); 
-		writer.println("Total Price : " + bill.calculateBill() + "SEK"); 
+			writer.println("Stay from " + bill.getArrival().toString() + "to " + bill.getDeparture().toString());
+			writer.println("Room price : " + bill.getRoomPrice() + " SEK (per night)"); 
+			writer.println("Total Price : " + bill.calculateBill() + "SEK"); 
 		}
 		writer.close();
-		Desktop desktop = Desktop.getDesktop();
-		try {
-			desktop.open(new File(fileName));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		}
 	}
+}
 
 

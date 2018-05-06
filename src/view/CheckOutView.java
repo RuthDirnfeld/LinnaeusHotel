@@ -8,6 +8,8 @@ import controller.MainController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.stage.Stage;
@@ -17,12 +19,14 @@ public class CheckOutView extends View {
 	
 	@FXML private Button checkOut;
 	@FXML private Button cancel;
+	@SuppressWarnings("rawtypes")
 	@FXML private ListView checkInRes;
 	 
 	
 	ObservableList<String> reservationList = FXCollections.observableArrayList(); 
 	
-    private void setUpList() {
+    @SuppressWarnings("unchecked")
+	private void setUpList() {
     	checkInRes.getItems().clear();
 		ArrayList<Reservation> checkedIns = ((MainController) controller).getCheckedInReservations();
 		if (!checkedIns.isEmpty()) {
@@ -45,8 +49,13 @@ public class CheckOutView extends View {
 		}
 		
 		if (res != null) {
-			((MainController) controller).checkOut(res);
-			stage.close();
+			if (((MainController) controller).checkOut(res)) {
+				alertBox("Guest successfully checked out!");
+				stage.close();
+			}
+			else {
+				alertBox("Something went wrong!");
+			}
 		}
 	}
 	
@@ -58,6 +67,12 @@ public class CheckOutView extends View {
 	public Stage display() throws Exception {
 		setUpList();
 		return stage;
+	}
+	
+	private void alertBox(String message) {
+        Alert alert = new Alert(AlertType.INFORMATION);
+        alert.setContentText(message);
+        alert.showAndWait();
 	}
 	
 	

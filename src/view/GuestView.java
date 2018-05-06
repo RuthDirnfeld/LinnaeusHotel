@@ -39,7 +39,6 @@ public class GuestView extends View {
 
 	@Override
 	public Stage display()throws Exception {
-		
 		return stage;
 	}
 

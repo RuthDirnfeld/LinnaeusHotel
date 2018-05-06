@@ -1,19 +1,19 @@
 package utils;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.regex.Pattern;
 
 import org.bson.Document;
 
 import com.google.gson.Gson;
 import com.mongodb.BasicDBObject;
 import com.mongodb.MongoClient;
+import com.mongodb.MongoClientOptions;
+import com.mongodb.MongoTimeoutException;
+import com.mongodb.ServerAddress;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
@@ -25,13 +25,15 @@ import model.Room;
 
 public class Database {
 	
-	private String dbAddress = "";
-	private int dbPort = 0;
+	private String dbAddress = "178.62.236.241";
+	private int dbPort = 27017;
 	private MongoClient client;
 	private MongoDatabase database;
 	private MongoCollection<BasicDBObject> guests;
 	private MongoCollection<BasicDBObject> rooms;
 	private MongoCollection<BasicDBObject> reservations;
+	private MongoClientOptions.Builder optionsBuilder = MongoClientOptions.builder();
+	private MongoClientOptions options;
 	private Logger logger;
 	
 	public Database(String address, int port) {
@@ -39,36 +41,25 @@ public class Database {
 		this.dbPort = port;
 	}
 	
-	public void connect() {
-		//Change ip and port later
-		client = new MongoClient("178.62.236.241", 27017);
-		// Set to log only severe messages
-		logger = Logger.getLogger("org.mongodb.driver");
-		logger.setLevel(Level.SEVERE);
-		//Get hotel database
-		database = client.getDatabase("hotel");
-		// If database doesn't contain any collections,
-		// initialize them
-		if (isDbEmpty()) {
-			database.createCollection("guests");
-			database.createCollection("rooms");
-			database.createCollection("reservations");
-		}
-		// Get collections
-		guests = database.getCollection("guests", BasicDBObject.class);
-		rooms = database.getCollection("rooms", BasicDBObject.class);
-		reservations = database.getCollection("reservations", BasicDBObject.class);
-	}
-	
-	//TODO attempt to connect again
-	public boolean isConnected() {
-		try {
-			client.getAddress();
-		} catch (Exception e) {
-			System.out.println("Mongo is down");
-			client.close();
+	public boolean setUpDatabase() {
+		setUpOptions();
+		boolean connection = updateConnection();
+		if (!connection) {
 			return false;
 		}
+		return true;
+	}
+
+	public boolean updateConnection() {
+		client = new MongoClient(new ServerAddress(dbAddress, dbPort), options);
+		setUpLogger();
+		try {
+			client.getAddress();
+		}
+		catch (MongoTimeoutException e) {
+			return false;
+		}
+		setUpDb();
 		return true;
 	}
 	
@@ -104,6 +95,14 @@ public class Database {
 		Document old = new Document("roomNum", roomNr);
 		Document newRoom = new Document ("RoomState", state);
 		rooms.updateOne(old, newRoom);
+	}
+	
+	public void updateReservation(model.Reservation res) {
+		Document old = new Document();
+		old.put("guestName", res.getGuestName());
+		old.put("room", res.getRoom());
+		Document newRes = new Document("checkedIn", "true");
+		reservations.updateMany(old, newRes);
 	}
 	
 	// Returns list of guests with specified name
@@ -229,12 +228,35 @@ public class Database {
 		BasicDBObject obj = (BasicDBObject)JSON.parse(gson.toJson(reservation));
 		reservations.deleteOne(obj);
 		
-	    }
-	    
-	 
+	}
 	
+	private void setUpDb() {
+		//Get hotel database
+		database = client.getDatabase("hotel");
+		// If database doesn't contain any collections,
+		// initialize them
+		if (isDbEmpty()) {
+			database.createCollection("guests");
+			database.createCollection("rooms");
+			database.createCollection("reservations");
+		}
+		// Get collections
+		guests = database.getCollection("guests", BasicDBObject.class);
+		rooms = database.getCollection("rooms", BasicDBObject.class);
+		reservations = database.getCollection("reservations", BasicDBObject.class);
+	}
 	
+	private void setUpOptions(){
+		// Makes sure it times out after 4 seconds of trying to connect to the server
+			optionsBuilder.serverSelectionTimeout(4000);
+			options = optionsBuilder.build();
+	}
 	
+	private void setUpLogger() {
+		// Set to log only severe messages
+		logger = Logger.getLogger("org.mongodb.driver");
+		logger.setLevel(Level.SEVERE);
+	}
 	
 	private ArrayList<model.Room> retrieveFreeRooms(String city, String numBeds) {
 		// Looking for free rooms in specified city with provided number of beds.

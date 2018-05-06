@@ -31,14 +31,17 @@ public class AppController {
 		netController.setDatabase(database);
 		if (!isDatabaseInit()) {
 			database = new Database("", 0);
-			//return netController.getDbView();
-			return mainController.getMainView();
+			netController.getDbView().show();
 		}
 		else {
 			String[] address = options.getDbAddress().split(":");
 			database = new Database(address[0], Integer.parseInt(address[1]));
 			netController.setDatabaseAddress(address[0], address[1]);
-			database.connect();
+
+			if(!database.setUpDatabase()) {
+				database = new Database("", 0);
+				netController.getDbView().show();
+			}
 		}
 		return mainController.getMainView();
 	}

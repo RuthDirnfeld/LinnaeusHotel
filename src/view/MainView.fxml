@@ -42,10 +42,6 @@
           <Menu mnemonicParsing="false" text="File">
             <items>
                   <MenuItem fx:id="menuNew" mnemonicParsing="false" text="New" />
-              <MenuItem fx:id="menuSearch" mnemonicParsing="false" text="Search" />
-                  <MenuItem fx:id="menuSave" mnemonicParsing="false" text="Save" />
-                  <MenuItem fx:id="exportDB" mnemonicParsing="false" text="Export Database" />
-                  <MenuItem fx:id="importDB" mnemonicParsing="false" text="Import Database" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Options">

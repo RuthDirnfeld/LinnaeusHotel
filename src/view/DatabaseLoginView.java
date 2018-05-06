@@ -40,13 +40,14 @@ public class DatabaseLoginView extends View {
 	}
 
     @FXML
-    public void buttonClick() {
+    public void buttonClick() throws Exception {
     	if (getAddress().isEmpty() || getPort().isEmpty()) {
     		showAlert("Address or port fields are empty!");
     	}
     	else {
     		((NetworkController) controller).setDatabaseAddress(getAddress(), getPort());
-        	stage.close();
+    		stage.close();
+    		((NetworkController) controller).getApp().getMainController().getMainView().show();
     	}
     }
     
