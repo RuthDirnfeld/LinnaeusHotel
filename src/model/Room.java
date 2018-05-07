@@ -2,127 +2,103 @@ package model;
 
 public class Room {
 
-	private String numBeds;
-	private String roomNum;
-	private boolean smoking = false;
-	private String arrival = "";
-	private String departure = "";
-	private boolean single = false;
-	private String location = "";
-	private String price;
-	private RoomState state;
-	private RoomQuality quality;
+	public String roomNum;
+	public boolean singleRoom;
+	public boolean doubleRoom;
+	public boolean doubleKingRoom;
+	public boolean apartment;
+	public boolean largeRooms;
+	public boolean view;
+	public boolean smokerRoom;
+	public String price;
 
-	private String floor;
-	
-	
-	public Room(String numBeds, boolean smoking, String arrival, String departure, boolean single, String location,
-			String price, RoomState state, RoomQuality quality, String floor, String number) {
-		this.numBeds = numBeds;
-		this.roomNum = number;
-		this.smoking = smoking;
-		this.arrival = arrival;
-		this.departure = departure;
-		this.single = single;
-		this.location = location;
+	public Room(String roomNum, boolean singleRoom, boolean doubleRoom, boolean doubleKingRoom, boolean apartment,
+			boolean largeRooms, boolean view, boolean smokerRoom, String price) {
+		this.roomNum = roomNum;
+		this.singleRoom = singleRoom;
+		this.doubleRoom = doubleRoom;
+		this.doubleKingRoom = doubleKingRoom;
+		this.apartment = apartment;
+		this.largeRooms = largeRooms;
+		this.view = view;
+		this.smokerRoom = smokerRoom;
 		this.price = price;
-		this.state = state;
-		this.quality = quality;
-		this.floor = floor;
 	}
+
 	public Room() {
 
 	}
 
-	public String getNumBeds() {
-		return numBeds;
+	public String getRoomNum() {
+		return roomNum;
 	}
 
 	public void setRoomNum(String roomNum) {
 		this.roomNum = roomNum;
 	}
-	
-	public String getRoomNum() {
-		return roomNum;
+
+	public boolean isSingleRoom() {
+		return singleRoom;
 	}
 
-
-	public void setNumBeds(String numBeds) {
-		this.numBeds = numBeds;
+	public void setSingleRoom(boolean singleRoom) {
+		this.singleRoom = singleRoom;
 	}
 
-	public boolean isSmoking() {
-		return smoking;
+	public boolean isDoubleRoom() {
+		return doubleRoom;
 	}
 
-	public void setSmoking(boolean smoking) {
-		this.smoking = smoking;
+	public void setDoubleRoom(boolean doubleRoom) {
+		this.doubleRoom = doubleRoom;
 	}
 
-	public String getArrival() {
-		return arrival;
+	public boolean isDoubleKingRoom() {
+		return doubleKingRoom;
 	}
 
-	public void setArrival(String arrival) {
-		this.arrival = arrival;
+	public void setDoubleKingRoom(boolean doubleKingRoom) {
+		this.doubleKingRoom = doubleKingRoom;
 	}
 
-	public String getDeparture() {
-		return departure;
+	public boolean isApartment() {
+		return apartment;
 	}
 
-	public void setDeparture(String departure) {
-		this.departure = departure;
+	public void setApartment(boolean apartment) {
+		this.apartment = apartment;
 	}
 
-	public boolean isSingle() {
-		return single;
+	public boolean isLargeRooms() {
+		return largeRooms;
 	}
 
-	public void setSingle(boolean single) {
-		this.single = single;
+	public void setLargeRooms(boolean largeRooms) {
+		this.largeRooms = largeRooms;
 	}
 
-	public String getLocation() {
-		return location;
+	public boolean isView() {
+		return view;
 	}
 
-	public void setLocation(String location) {
-		this.location = location;
+	public void setView(boolean view) {
+		this.view = view;
+	}
+
+	public boolean isSmokerRoom() {
+		return smokerRoom;
+	}
+
+	public void setSmokerRoom(boolean smokerRoom) {
+		this.smokerRoom = smokerRoom;
 	}
 
 	public String getPrice() {
 		return price;
 	}
 
-
 	public void setPrice(String price) {
 		this.price = price;
-	}
-
-	public RoomState getState() {
-		return state;
-	}
-
-	public void setState(RoomState state) {
-		this.state = state;
-	}
-
-	public RoomQuality getQuality() {
-		return quality;
-	}
-
-	public void setQuality(RoomQuality quality) {
-		this.quality = quality;
-  }
-	
-	public String getFloor() {
-		return floor;
-	}
-
-
-	public void setFloor(String floor) {
-		this.floor = floor;
 	}
 
 }
