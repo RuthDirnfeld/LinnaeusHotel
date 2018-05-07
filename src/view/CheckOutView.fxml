@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -9,9 +12,14 @@
   <children>
     <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="400.0" prefWidth="459.0" VBox.vgrow="ALWAYS">
          <children>
-            <Button fx:id="checkOut" layoutX="273.0" layoutY="456.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="85.0" text="Checkout" onAction="#onCheckoutClick"/>
-            <ListView fx:id="checkInRes" layoutX="26.0" layoutY="26.0" prefHeight="409.0" prefWidth="331.0" />
-            <Button fx:id="cancel" layoutX="26.0" layoutY="456.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="85.0" text="Cancel" onAction="#onCancelClick"/>
+            <Button fx:id="checkOut" layoutX="273.0" layoutY="456.0" mnemonicParsing="false" onAction="#onCheckoutClick" prefHeight="40.0" prefWidth="85.0" text="Checkout" />
+            <Button fx:id="cancel" layoutX="26.0" layoutY="456.0" mnemonicParsing="false" onAction="#onCancelClick" prefHeight="40.0" prefWidth="85.0" text="Cancel" />
+            <TableView fx:id ="table" layoutX="26.0" layoutY="33.0" prefHeight="389.0" prefWidth="330.0">
+              <columns>
+                <TableColumn fx:id="nameColumn" prefWidth="145.0" text="Name" />
+                <TableColumn fx:id="roomColumn" minWidth="0.0" prefWidth="184.0" text="Room" />
+              </columns>
+            </TableView>
          </children>
     </AnchorPane>
   </children>

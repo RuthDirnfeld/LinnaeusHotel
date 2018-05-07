@@ -11,27 +11,16 @@
   <children>
     <MenuBar VBox.vgrow="NEVER">
       <menus>
-        <Menu mnemonicParsing="false" text="File">
-          <items>
-            <MenuItem mnemonicParsing="false" text="Save" />
-            <MenuItem mnemonicParsing="false" text="Close" />
-          </items>
-        </Menu>
         <Menu mnemonicParsing="false" text="Edit">
           <items>
             <MenuItem mnemonicParsing="false" onAction="#preferencesClick" text="Preferences" />
           </items>
         </Menu>
-        <Menu mnemonicParsing="false" text="Help">
-          <items>
-            <MenuItem mnemonicParsing="false" text="About LinnaeusHotel" />
-          </items>
-        </Menu>
       </menus>
     </MenuBar>
-    <AnchorPane maxHeight="-1.0" maxWidth="-1.0" VBox.vgrow="ALWAYS">
+    <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="670.0" prefWidth="1200.0" VBox.vgrow="ALWAYS">
          <children>
-            <TableView fx:id="roomTable" layoutX="14.0" layoutY="11.0" prefHeight="739.0" prefWidth="1174.0">
+            <TableView fx:id="roomTable" layoutX="14.0" layoutY="11.0" prefHeight="592.0" prefWidth="1174.0">
               <columns>
                 <TableColumn fx:id="idCol" prefWidth="97.0" text="ID" />
                 <TableColumn fx:id="singleBedCol" prefWidth="115.0" text="Single" />
@@ -44,7 +33,7 @@
                   <TableColumn fx:id="priceCol" prefWidth="118.0" text="Price" />
               </columns>
             </TableView>
-            <Button fx:id="loadBtn" layoutX="1041.0" layoutY="761.0" mnemonicParsing="false" onAction="#onLoadBtnClick" prefHeight="31.0" prefWidth="110.0" text="Load" />
+            <Button fx:id="loadBtn" layoutX="1051.0" layoutY="623.0" mnemonicParsing="false" onAction="#onLoadBtnClick" prefHeight="31.0" prefWidth="110.0" text="Load" />
          </children>
     </AnchorPane>
   </children>

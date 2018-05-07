@@ -154,7 +154,7 @@ public class Database {
 	//Finds checked in reservations for check-out 
 	public ArrayList<model.Reservation> findCheckedInReservations() {
 		ArrayList<model.Reservation> reservationArr = new ArrayList<model.Reservation>();
-	    FindIterable<BasicDBObject> cursor = reservations.find();
+	    FindIterable<BasicDBObject> cursor = reservations.find(new Document("checkedIn", true));
 	    MongoCursor<BasicDBObject> it = cursor.iterator();
 	    try {
 		   while(it.hasNext()) {

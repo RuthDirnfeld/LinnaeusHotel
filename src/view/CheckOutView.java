@@ -12,7 +12,11 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
+import model.Options.City;
 import model.Reservation;
 
 public class CheckOutView extends View {
@@ -20,26 +24,37 @@ public class CheckOutView extends View {
 	@FXML private Button checkOut;
 	@FXML private Button cancel;
 	@SuppressWarnings("rawtypes")
-	@FXML private ListView checkInRes;
+	@FXML private TableView<Reservation> table;
+	@FXML private TableColumn<Reservation, String> nameColumn;
+	@FXML private TableColumn<Reservation, String> roomColumn;
 	 
 	
-	ObservableList<String> reservationList = FXCollections.observableArrayList(); 
+	ObservableList<Reservation> reservationList = FXCollections.observableArrayList(); 
 	
     @SuppressWarnings("unchecked")
 	private void setUpList() {
-    	checkInRes.getItems().clear();
+    	table.getItems().clear();
 		ArrayList<Reservation> checkedIns = ((MainController) controller).getCheckedInReservations();
 		if (!checkedIns.isEmpty()) {
 			for (Reservation r : checkedIns) {
-				reservationList.add(r.getGuestName());
+				if (((MainController)controller).getApp().getOptions().getCurrentCity() == City.VAXJO) {
+					if (r.getRoom().contains("V")) {
+						reservationList.add(r);
+					}
+				}
+				else {
+					reservationList.add(r);
+				}
 			}
 		}
-		checkInRes.setItems(reservationList);
+		table.setItems(reservationList);
+		nameColumn.setCellValueFactory(new PropertyValueFactory<Reservation, String>("guestName"));
+		roomColumn.setCellValueFactory(new PropertyValueFactory<Reservation, String>("room"));
     } 
 	
 	@FXML
 	public void onCheckoutClick () throws FileNotFoundException, UnsupportedEncodingException {
-		String name = checkInRes.getSelectionModel().getSelectedItem().toString();
+		String name = table.getSelectionModel().getSelectedItem().toString();
 		ArrayList<Reservation> checkedIns = ((MainController) controller).getCheckedInReservations();
 		Reservation res = null;
 		for (Reservation r : checkedIns) {

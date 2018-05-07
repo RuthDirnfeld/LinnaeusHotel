@@ -20,6 +20,8 @@ public class OptionsView extends View {
 	private Button acceptButton; 
 	@FXML 
 	private Button cancelButton; 
+	@FXML
+	private Button mngRooms;
 	
 	
 	ObservableList<String> cityList = FXCollections.observableArrayList("Vaxjo","Kalmar"); 
@@ -66,11 +68,8 @@ public class OptionsView extends View {
 	public void onClickCancel() {
 		stage.close();
 	}
-	public void onClickManageRooms() {
-		System.out.println("Manage Rooms");
-	}
-	public void onClickManageFloors() {
-		System.out.println("Manage Floors");
+	public void onClickManageRooms() throws Exception {
+		((OptionsController) controller).getApp().getRoomController().getRoomView().show();
 	}
 	
 	private boolean checkInput() {

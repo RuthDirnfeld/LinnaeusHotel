@@ -18,7 +18,6 @@
             <Button fx:id="cancelButton" layoutX="38.0" layoutY="436.0" mnemonicParsing="false" onAction="#onClickCancel" prefHeight="34.0" prefWidth="116.0" text="Cancel" />
             <TextField fx:id="address" layoutX="132.0" layoutY="171.0" />
             <ChoiceBox fx:id="cityChoice" layoutX="132.0" layoutY="110.0" prefWidth="150.0" />
-            <Button fx:id="mngFloors" layoutX="100.0" layoutY="258.0" mnemonicParsing="false" onAction="#onClickManageFloors" prefHeight="34.0" prefWidth="170.0" text="Manage Floors" />
       </children>
     </AnchorPane>
   </children>
