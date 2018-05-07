@@ -54,7 +54,8 @@ public class CheckOutView extends View {
 	
 	@FXML
 	public void onCheckoutClick () throws FileNotFoundException, UnsupportedEncodingException {
-		String name = table.getSelectionModel().getSelectedItem().toString();
+		Reservation reservation = table.getSelectionModel().getSelectedItem();
+		String name = reservation.getGuestName();
 		ArrayList<Reservation> checkedIns = ((MainController) controller).getCheckedInReservations();
 		Reservation res = null;
 		for (Reservation r : checkedIns) {
@@ -62,7 +63,6 @@ public class CheckOutView extends View {
 				res = r;
 			}
 		}
-		
 		if (res != null) {
 			if (((MainController) controller).checkOut(res)) {
 				alertBox("Guest successfully checked out!");

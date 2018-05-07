@@ -120,20 +120,21 @@ public class MainController extends Controller {
 	//TODO
 	public boolean checkOut(Reservation res) {
 		// Find reserved room for price
-		ArrayList<Room> rooms = app.getDatabase().findRooms();
-		Room room = null;
-		if (!rooms.isEmpty()) {
-			for (int i =0; i < rooms.size(); i++) {
-				if (rooms.get(i).getRoomNum().equals(res.getRoom())) {
-					room = rooms.get(i);
-					break;
-				}
-			}
-		}
+//		ArrayList<Room> rooms = app.getDatabase().findRooms();
+//		Room room = null;
+//		if (!rooms.isEmpty()) {
+//			for (int i =0; i < rooms.size(); i++) {
+//				if (rooms.get(i).getRoomNum().equals(res.getRoom())) {
+//					room = rooms.get(i);
+//					break;
+//				}
+//			}
+//		}
 		// print bill
 		try {
 			printBill(res,false);
 			app.getDatabase().deleteReservation(res);
+			
 			//TODOapp.getDatabase().updateRoom(room.getRoomNum(), RoomState.free);
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -236,6 +236,7 @@ public class Database {
 		Gson gson = new Gson();
 		BasicDBObject obj = (BasicDBObject)JSON.parse(gson.toJson(reservation));
 		reservations.deleteOne(obj);
+		System.out.println("Deleted");
 		
 	}
 	
