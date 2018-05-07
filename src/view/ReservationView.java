@@ -66,6 +66,11 @@ public class ReservationView extends View {
 
 	@Override
 	public Stage display() throws Exception {
+		departureDate.setDisable(true);
+		arrivalDate.valueProperty().addListener((ov, oldValue, newValue) -> {
+		    departureDate.setDisable(false);
+		});
+		
 		return stage;
 	}
 
@@ -73,8 +78,10 @@ public class ReservationView extends View {
 		onArrivalClick();
 		onDepartureClick();
 		setTable();
+		
 	}
-
+	
+	
 	// DatePicker choice validation
 	public void onArrivalClick() {
 		dateConverter();
@@ -109,10 +116,18 @@ public class ReservationView extends View {
 		};
 		arrivalDate.setDayCellFactory(sdayCellFactory);
 	}
+	
+	public void enableDeparture() {
+		System.out.println("Test");
+		departureDate.setDisable(false);
+	}
 
 	// DatePicker choice validation
 	public void onDepartureClick() {
 		dateConverter();
+		if(arrivalDate.getValue() != null){
+			departureDate.setDisable(false);
+		}
 		final Callback<DatePicker, DateCell> edayCellFactory = new Callback<DatePicker, DateCell>() {
 			@Override
 			public DateCell call(final DatePicker datePicker) {
@@ -229,6 +244,7 @@ public class ReservationView extends View {
 
 	public void clearAll() {
 		arrivalDate.setValue(null);
+		departureDate.setDisable(true);
 		departureDate.setValue(null);
 		chosenGuest.clear();
 		calcRoom.clear();
@@ -275,10 +291,12 @@ public class ReservationView extends View {
 	}
 	
 	public void setSelectedRoom(String roomNum) {
+		if(calcRoom.getText().isEmpty())
 		calcRoom.setText(roomNum);
 	}
 	
 	public void setSelectedPrice(String price) {
+		if(calcPrice.getText().isEmpty())
 		calcPrice.setText(price);
 	}
 
