@@ -66,24 +66,29 @@ public class RoomController extends Controller {
 	}
 	
 	public void reserveRoom(String room){
-		Room temp = this.database.findRooms(room).get(0);
-		temp.setRoomState(RoomState.reserved);
-		this.database.updateRoomState(temp.getRoomNum(),temp.getRoomState());
 		
-	}
+		Room temp = app.getDatabase().findRooms(room).get(0);
+		temp.setRoomState(RoomState.reserved);
+		app.getDatabase().updateRoomState(temp.getRoomNum(),temp.getRoomState());
+		}
+	
 	
 	public void allocateRoom(String room){
-		Room temp = this.database.findRooms(room).get(0);
-		temp.setRoomState(RoomState.allocated);
-		this.database.updateRoomState(temp.getRoomNum(),temp.getRoomState());
 		
-	}
+		Room temp = app.getDatabase().findRooms(room).get(0);
+		temp.setRoomState(RoomState.allocated);
+		app.getDatabase().updateRoomState(temp.getRoomNum(),temp.getRoomState());
+		}
+	
 	public void freeRoom(String room){
-		Room temp = this.database.findRooms(room).get(0);
+		
+		if(app.getDatabase().findReservationByRoom(room).isEmpty()) {
+		Room temp = app.getDatabase().findRooms(room).get(0);
 		System.out.println(temp.getRoomNum());
 		temp.setRoomState(RoomState.free);
-		this.database.updateRoomState(temp.getRoomNum(),temp.getRoomState());
+		app.getDatabase().updateRoomState(temp.getRoomNum(),temp.getRoomState());
 		
+		}
 	}
 
 	// True if all rooms, false if free only
@@ -91,7 +96,7 @@ public class RoomController extends Controller {
 		this.database = app.getDatabase();
 		if (!b) {
 			rooms.clear();
-			rooms = database.findFreeRooms();
+			rooms = database.findRooms();
 		}
 		else {
 			rooms.clear();

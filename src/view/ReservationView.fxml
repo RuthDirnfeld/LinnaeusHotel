@@ -25,8 +25,8 @@
             <Button fx:id="OkBtn" layoutX="585.0" layoutY="294.0" mnemonicParsing="false" onAction="#OkBtnClick" prefHeight="30.0" prefWidth="150.0" text="OK" />
             <TextField fx:id="calcPrice" layoutX="435.0" layoutY="228.0" prefHeight="31.0" prefWidth="137.0" />
             <TextField fx:id="chosenGuest" editable="false" layoutX="435.0" layoutY="119.0" prefHeight="31.0" prefWidth="334.0" />
-            <DatePicker fx:id="arrivalDate" layoutX="296.0" layoutY="26.0" onAction="#onArrivalClick" />
-            <DatePicker fx:id="departureDate" layoutX="603.0" layoutY="26.0" onAction="#onDepartureClick" />
+            <DatePicker fx:id="arrivalDate" editable="false" layoutX="296.0" layoutY="26.0" onAction="#onArrivalClick" />
+            <DatePicker fx:id="departureDate" editable="false" layoutX="603.0" layoutY="26.0" onAction="#onDepartureClick" />
             <Label layoutX="383.0" layoutY="229.0" prefHeight="30.0" prefWidth="38.0" text="Price" />
             <Label layoutX="592.0" layoutY="235.0" text="SEK" />
             <TableView fx:id="resTable" layoutX="8.0" layoutY="335.0" prefHeight="345.0" prefWidth="1021.0">

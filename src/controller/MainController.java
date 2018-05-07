@@ -136,7 +136,11 @@ public class MainController extends Controller {
 		try {
 			printBill(res,false);
 			app.getDatabase().deleteReservation(res);
+			if(app.getDatabase().findReservationByRoom(res.getRoom()).isEmpty()) {
 			app.getDatabase().updateRoomState(res.getRoom(), RoomState.free);
+			}else{
+			app.getDatabase().updateRoomState(res.getRoom(), RoomState.reserved);	
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			return false;

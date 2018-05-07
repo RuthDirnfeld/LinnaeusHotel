@@ -159,15 +159,12 @@ public class RoomView extends View {
 	
 	public void onLoadBtnClick() {
 		if(roomTable.getSelectionModel().getSelectedItem() != null) {
-			if(roomTable.getSelectionModel().getSelectedItem().getRoomState() != RoomState.reserved && roomTable.getSelectionModel().getSelectedItem().getRoomState() != RoomState.allocated) {
 			Room room = roomTable.getSelectionModel().getSelectedItem();
 			((RoomController) controller).getApp().getResController().setSelectedRoom(room.getRoomNum());
 			((RoomController) controller).getApp().getResController().setSelectedPrice(room.getPrice());
 			Stage stage = (Stage) loadBtn.getScene().getWindow();
 			stage.close();
-			}else{
-			showError("The room is reseved/allocated","Please choose a different room");	
-			}
+			
 			}
 	}
 

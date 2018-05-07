@@ -169,10 +169,9 @@ public class Database {
 	}
 	
 	// Returns list of free rooms
-	public ArrayList<model.Room> findFreeRooms() {
+	public ArrayList<model.Room> findFreeRoom() {
 		Document query = new Document();
 		query.append("roomState", "free");
-		
 		ArrayList<model.Room> roomArray = new ArrayList<model.Room>();
 	    FindIterable<BasicDBObject> cursor = rooms.find(query);
 	    MongoCursor<BasicDBObject> it = cursor.iterator();
@@ -208,6 +207,7 @@ public class Database {
 			model.Room foundRoom = (new Gson()).fromJson(dbobj.toString(), model.Room.class);
 			foundRooms.add(foundRoom);			
 	    }
+	    it.close();
 	    
 		return foundRooms;
 	} 
@@ -290,6 +290,23 @@ public class Database {
 	public ArrayList<Reservation> findReservationByName(String guestName) {
 		ArrayList<model.Reservation> resArray = new ArrayList<model.Reservation>();
 	    FindIterable<BasicDBObject> cursor = reservations.find(new Document("guestName", guestName));
+	    MongoCursor<BasicDBObject> it = cursor.iterator();
+	    try {
+		   while(it.hasNext()) {
+			   BasicDBObject dbobj = it.next();
+			   model.Reservation reservation = (new Gson()).fromJson(dbobj.toString(), model.Reservation.class);
+			   resArray.add(reservation);
+	       }
+	    }
+	    finally {
+	    	it.close();
+	    }
+		return resArray;
+	}
+	
+	public ArrayList<Reservation> findReservationByRoom(String room) {
+		ArrayList<model.Reservation> resArray = new ArrayList<model.Reservation>();
+	    FindIterable<BasicDBObject> cursor = reservations.find(new Document("room", room));
 	    MongoCursor<BasicDBObject> it = cursor.iterator();
 	    try {
 		   while(it.hasNext()) {

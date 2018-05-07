@@ -85,6 +85,19 @@ public class ReservationView extends View {
 					@Override
 					public void updateItem(LocalDate item, boolean empty) {
 						super.updateItem(item, empty);
+						
+						if(!calcRoom.getText().isEmpty()) {
+							if(!resv.isEmpty()) {
+								for(int i = 0; i<resv.size(); i++) {
+								if(resv.get(i).getRoom().equals(calcRoom.getText())) {
+									if(item.isBefore(resv.get(i).getEndDate())&&item.isAfter(resv.get(i).getStartDate())||item.equals(resv.get(i).getStartDate())){
+										setDisable(true);
+										setStyle("-fx-background-color:lightcoral");
+									}
+								}
+								}
+							}
+						}
 
 						if (departureDate.getValue() != null && item.isAfter(departureDate.getValue())) {
 							setDisable(true);
@@ -107,6 +120,19 @@ public class ReservationView extends View {
 					@Override
 					public void updateItem(LocalDate item, boolean empty) {
 						super.updateItem(item, empty);
+						
+						if(!calcRoom.getText().isEmpty()) {
+							if(!resv.isEmpty()) {
+								for(int i = 0; i<resv.size(); i++) {
+								if(resv.get(i).getRoom().equals(calcRoom.getText())) {
+									if((item.isBefore(resv.get(i).getEndDate())&&item.isAfter(resv.get(i).getStartDate()))||(item.isAfter(resv.get(i).getEndDate())&& arrivalDate.getValue().isBefore(resv.get(i).getStartDate())||item.equals(resv.get(i).getEndDate()))){
+										setDisable(true);
+										setStyle("-fx-background-color:lightcoral");
+									}
+								}
+								}
+							}
+						}
 
 						if (arrivalDate.getValue() != null && item.isBefore(arrivalDate.getValue())) {
 							setDisable(true);
@@ -182,8 +208,8 @@ public class ReservationView extends View {
 			}
 			try {
 				((ReservationController) controller).getApp().getMainController().printBill(res, true);
-				((ReservationController) controller).getApp().getRoomController().freeRoom(res.getRoom());
 				((ReservationController) controller).deleteReservation(res);
+				((ReservationController) controller).getApp().getRoomController().freeRoom(res.getRoom());
 				((ReservationController) controller).updateReservationList();
 			} catch (FileNotFoundException e) {
 				e.printStackTrace();
