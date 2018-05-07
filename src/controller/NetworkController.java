@@ -39,8 +39,10 @@ public class NetworkController extends Controller {
 		if (isCorrectPort(port) && isCorrectIp(ip)) {
 			db.setIp(ip);
 			db.setPort(Integer.parseInt(port));
-			db.setUpDatabase();
-			if (!db.updateConnection()) {
+			if (!db.setUpDatabase()) {
+				String[] address = app.getOptions().getDbAddress().split(":");
+				db.setIp(address[0]);
+				db.setPort(Integer.parseInt(address[1]));
 				return false;
 			}
 			app.setDatabaseAddress(ip, port);

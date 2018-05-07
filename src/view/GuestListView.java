@@ -1,24 +1,21 @@
 package view;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import controller.GuestController;
-import controller.ReservationController;
-import javafx.application.Application;
-import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
-import javafx.scene.control.TablePosition;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import model.Guest;
+import model.Room;
 
 public class GuestListView extends View {
 	@FXML
@@ -29,6 +26,8 @@ public class GuestListView extends View {
 	private Button loadBtn;
 	@FXML
 	private Button cancelBtn;
+	@FXML
+	private Button modify;
 	@FXML
 	private TableView<Guest> guestTable;
 	@FXML
@@ -55,9 +54,17 @@ public class GuestListView extends View {
 		return stage;
 	}
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@FXML
 	public void initialize() {
 		setTable();
+		//Enable modify button when something is selected in the table
+		guestTable.setOnMouseClicked(new EventHandler() {
+			@Override
+			public void handle(Event event) {
+				modify.setDisable(false);
+			}
+		});
 	}
 
 	public void setTable() {
@@ -76,7 +83,6 @@ public class GuestListView extends View {
 
 	public void searchClick() {
 		if (searchBox.getText().isEmpty()) {
-			System.out.println("test");
 			((GuestController) controller).updateGuestList();
 		} else {
 			((GuestController) controller).updateGuestList(searchBox.getText());
@@ -93,11 +99,21 @@ public class GuestListView extends View {
 
 	public void loadClick() {
 		if(guestTable.getSelectionModel().getSelectedItem() != null) {
-		Guest guest = guestTable.getSelectionModel().getSelectedItem();
-		System.out.println(guest.getName());
-		((GuestController) controller).getApp().getResController().setSelectedGuest(guest.getName());
-		Stage stage = (Stage) loadBtn.getScene().getWindow();
-		stage.close();
+			Guest guest = guestTable.getSelectionModel().getSelectedItem();
+			((GuestController) controller).getApp().getResController().setSelectedGuest(guest.getName());
+			if (guest.getFavRoom() != null || !guest.getFavRoom().isEmpty()) {
+				ArrayList<Room> rooms = ((GuestController) controller).getAllRooms();
+				String price = "";
+				((GuestController) controller).getApp().getResController().setSelectedRoom(guest.getFavRoom());
+				for (Room r : rooms) {
+					if (r.getRoomNum().equals(guest.getFavRoom())) {
+						price = r.getPrice();
+					}
+				}
+				((GuestController) controller).getApp().getResController().setSelectedPrice(price);
+			}
+			Stage stage = (Stage) loadBtn.getScene().getWindow();
+			stage.close();
 		}
 	}
 
@@ -111,9 +127,15 @@ public class GuestListView extends View {
 	}
 
 	public void cancelClick() {
-		System.out.println("Cancel");
 		Stage stage = (Stage) cancelBtn.getScene().getWindow();
 		stage.close();
+	}
+	
+	public void onModifyClick() throws Exception {
+		Guest guest = guestTable.getSelectionModel().getSelectedItem();
+		((GuestController) controller).getModifyGuestController().setUpGuest(guest);
+		((GuestController) controller).getModifyGuestView().show();
+		modify.setDisable(true);
 	}
 
 }

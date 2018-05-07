@@ -50,19 +50,22 @@ public class OptionsView extends View {
 	
 	public void onAcceptClick() {
 		if(checkInput()){
-		System.out.println("Accept");
-		System.out.println(address.getText());
-		if (((OptionsController) controller).createConfigFile(cityChoice.getValue(), address.getText())) {
-			if (((OptionsController) controller).connectToDatabase()) {
-			stage.close();
+			// Check if provided input is correct
+			if (((OptionsController) controller).isIpValid(address.getText().split(":")[0])
+					&& ((OptionsController) controller).isPortValid(address.getText().split(":")[1])) {
+				// Set dabatase address, which attempts to connect to database as well
+				if (((OptionsController) controller).getApp().getNetController().setDatabaseAddress(address.getText().split(":")[0], address.getText().split(":")[1] )) {
+					// All good, write to config
+					((OptionsController) controller).updateConfigFile(cityChoice.getValue(), address.getText());
+					stage.close();
+				}
+				else {
+					showError("Can't connect to your database!", "Make sure you provided a valid IP.");
+				}
 			}
 			else {
-				showError("Can't connect to your database!", "Make sure you provided a valid IP.");
+				showError("Wrong Ip!", "Your provided IP is wrong!");
 			}
-		}
-		else {
-			showError("Wrong Ip!", "Your provided IP is wrong!");
-		}
 		}
 	}
 	public void onClickCancel() {

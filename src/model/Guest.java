@@ -1,13 +1,13 @@
 package model;
 
 public class Guest {
-	public String name;
-	public String address;
-	public String phoneNum;
-	public String creditNumber;
-	public String passportNumber;
-	public boolean smoker;
-	public String favRoom;
+	private String name;
+	private String address;
+	private String phoneNum;
+	private String creditNumber;
+	private String passportNumber;
+	private boolean smoker;
+	private String favRoom;
 
 	public Guest(String name, String address, String phoneNum, String creditNumber, String passportNumber,
 			boolean smoker, String favRoom) {

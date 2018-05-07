@@ -1,17 +1,22 @@
 package view;
 
+import java.util.ArrayList;
+
 import controller.GuestController;
-import javafx.event.EventHandler;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
-import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import model.Guest;
+import model.Room;
 
-public class GuestView extends View {
+public class ModifyGuestView extends View {
 	@FXML
 	private TextField fullName;
 	@FXML
@@ -25,48 +30,43 @@ public class GuestView extends View {
 	@FXML
 	private CheckBox smoker;
 	@FXML
-	private TextField favRoom;
+	private ChoiceBox<String> favRoom;
 	@FXML
 	private Button cancelButton;
 	@FXML
 	private Button submitButton;
-
-
+	
+	private ObservableList<String> rooms = FXCollections.observableArrayList();
+	
 	@Override
 	public Stage display()throws Exception {
 		return stage;
 	}
 
-	@FXML
-	public void initialize() {
-		phoneNumber.addEventFilter(KeyEvent.KEY_TYPED, new EventHandler<KeyEvent>() {
-			@Override
-			public void handle(KeyEvent keyEvent) {
-				if (!"0123456789".contains(keyEvent.getCharacter())) {
-					keyEvent.consume();
-				}
-			}
-		});
-		creditCardNum.addEventFilter(KeyEvent.KEY_TYPED, new EventHandler<KeyEvent>() {
-			@Override
-			public void handle(KeyEvent keyEvent) {
-				if (!"0123456789".contains(keyEvent.getCharacter())) {
-					keyEvent.consume();
-				}
-			}
-		});
-
+	public void setUpGuest (Guest guest) {
+		ArrayList<Room> foundRooms = ((GuestController) controller).getAllRooms();
+		for (Room r : foundRooms) {
+			rooms.add(r.getRoomNum());
+		}
+		fullName.setText(guest.getName());
+		address.setText(guest.getAddress());
+		phoneNumber.setText(guest.getPhoneNum());
+		creditCardNum.setText(guest.getCreditNumber());
+		if (guest.isSmoker()) {
+			smoker.setSelected(true);
+		}
+		favRoom.setItems(rooms);
 	}
-
 	
 	public void onClickConfirm(){
 		if(inputCheck()) {
-			((GuestController) controller).createGuest(fullName.getText(), address.getText(), phoneNumber.getText(), creditCardNum.getText(),
-					passportNumber.getText(), smoker.isSelected(), favRoom.getText());
+			((GuestController) controller).modifyGuest(fullName.getText(), address.getText(), phoneNumber.getText(), creditCardNum.getText(),
+					passportNumber.getText(), smoker.isSelected(), (String) favRoom.getSelectionModel().getSelectedItem());
 		}
-		((GuestController) controller).updateGuestList();
+		((GuestController) controller).refreshGuestList();
 		clearAll();
 		stage.close();
+		
 	}
 
 	public void onClickCancel() {
@@ -105,13 +105,12 @@ public class GuestView extends View {
 	}
 	
 	public void clearAll(){
-    fullName.clear();
-    address.clear();
-	phoneNumber.clear();
-	passportNumber.clear();
-    creditCardNum.clear();
-    favRoom.clear();
-	smoker.setSelected(false);
+	    fullName.clear();
+	    address.clear();
+		phoneNumber.clear();
+		passportNumber.clear();
+	    creditCardNum.clear();
+	    favRoom.getSelectionModel().clearSelection();
+		smoker.setSelected(false);
 	}
-
 }
