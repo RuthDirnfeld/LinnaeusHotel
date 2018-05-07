@@ -289,18 +289,15 @@ public class ReservationView extends View {
 
 	}
 	
-	public void suggestRoom(String roomNum){
-		if(calcRoom.getText().isEmpty())
+	public void suggestion(String roomNum, String price){
+		if(calcRoom.getText().isEmpty() && calcPrice.getText().isEmpty()) {
 		   calcRoom.setText(roomNum);
-	}
-	
-	public void suggestPrice(String price){
-		if(calcRoom.getText().isEmpty())
-			calcPrice.setText(price);
+		   calcPrice.setText(price);
+		}
 	}
 	
 	public void setSelectedRoom(String roomNum) {
-		      calcRoom.setText(roomNum);
+	calcRoom.setText(roomNum);
 	}
 	
 	public void setSelectedPrice(String price) {
