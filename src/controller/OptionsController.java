@@ -30,45 +30,27 @@ public class OptionsController extends Controller {
 		return optionsView.display();
 	}
 	
-	public boolean createConfigFile(String city,String ip) {
+	public void updateConfigFile(String city,String ip) {
 		String[] fullIp = ip.split(":");
 		if (fullIp.length == 2) {
-			if (isIpValid(fullIp[0]) && isPortValid(fullIp[1])) {
-				app.getOptions().setDbAddress(ip);
-				app.getDatabase().setIp(fullIp[0]);
-				app.getDatabase().setPort(Integer.parseInt(fullIp[1]));
-				app.getOptions().setCurrentCity(City.valueOf(city.toUpperCase()));
-				app.getConfig().writeToFile();
-				return true;
-			}
-			else {
-				return false;
-			}
+			app.getOptions().setDbAddress(ip);
+			app.getDatabase().setIp(fullIp[0]);
+			app.getDatabase().setPort(Integer.parseInt(fullIp[1]));
+			app.getOptions().setCurrentCity(City.valueOf(city.toUpperCase()));
+			app.getConfig().writeToFile();
+				
 		}
 		else if (fullIp.length == 1){
-			if (isIpValid(fullIp[0])){
-				app.getOptions().setDbAddress(ip+":27017");
-				app.getDatabase().setIp(fullIp[0]);
-				app.getDatabase().setPort(27017);
-				app.getOptions().setCurrentCity(City.valueOf(city.toUpperCase()));
-				app.getConfig().writeToFile();
-				return true;
-			}
-			return false;
+			app.getOptions().setDbAddress(ip+":27017");
+			app.getDatabase().setIp(fullIp[0]);
+			app.getDatabase().setPort(27017);
+			app.getOptions().setCurrentCity(City.valueOf(city.toUpperCase()));
+			app.getConfig().writeToFile();
 		}
-		
-		else {
-			return false;
-		}
-		
-	}
-	
-	public boolean connectToDatabase() {
-		return app.getDatabase().updateConnection();
 	}
 	
 	// Check IP validity 
-    private boolean isIpValid(String ip) {
+    public boolean isIpValid(String ip) {
     	String[] splitIp = ip.split( "\\.");
     	// IP consists of 4 decimals, separated by dots
     	if (splitIp.length != 4) {
@@ -93,7 +75,7 @@ public class OptionsController extends Controller {
     }
     
     // Check port validity
-    private boolean isPortValid(String port) {
+    public boolean isPortValid(String port) {
     	try {
     	//Check if integer and if valid port
     		int integer = Integer.parseInt(port);
