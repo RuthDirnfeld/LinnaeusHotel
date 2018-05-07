@@ -36,6 +36,8 @@ public class MainController extends Controller {
 	private Parent checkInParent;
 	private Parent checkOutParent;
 	
+	public int cancellationFee = (int) 0.15;
+	
 	
 	private ArrayList<Reservation> resvList;
 
@@ -165,7 +167,7 @@ public class MainController extends Controller {
 	
 	
 	public void printBill(Reservation res, Boolean cancellation) throws FileNotFoundException, UnsupportedEncodingException {
-		Bill bill = new Bill(res.getGuestName(), Integer.parseInt(res.getPrice()), res.getStartDate(), res.getEndDate(),cancellation);
+	    Bill bill =  new Bill(res.getGuestName(), Integer.parseInt(res.getPrice()), res.getStartDate(), res.getEndDate(),cancellation);
 		String fileName = bill.getGuestName() + bill.getArrival().toString() + "-" + bill.getDeparture() + ".txt";
 		
 		PrintWriter writer = new PrintWriter(fileName, "UTF-8");
@@ -175,14 +177,18 @@ public class MainController extends Controller {
 		if(bill.isCancellation()) {
 			writer.println("Cancelled Reservation from " + bill.getArrival().toString() + " to " + bill.getDeparture().toString()+ " in room " + res.getRoom());
 			writer.println("Room Price : " + bill.getRoomPrice());
-			writer.println("Cancellation fee (15% of total room reservation price) : " + bill.calculateBill());
-			writer.println("Total : " + bill.calculateBill() + "SEK");
+			writer.println("Cancellation fee ( "+cancellationFee*100+ " of total room reservation price) : " + bill.calculateBill(cancellationFee));
+			writer.println("Total : " + bill.calculateBill(cancellationFee) + "SEK");
 		}else{
 			writer.println("Stay from " + bill.getArrival().toString() + " to " + bill.getDeparture().toString() + " in room " + res.getRoom());
 			writer.println("Room price : " + bill.getRoomPrice() + " SEK (per night)"); 
 			writer.println("Total Price : " + bill.calculateBill() + "SEK"); 
 		}
 		writer.close();
+	}
+
+	public void setCancellationFee(int i) {
+		cancellationFee = i; 
 	}
 }
 

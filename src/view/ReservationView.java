@@ -5,6 +5,7 @@ import java.io.UnsupportedEncodingException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Optional;
 
 import controller.ReservationController;
 import javafx.collections.FXCollections;
@@ -20,6 +21,7 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -170,6 +172,20 @@ public class ReservationView extends View {
 	public void onCancelBtnClick() {
 		if (resTable.getSelectionModel().getSelectedItem() != null) {
 			Reservation res = resTable.getSelectionModel().getSelectedItem();
+			TextInputDialog dialog = new TextInputDialog("15");
+			dialog.setTitle("Cancellation fee");
+			dialog.setHeaderText("Select a cancellation fee");
+			dialog.setContentText("Please enter cancellation fee (%):");
+
+			// Traditional way to get the response value.
+			Optional<String> result = dialog.showAndWait();
+			int fee = Integer.parseInt(result.get())/100;
+			if (result.isPresent()){
+				((ReservationController) controller).getApp().getMainController().setCancellationFee(fee);  
+			}
+
+			// The Java 8 way to get the response value (with lambda expression).
+			result.ifPresent(name -> System.out.println("Your name: " + name));
 			try {
 				((ReservationController) controller).getApp().getMainController().printBill(res, true);
 				((ReservationController) controller).getApp().getRoomController().freeRoom(res.getRoom());
