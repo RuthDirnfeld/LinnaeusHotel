@@ -7,7 +7,7 @@
 <?import javafx.scene.paint.*?>
 <?import javafx.scene.text.*?>
 
-<VBox fx:controller="view.DatabaseLoginView" prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<VBox prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.DatabaseLoginView">
   <children>
     <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
       <children>
@@ -28,7 +28,13 @@
                   <Font size="52.0" />
                </font>
             </Text>
-            <Button fx:id="login" layoutX="289.0" layoutY="268.0" mnemonicParsing="false" text="Login" onAction="#buttonClick"/>
+            <Button fx:id="login" layoutX="293.0" layoutY="312.0" mnemonicParsing="false" onAction="#buttonClick" text="Login" />
+            <Label layoutX="145.0" layoutY="231.0" prefHeight="24.0" prefWidth="92.0" text="Your city">
+               <font>
+                  <Font size="19.0" />
+               </font>
+            </Label>
+            <ChoiceBox fx:id="cities" layoutX="272.0" layoutY="231.0" prefWidth="150.0" />
       </children>
     </AnchorPane>
   </children>

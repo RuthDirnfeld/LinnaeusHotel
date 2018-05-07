@@ -39,23 +39,9 @@
       </VBox>
       <MenuBar fx:id="menu" layoutY="-2.0" prefHeight="31.0" prefWidth="600.0">
         <menus>
-          <Menu mnemonicParsing="false" text="File">
-            <items>
-                  <MenuItem fx:id="menuNew" mnemonicParsing="false" text="New" />
-              <MenuItem fx:id="menuSearch" mnemonicParsing="false" text="Search" />
-                  <MenuItem fx:id="menuSave" mnemonicParsing="false" text="Save" />
-                  <MenuItem fx:id="exportDB" mnemonicParsing="false" text="Export Database" />
-                  <MenuItem fx:id="importDB" mnemonicParsing="false" text="Import Database" />
-            </items>
-          </Menu>
           <Menu mnemonicParsing="false" text="Options">
             <items>
               <MenuItem fx:id="menuPreferences" mnemonicParsing="false" onAction="#onPreferencesClick" text="Preferences" />
-            </items>
-          </Menu>
-          <Menu mnemonicParsing="false" text="Help">
-            <items>
-              <MenuItem mnemonicParsing="false" text="About" />
             </items>
           </Menu>
         </menus>

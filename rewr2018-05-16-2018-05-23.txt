@@ -1,6 +1,0 @@
-Bill for rewr
--------------------------------------
-Cancelled Reservation from 2018-05-16 to 2018-05-23
-Room price : 0
-Cancellation fee (15% of total room reservation price) : 1488
-Total : 1488SEK

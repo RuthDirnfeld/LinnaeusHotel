@@ -67,6 +67,9 @@ public class CheckInView extends View{
 		Reservation res = resTable.getSelectionModel().getSelectedItem();
 		((MainController) controller).checkIn(res); 
 		((MainController) controller).refreshCheckInView();
+		
+		//Remove checked in guest from the list
+		((MainController) controller).refreshCheckInView();
 		searchField.clear();
 	    }
 	

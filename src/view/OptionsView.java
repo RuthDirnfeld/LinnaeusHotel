@@ -1,13 +1,11 @@
 package view;
 
-import controller.GuestController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.SingleSelectionModel;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -36,18 +34,36 @@ public class OptionsView extends View {
 		cityChoice.setItems(cityList);
 	}
 	
+	public void setCity(String city) {
+		for (int i =0; i < cityList.size(); i++) {
+			if (cityList.get(i).toLowerCase().equals(city.toLowerCase())) {
+				cityChoice.getSelectionModel().select(i);
+			}
+		}
+	}
+	
+	public void setIp(String ip) {
+		address.setText(ip);
+	}
+	
 	public void onAcceptClick() {
 		if(checkInput()){
 		System.out.println("Accept");
 		System.out.println(address.getText());
-		((OptionsController) controller).createConfigFile(cityChoice.getValue(), address.getText());
-		Stage stage = (Stage) acceptButton.getScene().getWindow();
-		stage.close();
+		if (((OptionsController) controller).createConfigFile(cityChoice.getValue(), address.getText())) {
+			if (((OptionsController) controller).connectToDatabase()) {
+			stage.close();
+			}
+			else {
+				showError("Can't connect to your database!", "Make sure you provided a valid IP.");
+			}
+		}
+		else {
+			showError("Wrong Ip!", "Your provided IP is wrong!");
+		}
 		}
 	}
 	public void onClickCancel() {
-		System.out.println("Cancel");
-		Stage stage = (Stage) cancelButton.getScene().getWindow();
 		stage.close();
 	}
 	public void onClickManageRooms() {
@@ -74,7 +90,6 @@ public class OptionsView extends View {
 		alert.setTitle("Error");
 		alert.setHeaderText(title);
 		alert.setContentText(message);
-
 		alert.showAndWait();
 	}
 	

@@ -3,12 +3,10 @@ package controller;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.List;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.stage.Stage;
-import model.Guest;
 import model.Reservation;
 import utils.Database;
 import view.ReservationView;
@@ -21,7 +19,6 @@ public class ReservationController extends Controller {
 	private Parent resParent;
 	private Database database;
 	Controller controller = null;
-	private List<Reservation> reservations = new ArrayList<Reservation>();
 	private ArrayList<Reservation> resvList;
 
 	public ReservationController() {
@@ -39,7 +36,7 @@ public class ReservationController extends Controller {
 
 	public Stage getResView() throws Exception {
 		this.database = app.getDatabase();
-		resvList = database.findReservation();
+		resvList = database.findReservations();
 		resView.setTable(resvList);
 		resView.initialize();
 		return resView.display();
@@ -52,7 +49,7 @@ public class ReservationController extends Controller {
 	}
 	public void updateReservationList(){
 		this.database = app.getDatabase();
-		resvList = database.findReservation();
+		resvList = database.findReservations();
 		resView.setTable(resvList);
 		resView.initialize();
 	}

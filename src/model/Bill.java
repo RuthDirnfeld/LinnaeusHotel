@@ -29,9 +29,9 @@ public class Bill {
 	public int calculateBill() {
 		long days = java.time.temporal.ChronoUnit.DAYS.between(arrival, departure);
 		if(!cancellation){
-		return (int)days * roomPrice;
+			return (int)days * roomPrice;
 		}else{
-		return (int) ((int)(days * roomPrice) * 0.15);	
+			return (int) ((int)(days * roomPrice) * 0.15);	
 		}
 	}
 
