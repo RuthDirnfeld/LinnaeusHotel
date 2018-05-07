@@ -216,9 +216,8 @@ public class ReservationView extends View {
 			dialog.setContentText("Please enter cancellation fee (%):");
 
 			Optional<String> result = dialog.showAndWait();
-			int fee = Integer.parseInt(result.get());
-			System.out.println(fee);
 			if (result.isPresent()){
+				int fee = Integer.parseInt(result.get());
 				((ReservationController) controller).getApp().getMainController().setCancellationFee(fee);  
 			}
 			try {
