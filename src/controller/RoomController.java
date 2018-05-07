@@ -8,6 +8,7 @@ import javafx.scene.Parent;
 import javafx.stage.Stage;
 import model.Options.City;
 import model.Room;
+import model.RoomState;
 import utils.Database;
 import view.RoomPreferencesView;
 import view.RoomView;
@@ -57,11 +58,32 @@ public class RoomController extends Controller {
 	}
 
 	public void createRoom(String roomNum, boolean singleRoom, boolean doubleRoom, boolean doubleKingRoom,
-			boolean apartment, boolean largeRooms, boolean view, boolean smokerRoom, String price) {
+			boolean apartment, boolean largeRooms, boolean view, boolean smokerRoom, String price, RoomState roomstate) {
 		Room room = new Room(roomNum, singleRoom, doubleRoom, doubleKingRoom, apartment, largeRooms, view, smokerRoom,
-				price);
+				price,roomstate);
 		this.database = app.getDatabase();
 		database.writeRoom(room);
+	}
+	
+	public void reserveRoom(String room){
+		Room temp = this.database.findRooms(room).get(0);
+		temp.setRoomState(RoomState.reserved);
+		this.database.updateRoomState(temp.getRoomNum(),temp.getRoomState());
+		
+	}
+	
+	public void allocateRoom(String room){
+		Room temp = this.database.findRooms(room).get(0);
+		temp.setRoomState(RoomState.allocated);
+		this.database.updateRoomState(temp.getRoomNum(),temp.getRoomState());
+		
+	}
+	public void freeRoom(String room){
+		Room temp = this.database.findRooms(room).get(0);
+		System.out.println(temp.getRoomNum());
+		temp.setRoomState(RoomState.free);
+		this.database.updateRoomState(temp.getRoomNum(),temp.getRoomState());
+		
 	}
 
 	// True if all rooms, false if free only

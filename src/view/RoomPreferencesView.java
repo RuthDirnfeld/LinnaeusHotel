@@ -6,6 +6,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import model.RoomState;
 
 public class RoomPreferencesView extends View {
 	@FXML
@@ -38,10 +39,11 @@ public class RoomPreferencesView extends View {
 	}
 
 	public void onSaveBtnClick() {
+		RoomState r = null; 
 		((RoomController) controller).createRoom(roomNum.getText(), singleRoom.isSelected(), doubleRoom.isSelected(),
 				doubleKingRoom.isSelected(), apartment.isSelected(), largeRooms.isSelected(), view.isSelected(),
-				smokerRoom.isSelected(), price.getText());
-		((RoomController) controller).updateRoomList(true);
+				smokerRoom.isSelected(), price.getText(),r.free);
+		((RoomController) controller).updateRoomList();
 		clearAll();
 		Stage stage = (Stage) cancelBtn.getScene().getWindow();
 		stage.close();

@@ -36,6 +36,8 @@ public class MainController extends Controller {
 	private Parent checkInParent;
 	private Parent checkOutParent;
 	
+	public double cancellationFee = 0.15;
+	
 	
 	private ArrayList<Reservation> resvList;
 
@@ -134,8 +136,7 @@ public class MainController extends Controller {
 		try {
 			printBill(res,false);
 			app.getDatabase().deleteReservation(res);
-			
-			//TODOapp.getDatabase().updateRoom(room.getRoomNum(), RoomState.free);
+			app.getDatabase().updateRoomState(res.getRoom(), RoomState.free);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return false;
@@ -159,14 +160,14 @@ public class MainController extends Controller {
 			}
 		}
 		res.setCheckedIn(true);
+		app.getDatabase().updateRoomState(res.getRoom(), RoomState.allocated);
 		app.getDatabase().updateReservationState(res);
-		//TODOapp.getDatabase().updateRoom(room.getRoomNum(), RoomState.allocated);
 	}
 	
 	
 	
 	public void printBill(Reservation res, Boolean cancellation) throws FileNotFoundException, UnsupportedEncodingException {
-		Bill bill = new Bill(res.getGuestName(), Integer.parseInt(res.getPrice()), res.getStartDate(), res.getEndDate(),cancellation);
+	    Bill bill =  new Bill(res.getGuestName(), Integer.parseInt(res.getPrice()), res.getStartDate(), res.getEndDate(),cancellation);
 		String fileName = bill.getGuestName() + bill.getArrival().toString() + "-" + bill.getDeparture() + ".txt";
 		
 		PrintWriter writer = new PrintWriter(fileName, "UTF-8");
@@ -174,16 +175,22 @@ public class MainController extends Controller {
 		writer.println("Bill for " + bill.getGuestName());
 		writer.println("-------------------------------------");
 		if(bill.isCancellation()) {
-			writer.println("Cancelled Reservation from " + bill.getArrival().toString() + " to " + bill.getDeparture().toString());
+			double temp = (double) cancellationFee*100;
+			writer.println("Cancelled Reservation from " + bill.getArrival().toString() + " to " + bill.getDeparture().toString()+ " in room " + res.getRoom());
 			writer.println("Room Price : " + bill.getRoomPrice());
-			writer.println("Cancellation fee (15% of total room reservation price) : " + bill.calculateBill());
-			writer.println("Total : " + bill.calculateBill() + "SEK");
+			writer.println("Cancellation fee ( "+temp+ "% of total room reservation price) : " + bill.calculateBill(cancellationFee));
+			writer.println("Total : " + bill.calculateBill(cancellationFee) + "SEK");
 		}else{
-			writer.println("Stay from " + bill.getArrival().toString() + "to " + bill.getDeparture().toString());
+			writer.println("Stay from " + bill.getArrival().toString() + " to " + bill.getDeparture().toString() + " in room " + res.getRoom());
 			writer.println("Room price : " + bill.getRoomPrice() + " SEK (per night)"); 
 			writer.println("Total Price : " + bill.calculateBill() + "SEK"); 
 		}
 		writer.close();
+	}
+
+	public void setCancellationFee(double i) {
+		System.out.println((double)i/100);
+		 cancellationFee = (double) i/100; 
 	}
 }
 

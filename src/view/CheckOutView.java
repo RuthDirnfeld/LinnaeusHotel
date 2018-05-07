@@ -43,7 +43,9 @@ public class CheckOutView extends View {
 					}
 				}
 				else {
-					reservationList.add(r);
+					if (r.getRoom().contains("K")) {
+						reservationList.add(r);
+						}
 				}
 			}
 		}

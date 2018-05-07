@@ -5,6 +5,7 @@ import java.io.UnsupportedEncodingException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Optional;
 
 import controller.ReservationController;
 import javafx.collections.FXCollections;
@@ -17,6 +18,7 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -159,6 +161,7 @@ public class ReservationView extends View {
 			((ReservationController) controller).createReservation(chosenGuest.getText(), calcRoom.getText(),
 					arrivalDate.getValue(), departureDate.getValue(), calcPrice.getText());
 			((ReservationController) controller).updateReservationList();
+			((ReservationController) controller).getApp().getRoomController().reserveRoom(calcRoom.getText());
 			clearAll();
 		}
 	}
@@ -166,8 +169,20 @@ public class ReservationView extends View {
 	public void onCancelBtnClick() {
 		if (resTable.getSelectionModel().getSelectedItem() != null) {
 			Reservation res = resTable.getSelectionModel().getSelectedItem();
+			TextInputDialog dialog = new TextInputDialog("15");
+			dialog.setTitle("Cancellation fee");
+			dialog.setHeaderText("Select a cancellation fee");
+			dialog.setContentText("Please enter cancellation fee (%):");
+
+			Optional<String> result = dialog.showAndWait();
+			int fee = Integer.parseInt(result.get());
+			System.out.println(fee);
+			if (result.isPresent()){
+				((ReservationController) controller).getApp().getMainController().setCancellationFee(fee);  
+			}
 			try {
 				((ReservationController) controller).getApp().getMainController().printBill(res, true);
+				((ReservationController) controller).getApp().getRoomController().freeRoom(res.getRoom());
 				((ReservationController) controller).deleteReservation(res);
 				((ReservationController) controller).updateReservationList();
 			} catch (FileNotFoundException e) {

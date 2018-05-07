@@ -34,7 +34,14 @@ public class Bill {
 			return (int) ((int)(days * roomPrice) * 0.15);	
 		}
 	}
-
+	public double calculateBill(double cancellationFee) {
+		long days = java.time.temporal.ChronoUnit.DAYS.between(arrival, departure);
+		if(!cancellation){
+			return (int)days * roomPrice;
+		}else{
+			return ((days * roomPrice) * cancellationFee);	
+		}
+	}
 	
 	public String getGuestName() {
 		return guestName;
@@ -76,3 +83,4 @@ public class Bill {
 		this.cancellation = cancellation;
 	}
 }
+

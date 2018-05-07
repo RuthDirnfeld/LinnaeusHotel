@@ -10,10 +10,11 @@ public class Room {
 	public boolean largeRooms;
 	public boolean view;
 	public boolean smokerRoom;
+	public RoomState roomState; 
 	public String price;
 
 	public Room(String roomNum, boolean singleRoom, boolean doubleRoom, boolean doubleKingRoom, boolean apartment,
-			boolean largeRooms, boolean view, boolean smokerRoom, String price) {
+			boolean largeRooms, boolean view, boolean smokerRoom, String price, RoomState roomState) {
 		this.roomNum = roomNum;
 		this.singleRoom = singleRoom;
 		this.doubleRoom = doubleRoom;
@@ -23,6 +24,7 @@ public class Room {
 		this.view = view;
 		this.smokerRoom = smokerRoom;
 		this.price = price;
+		this.roomState = roomState; 
 	}
 
 	public Room() {
@@ -95,6 +97,14 @@ public class Room {
 
 	public String getPrice() {
 		return price;
+	}
+	
+	public void setRoomState(RoomState roomState) {
+		this.roomState = roomState; 
+	}
+	
+	public RoomState getRoomState() {
+		return roomState; 
 	}
 
 	public void setPrice(String price) {
