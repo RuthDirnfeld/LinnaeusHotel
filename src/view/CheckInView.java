@@ -45,6 +45,7 @@ public class CheckInView extends View{
 	
 	
 	public void setTable() {
+		resTable.getItems().clear();
 		if (resv != null) {
 			ObservableList<Reservation> resvList = FXCollections.observableList(resv);
 			for (Reservation r : resvList) {
