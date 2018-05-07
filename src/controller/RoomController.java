@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.stage.Stage;
+import model.Options.City;
 import model.Room;
 import utils.Database;
 import view.RoomPreferencesView;
@@ -20,7 +21,7 @@ public class RoomController extends Controller {
 	private Parent roomParent;
 	private Parent roomPrefParent;
 	private Database database;
-	private ArrayList<Room> rooms;
+	private ArrayList<Room> rooms = new ArrayList<Room>();
 	Controller controller = null;
 
 	public RoomController() {
@@ -63,9 +64,31 @@ public class RoomController extends Controller {
 		database.writeRoom(room);
 	}
 
-	public void updateRoomList() {
+	// True if all rooms, false if free only
+	public void updateRoomList(boolean b) {
 		this.database = app.getDatabase();
-		rooms = database.findRooms();
+		if (!b) {
+			ArrayList<Room> tempRooms = database.findFreeRooms();
+			ArrayList<Room> freeRooms = new ArrayList<Room>();
+			for (Room r : tempRooms) {
+				if (app.getOptions().getCurrentCity().equals(City.VAXJO)) {
+					if (r.getRoomNum().contains("V")) {
+						freeRooms.add(r);
+					}
+				}
+				else {
+					if (r.getRoomNum().contains("K")) {
+						freeRooms.add(r);
+					}
+				}
+			}
+			rooms.clear();
+			rooms = freeRooms;
+		}
+		else {
+			rooms.clear();
+			rooms = database.findRooms();
+		}
 		roomView.setTable(rooms);
 		roomView.initialize();
 	}

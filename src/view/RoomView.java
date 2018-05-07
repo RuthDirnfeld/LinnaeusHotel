@@ -2,20 +2,16 @@ package view;
 
 import java.util.ArrayList;
 
-import controller.GuestController;
 import controller.RoomController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.control.ListView;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
-import model.Guest;
-import model.Reservation;
 import model.Room;
 
 public class RoomView extends View {
@@ -146,9 +142,5 @@ public class RoomView extends View {
 
 	public void setTable(ArrayList<Room> list) {
 		this.roomArray = list;
-	}
-
-	public void getRoomList() {
-		((RoomController) controller).updateRoomList();
 	}
 }

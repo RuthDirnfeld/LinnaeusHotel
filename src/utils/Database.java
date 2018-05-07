@@ -1,9 +1,7 @@
 package utils;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Comparator;
-import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -22,7 +20,6 @@ import com.mongodb.client.MongoDatabase;
 import com.mongodb.util.JSON;
 
 import model.Reservation;
-import model.Room;
 
 public class Database {
 	
@@ -171,27 +168,21 @@ public class Database {
 	}
 	
 	// Returns list of free rooms
-/*	public ArrayList<model.Room> findFreeRooms(model.Room room) {
-		ArrayList<model.Room> foundRooms = retrieveFreeRooms(room.getLocation(), room.getNumBeds());
-		if (foundRooms.size() > 0) {
-			for (Iterator<Room> it = foundRooms.iterator(); it.hasNext() ;){
-				model.Room curRoom = it.next();
-				if (curRoom.isSingle() != room.isSingle()) {
-					it.remove();
-				}
-				if (curRoom.isSmoker() != room.isSmoker()) {
-					it.remove();
-				}
-			}
-			
-			foundRooms.sort(new PriceComparator());
-		}
-		else {
-			foundRooms = null;
-		}
+	public ArrayList<model.Room> findFreeRooms() {
+		Document query = new Document();
+		query.append("roomState", "free");
 		
-		return foundRooms;
-	}*/
+		ArrayList<model.Room> roomArray = new ArrayList<model.Room>();
+	    FindIterable<BasicDBObject> cursor = rooms.find(query);
+	    MongoCursor<BasicDBObject> it = cursor.iterator();
+	    while (it.hasNext()) {
+	    	BasicDBObject dbobj = it.next();
+			model.Room foundRoom = (new Gson()).fromJson(dbobj.toString(), model.Room.class);
+			roomArray.add(foundRoom);
+	    }
+		
+		return roomArray;
+	}
 	
 	// Returns all rooms
 	public ArrayList<model.Room> findRooms() {
@@ -265,41 +256,6 @@ public class Database {
 		// Set to log only severe messages
 		logger = Logger.getLogger("org.mongodb.driver");
 		logger.setLevel(Level.SEVERE);
-	}
-	
-	private ArrayList<model.Room> retrieveFreeRooms(String city, String numBeds) {
-		// Looking for free rooms in specified city with provided number of beds.
-		// Document class is used to provide what to search in database
-		Document query = new Document();
-		query.append("location", city);
-		query.append("numBeds", numBeds);
-		query.append("state", "free");
-		
-		ArrayList<model.Room> roomArray = new ArrayList<model.Room>();
-	    FindIterable<BasicDBObject> cursor = rooms.find(query);
-	    MongoCursor<BasicDBObject> it = cursor.iterator();
-	    // If array is empty, means the city doesn't have any of that kind of rooms.
-	    // Search other city
-	    if (!it.hasNext()) {
-	    	query = new Document();
-	    	query.append("numBeds", numBeds);
-	    	cursor = rooms.find(query);
-	    	it = cursor.iterator();
-	    	while (it.hasNext()) {
-		    	BasicDBObject dbobj = it.next();
-				model.Room foundRoom = (new Gson()).fromJson(dbobj.toString(), model.Room.class);
-				roomArray.add(foundRoom);			
-		    }
-	    }
-	    else {
-		    while (it.hasNext()) {
-		    	BasicDBObject dbobj = it.next();
-				model.Room foundRoom = (new Gson()).fromJson(dbobj.toString(), model.Room.class);
-				roomArray.add(foundRoom);			
-		    }
-	    }
-	    
-		return roomArray;
 	}
 	
 	
