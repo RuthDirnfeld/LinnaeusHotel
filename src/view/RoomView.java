@@ -185,7 +185,7 @@ public class RoomView extends View {
 		alert.showAndWait();
 	}
 
-	public void getRoomList() {
-		((RoomController) controller).updateRoomList();
+	public void getRoomList(boolean b) {
+		((RoomController) controller).updateRoomList(b);
 	}
 }

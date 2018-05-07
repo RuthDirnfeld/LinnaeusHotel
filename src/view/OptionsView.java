@@ -10,6 +10,7 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import controller.OptionsController;
+import controller.ReservationController;
 
 public class OptionsView extends View {
 	@FXML
@@ -73,6 +74,7 @@ public class OptionsView extends View {
 	}
 	public void onClickManageRooms() throws Exception {
 		((OptionsController) controller).getApp().getRoomController().getRoomView().show();
+		((OptionsController) controller).getApp().getRoomController().updateRoomList(true);
 	}
 	
 	private boolean checkInput() {

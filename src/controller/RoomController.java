@@ -90,22 +90,8 @@ public class RoomController extends Controller {
 	public void updateRoomList(boolean b) {
 		this.database = app.getDatabase();
 		if (!b) {
-			ArrayList<Room> tempRooms = database.findFreeRooms();
-			ArrayList<Room> freeRooms = new ArrayList<Room>();
-			for (Room r : tempRooms) {
-				if (app.getOptions().getCurrentCity().equals(City.VAXJO)) {
-					if (r.getRoomNum().contains("V")) {
-						freeRooms.add(r);
-					}
-				}
-				else {
-					if (r.getRoomNum().contains("K")) {
-						freeRooms.add(r);
-					}
-				}
-			}
 			rooms.clear();
-			rooms = freeRooms;
+			rooms = database.findFreeRooms();
 		}
 		else {
 			rooms.clear();

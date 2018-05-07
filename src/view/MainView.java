@@ -1,6 +1,7 @@
 package view;
 
 import controller.MainController;
+import controller.ReservationController;
 import javafx.stage.Stage;
 
 public class MainView extends View{
@@ -46,6 +47,7 @@ public class MainView extends View{
 	public void onRoomsClick() {
 		try {
 			((MainController) controller).getApp().getRoomController().getRoomView().show();
+			((MainController) controller).getApp().getRoomController().updateRoomList(true);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

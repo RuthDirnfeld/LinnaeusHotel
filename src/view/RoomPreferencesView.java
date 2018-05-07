@@ -43,7 +43,7 @@ public class RoomPreferencesView extends View {
 		((RoomController) controller).createRoom(roomNum.getText(), singleRoom.isSelected(), doubleRoom.isSelected(),
 				doubleKingRoom.isSelected(), apartment.isSelected(), largeRooms.isSelected(), view.isSelected(),
 				smokerRoom.isSelected(), price.getText(),r.free);
-		((RoomController) controller).updateRoomList();
+		((RoomController) controller).updateRoomList(true);
 		clearAll();
 		Stage stage = (Stage) cancelBtn.getScene().getWindow();
 		stage.close();
