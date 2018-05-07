@@ -1,6 +1,7 @@
 package utils;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.logging.Level;
@@ -92,15 +93,14 @@ public class Database {
 	//Update room status (free, allocated, reserved)
 	public void updateRoomState (String roomNr, model.RoomState state) {
 		Document old = new Document("roomNum", roomNr);
-		Document newRoom = new Document ("$set", new Document("RoomState", state));
+		Document newRoom = new Document ("$set", new Document("RoomState", state.name()));
 		rooms.updateOne(old, newRoom);
 	}
 	
 	public void updateGuestFavRoom(String room, model.Guest guest) {
 		Document old = new Document();
 		old.put("name", guest.getName());
-		old.put("creditNumer", guest.getCreditNumber());
-		
+		old.put("creditNumber", guest.getCreditNumber());
 		Document newGuest = new Document("$set", new Document("favRoom", room));
 		guests.updateOne(old, newGuest);
 	}
@@ -236,7 +236,6 @@ public class Database {
 		Gson gson = new Gson();
 		BasicDBObject obj = (BasicDBObject)JSON.parse(gson.toJson(reservation));
 		reservations.deleteOne(obj);
-		System.out.println("Deleted");
 		
 	}
 	

@@ -30,6 +30,7 @@
               </columns>
             </TableView>
             <Button fx:id="loadBtn" layoutX="944.0" layoutY="484.0" mnemonicParsing="false" onAction="#loadClick" prefHeight="31.0" prefWidth="160.0" text="Load" />
+            <Button fx:id="modify" disable="true" layoutX="703.0" layoutY="38.0" mnemonicParsing="false" onAction="#onModifyClick" prefHeight="31.0" prefWidth="160.0" text="Modify guest" />
          </children>
       </AnchorPane>
    </children>

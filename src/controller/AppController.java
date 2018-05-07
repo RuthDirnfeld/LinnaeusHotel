@@ -29,6 +29,7 @@ public class AppController {
 		roomController.setApp(this);
 		
 		netController.setDatabase(database);
+		guestController.setDatabase(database);
 		if (!isDatabaseInit()) {
 			return netController.getDbView();
 		}
