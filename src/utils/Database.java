@@ -91,8 +91,9 @@ public class Database {
 	
 	//Update room status (free, allocated, reserved)
 	public void updateRoomState (String roomNr, model.RoomState state) {
-		Document old = new Document("roomNum", roomNr);
-		Document newRoom = new Document ("$set", new Document("RoomState", state));
+		Document old = new Document();
+		old.put("roomNum", roomNr);
+		Document newRoom = new Document ("$set", new Document("roomState", state));
 		rooms.updateOne(old, newRoom);
 	}
 	
@@ -206,6 +207,20 @@ public class Database {
 	    
 		return foundRooms;
 	} 
+	
+	public ArrayList<model.Room> findRooms(String s) {
+		ArrayList<model.Room> foundRooms = new ArrayList<model.Room>();
+	    FindIterable<BasicDBObject> cursor = rooms.find(new Document("roomNum", s));
+	    MongoCursor<BasicDBObject> it = cursor.iterator();
+	    while (it.hasNext()) {
+	    	BasicDBObject dbobj = it.next();
+			model.Room foundRoom = (new Gson()).fromJson(dbobj.toString(), model.Room.class);
+			foundRooms.add(foundRoom);			
+	    }
+	    
+		return foundRooms;
+	} 
+	
 	
 	public ArrayList<model.Guest> findGuests() {
 		ArrayList<model.Guest> foundGuests = new ArrayList<model.Guest>();

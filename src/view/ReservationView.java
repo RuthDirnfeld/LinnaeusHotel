@@ -162,6 +162,7 @@ public class ReservationView extends View {
 			((ReservationController) controller).createReservation(chosenGuest.getText(), calcRoom.getText(),
 					arrivalDate.getValue(), departureDate.getValue(), calcPrice.getText());
 			((ReservationController) controller).updateReservationList();
+			((ReservationController) controller).getApp().getRoomController().reserveRoom(calcRoom.getText());
 			clearAll();
 		}
 	}
