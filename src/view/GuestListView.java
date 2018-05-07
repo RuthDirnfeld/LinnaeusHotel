@@ -104,13 +104,13 @@ public class GuestListView extends View {
 			if (guest.getFavRoom() != null || !guest.getFavRoom().isEmpty()) {
 				ArrayList<Room> rooms = ((GuestController) controller).getAllRooms();
 				String price = "";
-				((GuestController) controller).getApp().getResController().setSelectedRoom(guest.getFavRoom());
+				((GuestController) controller).getApp().getResController().suggestSelectedRoom(guest.getFavRoom());
 				for (Room r : rooms) {
 					if (r.getRoomNum().equals(guest.getFavRoom())) {
 						price = r.getPrice();
 					}
 				}
-				((GuestController) controller).getApp().getResController().setSelectedPrice(price);
+				((GuestController) controller).getApp().getResController().suggestSelectedPrice(price);
 			}
 			Stage stage = (Stage) loadBtn.getScene().getWindow();
 			stage.close();
