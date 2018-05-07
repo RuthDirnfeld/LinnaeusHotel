@@ -172,6 +172,7 @@ public class ReservationView extends View {
 			Reservation res = resTable.getSelectionModel().getSelectedItem();
 			try {
 				((ReservationController) controller).getApp().getMainController().printBill(res, true);
+				((ReservationController) controller).getApp().getRoomController().freeRoom(res.getRoom());
 				((ReservationController) controller).deleteReservation(res);
 				((ReservationController) controller).updateReservationList();
 			} catch (FileNotFoundException e) {

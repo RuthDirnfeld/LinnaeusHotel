@@ -79,6 +79,7 @@ public class RoomController extends Controller {
 	}
 	public void freeRoom(String room){
 		Room temp = this.database.findRooms(room).get(0);
+		System.out.println(temp.getRoomNum());
 		temp.setRoomState(RoomState.free);
 		this.database.updateRoomState(temp.getRoomNum(),temp.getRoomState());
 		
