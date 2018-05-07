@@ -93,7 +93,7 @@ public class Database {
 	public void updateRoomState (String roomNr, model.RoomState state) {
 		Document old = new Document();
 		old.put("roomNum", roomNr);
-		Document newRoom = new Document ("$set", new Document("roomState", state));
+		Document newRoom = new Document ("$set", new Document("roomState", state.name()));
 		rooms.updateOne(old, newRoom);
 	}
 	

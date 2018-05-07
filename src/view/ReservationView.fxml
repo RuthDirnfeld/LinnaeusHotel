@@ -1,9 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.DatePicker?>
@@ -18,22 +14,21 @@
    <children>
       <AnchorPane prefHeight="665.0" prefWidth="1155.0">
          <children>
-            <Label layoutX="306.0" layoutY="35.0" text="Departure">
+            <Label layoutX="502.0" layoutY="30.0" text="Departure">
                <padding>
                   <Insets left="30.0" right="5.0" />
                </padding>
             </Label>
-            <Label layoutX="36.0" layoutY="32.0" prefHeight="21.0" prefWidth="53.0" text="Arrival" />
-            <Label layoutX="462.0" layoutY="160.0" prefHeight="30.0" text="Rooms" />
-            <Button fx:id="chooseGuestBtn" layoutX="357.0" layoutY="113.0" mnemonicParsing="false" onAction="#chooseGuestClick" prefHeight="30.0" prefWidth="145.0" text="Choose Guest" />
+            <Label layoutX="235.0" layoutY="28.0" prefHeight="21.0" prefWidth="53.0" text="Arrival" />
+            <Button fx:id="chooseGuestBtn" layoutX="269.0" layoutY="119.0" mnemonicParsing="false" onAction="#chooseGuestClick" prefHeight="30.0" prefWidth="145.0" text="Choose Guest" />
             <Button fx:id="clearFieldsBtn" layoutX="427.0" layoutY="294.0" mnemonicParsing="false" onAction="#clearFieldsClick" prefHeight="30.0" prefWidth="150.0" text="Clear Fields" />
             <Button fx:id="OkBtn" layoutX="585.0" layoutY="294.0" mnemonicParsing="false" onAction="#OkBtnClick" prefHeight="30.0" prefWidth="150.0" text="OK" />
-            <TextField fx:id="calcPrice" layoutX="523.0" layoutY="222.0" prefHeight="31.0" prefWidth="137.0" />
-            <TextField fx:id="chosenGuest" layoutX="523.0" layoutY="113.0" prefHeight="31.0" prefWidth="334.0" />
-            <DatePicker fx:id="arrivalDate" layoutX="101.0" layoutY="30.0" onAction="#onArrivalClick" />
-            <DatePicker fx:id="departureDate" layoutX="408.0" layoutY="30.0" onAction="#onDepartureClick" />
-            <Label layoutX="469.0" layoutY="215.0" prefHeight="30.0" prefWidth="38.0" text="Price" />
-            <Label layoutX="678.0" layoutY="235.0" text="SEK" />
+            <TextField fx:id="calcPrice" layoutX="435.0" layoutY="228.0" prefHeight="31.0" prefWidth="137.0" />
+            <TextField fx:id="chosenGuest" editable="false" layoutX="435.0" layoutY="119.0" prefHeight="31.0" prefWidth="334.0" />
+            <DatePicker fx:id="arrivalDate" layoutX="296.0" layoutY="26.0" onAction="#onArrivalClick" />
+            <DatePicker fx:id="departureDate" layoutX="603.0" layoutY="26.0" onAction="#onDepartureClick" />
+            <Label layoutX="383.0" layoutY="229.0" prefHeight="30.0" prefWidth="38.0" text="Price" />
+            <Label layoutX="592.0" layoutY="235.0" text="SEK" />
             <TableView fx:id="resTable" layoutX="8.0" layoutY="335.0" prefHeight="345.0" prefWidth="1021.0">
               <columns>
                 <TableColumn fx:id="nameColumn" prefWidth="247.0" text="Name" />
@@ -43,9 +38,9 @@
                 <TableColumn fx:id="priceColumn" prefWidth="203.0" text="Price" />
               </columns>
             </TableView>
-            <TextField fx:id="calcRoom" layoutX="523.0" layoutY="160.0" prefHeight="31.0" prefWidth="334.0" />
+            <TextField fx:id="calcRoom" editable="false" layoutX="435.0" layoutY="166.0" prefHeight="31.0" prefWidth="334.0" />
             <Button fx:id="cancelBtn" layoutX="271.0" layoutY="294.0" mnemonicParsing="false" onAction="#onCancelBtnClick" prefHeight="30.0" prefWidth="150.0" text="Cancel Reservation" />
-            <Button fx:id="roomsBtn" layoutX="36.0" layoutY="107.0" mnemonicParsing="false" onAction="#onRoomsBtnClick" prefHeight="135.0" prefWidth="235.0" text="Rooms" />
+            <Button fx:id="roomsBtn" layoutX="269.0" layoutY="167.0" mnemonicParsing="false" onAction="#onRoomsBtnClick" prefHeight="30.0" prefWidth="145.0" text="Choose Room" />
          </children>
       </AnchorPane>
    </children>

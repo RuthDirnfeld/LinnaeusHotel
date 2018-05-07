@@ -7,16 +7,20 @@ import controller.RoomController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import model.Guest;
 import model.Reservation;
 import model.Room;
+import model.RoomState;
 
 public class RoomView extends View {
 	@FXML
@@ -39,6 +43,8 @@ public class RoomView extends View {
 	private TableColumn<Room, Boolean> smokerCol;
 	@FXML
 	private TableColumn<Room, Integer> priceCol;
+	@FXML
+	private TableColumn<Room, RoomState> roomStateCol;
 	@FXML
 	private Button loadBtn;
 
@@ -68,6 +74,24 @@ public class RoomView extends View {
 			            item.booleanValue() ? "XXX" : " ");
 			    }
 			});
+			roomStateCol.setCellValueFactory(new PropertyValueFactory<Room, RoomState>("roomState"));
+			roomStateCol.setCellFactory(tc -> new TableCell<Room, RoomState>() {
+			    @Override
+			    protected void updateItem(RoomState item, boolean empty) {
+			        super.updateItem(item, empty);
+			        TableRow<Room> currentRow = getTableRow();
+			        if(item == item.allocated){
+			        	currentRow.setStyle("-fx-background-color:lightcoral");	
+			        }
+			        if(item == item.reserved) {
+			        	currentRow.setStyle("-fx-background-color:#f7b100");
+			        }
+			        if(item == item.free) {
+			        	currentRow.setStyle("-fx-background-color:lightgreen");
+			        }
+			    }
+			});
+			
 			doubleCol.setCellValueFactory(new PropertyValueFactory<Room, Boolean>("doubleRoom"));
 			doubleCol.setCellFactory(tc -> new TableCell<Room, Boolean>() {
 			    @Override
@@ -123,6 +147,7 @@ public class RoomView extends View {
 			    }
 			});
 			priceCol.setCellValueFactory(new PropertyValueFactory<Room, Integer>("price"));
+			
 		}
 	}
 
@@ -136,16 +161,30 @@ public class RoomView extends View {
 	
 	public void onLoadBtnClick() {
 		if(roomTable.getSelectionModel().getSelectedItem() != null) {
+			if(roomTable.getSelectionModel().getSelectedItem().getRoomState() != RoomState.reserved && roomTable.getSelectionModel().getSelectedItem().getRoomState() != RoomState.allocated) {
 			Room room = roomTable.getSelectionModel().getSelectedItem();
 			((RoomController) controller).getApp().getResController().setSelectedRoom(room.getRoomNum());
 			((RoomController) controller).getApp().getResController().setSelectedPrice(room.getPrice());
 			Stage stage = (Stage) loadBtn.getScene().getWindow();
 			stage.close();
+			}else{
+			showError("The room is reseved/allocated","Please choose a different room");	
+			}
 			}
 	}
 
 	public void setTable(ArrayList<Room> list) {
 		this.roomArray = list;
+	}
+	
+	public static void showError(String title, String message) {
+		Alert alert = new Alert(Alert.AlertType.ERROR);
+		alert.initStyle(StageStyle.UTILITY);
+		alert.setTitle("Error");
+		alert.setHeaderText(title);
+		alert.setContentText(message);
+
+		alert.showAndWait();
 	}
 
 	public void getRoomList() {

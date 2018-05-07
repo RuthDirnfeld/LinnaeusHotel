@@ -15,6 +15,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import model.Reservation;
+import model.Options.City;
 
 
 public class CheckInView extends View{
@@ -35,6 +36,8 @@ public class CheckInView extends View{
 	
 	public ArrayList<Reservation> resv;
 	
+	public ObservableList<Reservation> reservationList = FXCollections.observableArrayList();
+	
 	@FXML
 	public void initialize() {
 	setTable();	
@@ -44,13 +47,26 @@ public class CheckInView extends View{
 	public void setTable() {
 		if (resv != null) {
 			ObservableList<Reservation> resvList = FXCollections.observableList(resv);
-			resTable.setItems(resvList);
+			for (Reservation r : resvList) {
+				if (((MainController)controller).getApp().getOptions().getCurrentCity() == City.VAXJO) {
+					if (r.getRoom().contains("V")) {
+						reservationList.add(r);
+					}
+				}
+				else{
+					if (r.getRoom().contains("K")) {
+					reservationList.add(r);
+					}
+				}
+			}
+		
+			resTable.setItems(reservationList);
 			nameColumn.setCellValueFactory(new PropertyValueFactory<Reservation, String>("guestName"));
 			roomColumn.setCellValueFactory(new PropertyValueFactory<Reservation, String>("room"));
 			checkInColumn.setCellValueFactory(new PropertyValueFactory<Reservation, String>("startDate"));
 			checkOutColumn.setCellValueFactory(new PropertyValueFactory<Reservation, String>("endDate"));
-		}
-	}
+		}}
+	
 	
 	
 	@FXML

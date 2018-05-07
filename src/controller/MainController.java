@@ -134,8 +134,7 @@ public class MainController extends Controller {
 		try {
 			printBill(res,false);
 			app.getDatabase().deleteReservation(res);
-			
-			//TODOapp.getDatabase().updateRoom(room.getRoomNum(), RoomState.free);
+			app.getDatabase().updateRoomState(res.getRoom(), RoomState.free);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return false;
@@ -159,8 +158,8 @@ public class MainController extends Controller {
 			}
 		}
 		res.setCheckedIn(true);
+		app.getDatabase().updateRoomState(res.getRoom(), RoomState.allocated);
 		app.getDatabase().updateReservationState(res);
-		//TODOapp.getDatabase().updateRoom(room.getRoomNum(), RoomState.allocated);
 	}
 	
 	
@@ -174,12 +173,12 @@ public class MainController extends Controller {
 		writer.println("Bill for " + bill.getGuestName());
 		writer.println("-------------------------------------");
 		if(bill.isCancellation()) {
-			writer.println("Cancelled Reservation from " + bill.getArrival().toString() + " to " + bill.getDeparture().toString());
+			writer.println("Cancelled Reservation from " + bill.getArrival().toString() + " to " + bill.getDeparture().toString()+ " in room " + res.getRoom());
 			writer.println("Room Price : " + bill.getRoomPrice());
 			writer.println("Cancellation fee (15% of total room reservation price) : " + bill.calculateBill());
 			writer.println("Total : " + bill.calculateBill() + "SEK");
 		}else{
-			writer.println("Stay from " + bill.getArrival().toString() + "to " + bill.getDeparture().toString());
+			writer.println("Stay from " + bill.getArrival().toString() + " to " + bill.getDeparture().toString() + " in room " + res.getRoom());
 			writer.println("Room price : " + bill.getRoomPrice() + " SEK (per night)"); 
 			writer.println("Total Price : " + bill.calculateBill() + "SEK"); 
 		}
