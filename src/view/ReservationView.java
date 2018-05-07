@@ -177,15 +177,12 @@ public class ReservationView extends View {
 			dialog.setHeaderText("Select a cancellation fee");
 			dialog.setContentText("Please enter cancellation fee (%):");
 
-			// Traditional way to get the response value.
 			Optional<String> result = dialog.showAndWait();
-			int fee = Integer.parseInt(result.get())/100;
+			int fee = Integer.parseInt(result.get());
+			System.out.println(fee);
 			if (result.isPresent()){
 				((ReservationController) controller).getApp().getMainController().setCancellationFee(fee);  
 			}
-
-			// The Java 8 way to get the response value (with lambda expression).
-			result.ifPresent(name -> System.out.println("Your name: " + name));
 			try {
 				((ReservationController) controller).getApp().getMainController().printBill(res, true);
 				((ReservationController) controller).getApp().getRoomController().freeRoom(res.getRoom());

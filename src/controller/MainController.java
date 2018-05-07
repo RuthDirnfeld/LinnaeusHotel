@@ -36,7 +36,7 @@ public class MainController extends Controller {
 	private Parent checkInParent;
 	private Parent checkOutParent;
 	
-	public int cancellationFee = (int) 0.15;
+	public double cancellationFee = 0.15;
 	
 	
 	private ArrayList<Reservation> resvList;
@@ -175,9 +175,10 @@ public class MainController extends Controller {
 		writer.println("Bill for " + bill.getGuestName());
 		writer.println("-------------------------------------");
 		if(bill.isCancellation()) {
+			double temp = (double) cancellationFee*100;
 			writer.println("Cancelled Reservation from " + bill.getArrival().toString() + " to " + bill.getDeparture().toString()+ " in room " + res.getRoom());
 			writer.println("Room Price : " + bill.getRoomPrice());
-			writer.println("Cancellation fee ( "+cancellationFee*100+ " of total room reservation price) : " + bill.calculateBill(cancellationFee));
+			writer.println("Cancellation fee ( "+temp+ "% of total room reservation price) : " + bill.calculateBill(cancellationFee));
 			writer.println("Total : " + bill.calculateBill(cancellationFee) + "SEK");
 		}else{
 			writer.println("Stay from " + bill.getArrival().toString() + " to " + bill.getDeparture().toString() + " in room " + res.getRoom());
@@ -187,8 +188,9 @@ public class MainController extends Controller {
 		writer.close();
 	}
 
-	public void setCancellationFee(int i) {
-		cancellationFee = i; 
+	public void setCancellationFee(double i) {
+		System.out.println((double)i/100);
+		 cancellationFee = (double) i/100; 
 	}
 }
 
