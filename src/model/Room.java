@@ -2,16 +2,16 @@ package model;
 
 public class Room {
 
-	public String roomNum;
-	public boolean singleRoom;
-	public boolean doubleRoom;
-	public boolean doubleKingRoom;
-	public boolean apartment;
-	public boolean largeRooms;
-	public boolean view;
-	public boolean smokerRoom;
-	public RoomState roomState; 
-	public String price;
+	private String roomNum;
+	private boolean singleRoom;
+	private boolean doubleRoom;
+	private boolean doubleKingRoom;
+	private boolean apartment;
+	private boolean largeRooms;
+	private boolean view;
+	private boolean smokerRoom;
+	private RoomState roomState; 
+	private String price;
 
 	public Room(String roomNum, boolean singleRoom, boolean doubleRoom, boolean doubleKingRoom, boolean apartment,
 			boolean largeRooms, boolean view, boolean smokerRoom, String price, RoomState roomState) {

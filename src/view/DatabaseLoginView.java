@@ -26,6 +26,7 @@ public class DatabaseLoginView extends View {
     
     @FXML
 	public void initialize() throws InstantiationException, IllegalAccessException {
+    	// Prevents anything but numbers typed in port field of the window
 		portText.addEventFilter(KeyEvent.KEY_TYPED, new EventHandler<KeyEvent>() {
 			  @Override 
 			  public void handle(KeyEvent keyEvent) {
@@ -34,6 +35,7 @@ public class DatabaseLoginView extends View {
 			    }
 			  }
 		});
+		// Prevents anything but numbers and a dot typed in IP field
 		ipText.addEventFilter(KeyEvent.KEY_TYPED, new EventHandler<KeyEvent>() {
 			  @Override 
 			  public void handle(KeyEvent keyEvent) {
@@ -47,26 +49,32 @@ public class DatabaseLoginView extends View {
 
     @FXML
     public void buttonClick() throws Exception {
+    	//User provided no input in IP or port fields
     	if (getAddress().isEmpty() || getPort().isEmpty()) {
     		showAlert("Address or port fields are empty!");
     	}
     	else {
+    		// User provided input for IP, but haven't selected a city
     		if (((NetworkController) controller).setDatabaseAddress(getAddress(), getPort())) {
 	    		if (cities.getSelectionModel().getSelectedItem() == null) {
 	    			showAlert("Make sure you have selected a city!");
 	    		}
+	    		// User chose VAXJO as their city, set that in options
 	    		else if (cities.getSelectionModel().getSelectedItem().toLowerCase().equals(City.VAXJO.name().toLowerCase())) {
 	    			((NetworkController) controller).getApp().getOptions().setCurrentCity(City.VAXJO);
 	        		stage.close();
 	        		((NetworkController) controller).getApp().getMainController().getMainView().show();
 	    		}
+	    		// User chose KALMAR as their city, set that in options
 	    		else {
 	    			((NetworkController) controller).getApp().getOptions().setCurrentCity(City.KALMAR);
 	        		stage.close();
 	        		((NetworkController) controller).getApp().getMainController().getMainView().show();
 	    		}
+	    		// All went good, write everything to config file
 	    		((NetworkController) controller).getApp().getConfig().writeToFile();
     		}
+    		// An issue occured setting database address. Wrong address or connection issues
     		else {
     			showAlert("There has been an issue connecting to the database!");
     		}

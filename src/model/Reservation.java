@@ -3,12 +3,13 @@ package model;
 import java.time.LocalDate;
 
 public class Reservation {
-	public String guestName;
-	public String room;
-	public LocalDate startDate;
-	public LocalDate endDate;
-	public String price;
-	public Boolean checkedIn; 
+	
+	private String guestName;
+	private String room;
+	private LocalDate startDate;
+	private LocalDate endDate;
+	private String price;
+	private Boolean checkedIn; 
 	
 	public Reservation(String guestName, String room, LocalDate startDate, LocalDate endDate, String price) {
 		this.guestName = guestName;

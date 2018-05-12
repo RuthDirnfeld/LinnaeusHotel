@@ -30,6 +30,12 @@ public class AppController {
 		
 		netController.setDatabase(database);
 		guestController.setDatabase(database);
+		mainController.setDatabase(database);
+		optionsController.setDatabase(database);
+		resController.setDatabase(database);
+		roomController.setDatabase(database);
+		
+		
 		if (!isDatabaseInit()) {
 			return netController.getDbView();
 		}
@@ -44,14 +50,6 @@ public class AppController {
 			}
 		}
 		return mainController.getMainView();
-	}
-	
-	// False, init databaseview, true, init main view
-	public boolean isDatabaseInit() {
-		if (options.getDbAddress().isEmpty()) {
-			return false;
-		}
-		return true;
 	}
 	
 	public void setDatabaseAddress(String ip, String port) {
@@ -96,5 +94,14 @@ public class AppController {
 	
 	public Options getOptions() {
 		return options;
+	}
+	
+	
+	// False, init databaseview, true, init main view
+	private boolean isDatabaseInit() {
+		if (options.getDbAddress().isEmpty()) {
+			return false;
+		}
+		return true;
 	}
 }

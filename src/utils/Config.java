@@ -18,10 +18,11 @@ public class Config {
 	public Config (String filePath, Options options) {
 		this.filePath = filePath;
 		this.options = options;
+		// If config file doesn't exist yet, create it
 		if (!isCreated()) {
 			initializeConfig();
 		}
-		// File exists, get what's written
+		// File exists, get what's written into the system
 		else {
 			try {
 				getFromFile();
@@ -56,8 +57,14 @@ public class Config {
 		
 	}
 	
+	/**
+	 * Get information from config file and save it in options object
+	 * @throws JSONException
+	 * @throws FileNotFoundException
+	 */
 	public void getFromFile() throws JSONException, FileNotFoundException {
 		options.setDbAddress(getDbIp());
+		// Set city depending on what city is selected in the file
 		if (getCity().toLowerCase().equals(model.Options.City.VAXJO.toString().toLowerCase())) {
 			options.setCurrentCity(model.Options.City.VAXJO);
 		}else if (getCity().isEmpty()){
@@ -69,6 +76,9 @@ public class Config {
 		
 	}
 	
+	/**
+	 * Get information from options object and write it to config file
+	 */
 	public void writeToFile() {
 		JSONObject file = new JSONObject();
 		file.put("city", options.getCurrentCity().name());
@@ -81,6 +91,7 @@ public class Config {
 			e.printStackTrace();
 		}
 	}
+	
 	
 	private String getCity() throws JSONException, FileNotFoundException {
 		String city = "";

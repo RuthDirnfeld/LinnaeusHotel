@@ -11,8 +11,8 @@ import com.google.gson.Gson;
 import com.mongodb.BasicDBObject;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientOptions;
+import com.mongodb.MongoClientURI;
 import com.mongodb.MongoTimeoutException;
-import com.mongodb.ServerAddress;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
@@ -23,16 +23,16 @@ import model.Reservation;
 
 public class Database {
 	
-	private String dbAddress = "178.62.236.241";
-	private int dbPort = 27017;
+	private String dbAddress = "";
+	private int dbPort = 0;
 	private MongoClient client;
 	private MongoDatabase database;
 	private MongoCollection<BasicDBObject> guests;
 	private MongoCollection<BasicDBObject> rooms;
 	private MongoCollection<BasicDBObject> reservations;
 	private MongoClientOptions.Builder optionsBuilder = MongoClientOptions.builder();
-	private MongoClientOptions options;
 	private Logger logger;
+	private MongoClientURI uri;
 	
 	public Database(String address, int port) {
 		this.dbAddress = address;
@@ -49,7 +49,11 @@ public class Database {
 	}
 
 	public boolean updateConnection() {
-		client = new MongoClient(new ServerAddress(dbAddress, dbPort), options);
+		String uriString = "mongodb://";
+		uriString = uriString + "admin"+":"+"group8" 
+				+"@"+dbAddress+":"+dbPort;
+		uri = new MongoClientURI(uriString, optionsBuilder);
+		client = new MongoClient(uri);
 		setUpLogger();
 		try {
 			client.getAddress();
@@ -263,8 +267,7 @@ public class Database {
 	
 	private void setUpOptions(){
 		// Makes sure it times out after 4 seconds of trying to connect to the server
-			optionsBuilder.serverSelectionTimeout(4000);
-			options = optionsBuilder.build();
+		optionsBuilder.serverSelectionTimeout(4000);
 	}
 	
 	private void setUpLogger() {

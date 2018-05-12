@@ -75,11 +75,4 @@ public class Guest {
 	public void setFavRoom(String favRoom) {
 		this.favRoom = favRoom;
 	}
-
-	@Override
-	public String toString() {
-		return "Guest [name=" + name + ", address=" + address + ", phoneNum=" + phoneNum + ", creditNumber="
-				+ creditNumber + ", passportNumber=" + passportNumber + ", smoker=" + smoker + ", favRoom=" + favRoom
-				+ "]";
-	}
 }

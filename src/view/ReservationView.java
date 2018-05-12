@@ -28,41 +28,24 @@ import model.Reservation;
 
 public class ReservationView extends View {
 
-	@FXML
-	private DatePicker arrivalDate;
-	@FXML
-	private DatePicker departureDate;
-	@FXML
-	private TextField chosenGuest;
-	@FXML
-	private TextField calcRoom;
-	@FXML
-	private TextField calcPrice;
-	@FXML
-	private Button chooseGuestBtn;
-	@FXML
-	private Button clearFieldsBtn;
-	@FXML
-	private Button OkBtn;
-	@FXML
-	private Button cancelBtn;
-	@FXML
-	private Button roomsBtn;
-	@FXML
-	private TableView<Reservation> resTable;
-	@FXML
-	private TableColumn<Reservation, String> nameColumn;
-	@FXML
-	private TableColumn<Reservation, String> roomColumn;
-	@FXML
-	private TableColumn<Reservation, String> checkInColumn;
-	@FXML
-	private TableColumn<Reservation, String> checkOutColumn;
-	@FXML
-	private TableColumn<Reservation, String> priceColumn;
+	@FXML private DatePicker arrivalDate;
+	@FXML private DatePicker departureDate;
+	@FXML private TextField chosenGuest;
+	@FXML private TextField calcRoom;
+	@FXML private TextField calcPrice;
+	@FXML private Button chooseGuestBtn;
+	@FXML private Button clearFieldsBtn;
+	@FXML private Button OkBtn;
+	@FXML private Button cancelBtn;
+	@FXML private Button roomsBtn;
+	@FXML private TableView<Reservation> resTable;
+	@FXML private TableColumn<Reservation, String> nameColumn;
+	@FXML private TableColumn<Reservation, String> roomColumn;
+	@FXML private TableColumn<Reservation, String> checkInColumn;
+	@FXML private TableColumn<Reservation, String> checkOutColumn;
+	@FXML private TableColumn<Reservation, String> priceColumn;
 
-	public ArrayList<Reservation> resv;
-	GuestListView guestListView;
+	private ArrayList<Reservation> resv;
 
 	@Override
 	public Stage display() throws Exception {
@@ -74,17 +57,25 @@ public class ReservationView extends View {
 		return stage;
 	}
 
+	/**
+	 * Initializes date pickers
+	 * and reservation table
+	 */
 	public void initialize() {
 		onArrivalClick();
 		onDepartureClick();
 		setTable();
-		
 	}
 	
 	
-	// DatePicker choice validation
+	/**
+	 * Handles date picker and choice validation,
+	 * meaning that arrival cannot be after departure.
+	 */
 	public void onArrivalClick() {
+		// Conversts data to proper european format and to string
 		dateConverter();
+		
 		final Callback<DatePicker, DateCell> sdayCellFactory = new Callback<DatePicker, DateCell>() {
 			@Override
 			public DateCell call(final DatePicker datePicker) {
@@ -92,20 +83,27 @@ public class ReservationView extends View {
 					@Override
 					public void updateItem(LocalDate item, boolean empty) {
 						super.updateItem(item, empty);
-						
+						// If room is selected
 						if(!calcRoom.getText().isEmpty()) {
+							// Checks if there are any reservations in the list
 							if(!resv.isEmpty()) {
-								for(int i = 0; i<resv.size(); i++) {
-								if(resv.get(i).getRoom().equals(calcRoom.getText())) {
-									if(item.isBefore(resv.get(i).getEndDate())&&item.isAfter(resv.get(i).getStartDate())||item.equals(resv.get(i).getStartDate())){
-										setDisable(true);
-										setStyle("-fx-background-color:lightcoral");
+								for(int i = 0; i < resv.size(); i++) {
+									// Loop checks if input room is in the reservation list
+									// and if it is, then it checks if arrival date is selected after
+									// reservation date. If it is, it allows to select that date,
+									// otherwise date is disabled and marked with color
+									if(resv.get(i).getRoom().equals(calcRoom.getText())) {
+										if(item.isBefore(resv.get(i).getEndDate())&&item.isAfter(resv.get(i).getStartDate())||item.equals(resv.get(i).getStartDate())){
+											setDisable(true);
+											setStyle("-fx-background-color:lightcoral");
+										}
 									}
-								}
 								}
 							}
 						}
 
+						// If departure value was selected before. check that arrival
+						// is not after departure
 						if (departureDate.getValue() != null && item.isAfter(departureDate.getValue())) {
 							setDisable(true);
 							setStyle("-fx-background-color: #a6a6a6");
@@ -116,15 +114,16 @@ public class ReservationView extends View {
 		};
 		arrivalDate.setDayCellFactory(sdayCellFactory);
 	}
-	
-	public void enableDeparture() {
-		System.out.println("Test");
-		departureDate.setDisable(false);
-	}
 
-	// DatePicker choice validation
+	/**
+	 * Handles date picker and choice validation,
+	 * meaning that departure cannot be before arrival.
+	 */
 	public void onDepartureClick() {
+		// Conversts data to proper european format and to string
 		dateConverter();
+		// If arrival date is set already, disable dates that 
+		// would be before arrival date
 		if(arrivalDate.getValue() != null){
 			departureDate.setDisable(false);
 		}
@@ -135,20 +134,26 @@ public class ReservationView extends View {
 					@Override
 					public void updateItem(LocalDate item, boolean empty) {
 						super.updateItem(item, empty);
-						
+						// If room is chosen
 						if(!calcRoom.getText().isEmpty()) {
+							// Checks if there are any reservations in the list
 							if(!resv.isEmpty()) {
 								for(int i = 0; i<resv.size(); i++) {
-								if(resv.get(i).getRoom().equals(calcRoom.getText())) {
-									if((item.isBefore(resv.get(i).getEndDate())&&item.isAfter(resv.get(i).getStartDate()))||(item.isAfter(resv.get(i).getEndDate())&& arrivalDate.getValue().isBefore(resv.get(i).getStartDate())||item.equals(resv.get(i).getEndDate()))){
-										setDisable(true);
-										setStyle("-fx-background-color:lightcoral");
+								// Loop checks if input room is in the reservation list
+								// and if it is, then it checks if departure date is selected after
+								// reservation date. If it is, it allows to select that date,
+								// otherwise date is disabled and marked with color
+									if(resv.get(i).getRoom().equals(calcRoom.getText())) {
+										if((item.isBefore(resv.get(i).getEndDate())&&item.isAfter(resv.get(i).getStartDate()))||(item.isAfter(resv.get(i).getEndDate())&& arrivalDate.getValue().isBefore(resv.get(i).getStartDate())||item.equals(resv.get(i).getEndDate()))){
+											setDisable(true);
+											setStyle("-fx-background-color:lightcoral");
+										}
 									}
-								}
 								}
 							}
 						}
 
+						// If arrival value is set, disables not allowed dates
 						if (arrivalDate.getValue() != null && item.isBefore(arrivalDate.getValue())) {
 							setDisable(true);
 							setStyle("-fx-background-color: #a6a6a6");
@@ -160,8 +165,11 @@ public class ReservationView extends View {
 		departureDate.setDayCellFactory(edayCellFactory);
 	}
 
-	// Set Cell Values of the TableView
+	/**
+	 * Sets cell values for tableView
+	 */
 	public void setTable() {
+		// If resvation array was set before, continue
 		if (resv != null) {
 			ObservableList<Reservation> resvList = FXCollections.observableList(resv);
 			resTable.setItems(resvList);
@@ -173,7 +181,9 @@ public class ReservationView extends View {
 		}
 	}
 
-	// Opens a List of all Guests
+	/**
+	 * Opens a list of guests
+	 */
 	public void chooseGuestClick() {
 		try {
 			((ReservationController) controller).getApp().getGuestController().getGuestListView().showAndWait();
@@ -182,21 +192,26 @@ public class ReservationView extends View {
 		}
 	}
 
+	/**
+	 * Opens a list of rooms
+	 */
 	public void onRoomsBtnClick() {
 		try {
 			((ReservationController) controller).getApp().getRoomController().getRoomView().show();
-			((ReservationController) controller).getApp().getRoomController().updateRoomList(false);
+			((ReservationController) controller).getApp().getRoomController().updateRoomList();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
-	// Clears all Fields
 	public void clearFieldsClick() {
 		clearAll();
 	}
 
-	// Adds the new Reservation to TableView
+	/**
+	 * Adds new reservation to the reservation list and 
+	 * adds it to the database
+	 */
 	public void OkBtnClick() {
 		if (inputCheck()) {
 			((ReservationController) controller).createReservation(chosenGuest.getText(), calcRoom.getText(),
@@ -207,19 +222,30 @@ public class ReservationView extends View {
 		}
 	}
 
+	/**
+	 * Allows to cancel reservation if a reservation
+	 * is selected from reservation list
+	 */
 	public void onCancelBtnClick() {
 		if (resTable.getSelectionModel().getSelectedItem() != null) {
 			Reservation res = resTable.getSelectionModel().getSelectedItem();
+			
+			// Prints text for user to let them know
+			// that they can change cancellation fee
 			TextInputDialog dialog = new TextInputDialog("15");
 			dialog.setTitle("Cancellation fee");
 			dialog.setHeaderText("Select a cancellation fee");
 			dialog.setContentText("Please enter cancellation fee (%):");
 
 			Optional<String> result = dialog.showAndWait();
+			
+			// If user has input the percentage of the fee
 			if (result.isPresent()){
 				int fee = Integer.parseInt(result.get());
 				((ReservationController) controller).getApp().getMainController().setCancellationFee(fee);  
 			}
+			// Prints bill, deletes reservation that is cancelled, sets new availability for the room
+			// and updates reservation list
 			try {
 				((ReservationController) controller).getApp().getMainController().printBill(res, true);
 				((ReservationController) controller).deleteReservation(res);
@@ -237,11 +263,7 @@ public class ReservationView extends View {
 		this.resv = list;
 	}
 
-	public void getReservationList() {
-		((ReservationController) controller).updateReservationList();
-	}
-
-	public void clearAll() {
+	private void clearAll() {
 		arrivalDate.setValue(null);
 		departureDate.setDisable(true);
 		departureDate.setValue(null);
@@ -297,14 +319,14 @@ public class ReservationView extends View {
 	}
 	
 	public void setSelectedRoom(String roomNum) {
-	calcRoom.setText(roomNum);
+		calcRoom.setText(roomNum);
 	}
 	
 	public void setSelectedPrice(String price) {
-		    calcPrice.setText(price);
+		calcPrice.setText(price);
 	}
 
-	public boolean inputCheck() {
+	private boolean inputCheck() {
 		if (calcRoom.getText().isEmpty()) {
 			showError("No room selected", "Please select a room");
 			return false;
@@ -328,7 +350,7 @@ public class ReservationView extends View {
 		return true;
 	}
 
-	public static void showError(String title, String message) {
+	private static void showError(String title, String message) {
 		Alert alert = new Alert(Alert.AlertType.ERROR);
 		alert.initStyle(StageStyle.UTILITY);
 		alert.setTitle("Error");

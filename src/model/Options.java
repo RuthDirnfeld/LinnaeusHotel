@@ -5,8 +5,8 @@ public class Options {
 		VAXJO, KALMAR
 	}
 
-	public String dbAddress;
-	public City currentCity;
+	private String dbAddress;
+	private City currentCity;
 
 	public Options(String dbAddress, City currentCity) {
 		this.dbAddress = dbAddress;

@@ -13,7 +13,6 @@ import javafx.stage.Stage;
 
 import model.Bill;
 import model.Reservation;
-import model.Room;
 import model.RoomState;
 import view.CheckInView;
 import view.CheckOutView;
@@ -21,29 +20,28 @@ import view.MainView;
 
 public class MainController extends Controller {
 	
-	//FXML loaders
+	//FXML controllers
 	private FXMLLoader fxmlcheckIn = new FXMLLoader((getClass().getResource("../view/CheckInView.fxml")));
 	private FXMLLoader fxmlcheckOut = new FXMLLoader((getClass().getResource("../view/CheckOutView.fxml")));
 	private FXMLLoader fxmlMain = new FXMLLoader((getClass().getResource("../view/MainView.fxml")));
 	
-	// Views
+	// Views MainController is responsible for
 	private CheckInView checkIn;
 	private MainView mainView;
 	private CheckOutView checkOut;
 	
-	//Parents
+	// Parent objects to use when initializing each view's scenes
 	private Parent mainParent;
 	private Parent checkInParent;
 	private Parent checkOutParent;
 	
+	// Variables for this class only
 	public double cancellationFee = 0.15;
-	
-	
 	private ArrayList<Reservation> resvList;
 
 	public MainController() {
 		
-		//Load loaders
+		// Setting parents as fxml files
 		try {
 			checkInParent = fxmlcheckIn.load();
 			checkOutParent = fxmlcheckOut.load();
@@ -52,22 +50,23 @@ public class MainController extends Controller {
 			e.printStackTrace();
 		}
 		
-		// Init views
+		// Connect fxml files with view classes
 		checkIn = fxmlcheckIn.getController();
 		mainView = fxmlMain.getController();
 		checkOut = fxmlcheckOut.getController();
 		
-		// Set controllers
+		// Setting this class to be a controller of each view this
+		// controller is responsible for
 		mainView.setController(this);
 		checkIn.setController(this);
 		checkOut.setController(this);
 		
-		// Set parents
+		// Setting parent/root objects for each view
 		mainView.setParent(mainParent);
 		checkIn.setParent(checkInParent);
 		checkOut.setParent(checkOutParent);
 		
-		//Set stages
+		// Setting names of stages for each view class
 		mainView.setStage("Linnaeus Hotel");
 		checkIn.setStage("Check In");
 		checkOut.setStage("Check Out");
@@ -82,36 +81,8 @@ public class MainController extends Controller {
 		return app.getNetController().getDbView();
 	}
 	
-	public ArrayList<Reservation> checkedOutRes(ArrayList<Reservation> resvList) {
-		ArrayList<Reservation> temp = new ArrayList<Reservation>(); 
-		if(!resvList.isEmpty())
-		for(int i = 0; i < resvList.size(); i++){
-			if(resvList.get(i).getCheckedIn() == false && resvList.get(i).getStartDate().equals(LocalDate.now())) {
-				temp.add(resvList.get(i));
-			}
-		}
-		return temp;
-	}
-	
-	public void refreshCheckInView(){
-		resvList = app.getDatabase().findReservations();
-		resvList = checkedOutRes(resvList);
-		checkIn.setTable(resvList);
-		checkIn.initialize();
-	}
-	
-	public void refreshCheckInView(String s){
-		resvList = app.getDatabase().findReservationByName(s);
-		resvList = checkedOutRes(resvList);
-		checkIn.setTable(resvList);
-		checkIn.initialize();
-	}
-	
 	public Stage getCheckInView() throws Exception {
-		resvList = app.getDatabase().findReservations();
-		resvList = checkedOutRes(resvList);
-		checkIn.setTable(resvList);
-		checkIn.initialize();
+		refreshCheckInView();
 		return checkIn.display();
 	}
 	
@@ -119,27 +90,44 @@ public class MainController extends Controller {
 		return checkOut.display();
 	}
 	
-	//TODO
+	/**
+	 * Updates reservation list in case a guest has checked in
+	 */
+	public void refreshCheckInView(){
+		resvList = app.getDatabase().findReservations();
+		resvList = checkedOutRes(resvList);
+		checkIn.setTable(resvList);
+		checkIn.initialize();
+	}
+	
+	/**
+	 * Updates reservation list in case a gust has checked in 
+	 * searching by guests' name
+	 * @param s
+	 */
+	public void refreshCheckInView(String s){
+		resvList = app.getDatabase().findReservationByName(s);
+		resvList = checkedOutRes(resvList);
+		checkIn.setTable(resvList);
+		checkIn.initialize();
+	}
+	
+	/**
+	 * Checks out a guest and removes reservation from the database
+	 * @param res
+	 * @return
+	 */
 	public boolean checkOut(Reservation res) {
-		// Find reserved room for price
-//		ArrayList<Room> rooms = app.getDatabase().findRooms();
-//		Room room = null;
-//		if (!rooms.isEmpty()) {
-//			for (int i =0; i < rooms.size(); i++) {
-//				if (rooms.get(i).getRoomNum().equals(res.getRoom())) {
-//					room = rooms.get(i);
-//					break;
-//				}
-//			}
-//		}
-		// print bill
 		try {
+			// Prints bill first, then deletes reservation
 			printBill(res,false);
-			app.getDatabase().deleteReservation(res);
-			if(app.getDatabase().findReservationByRoom(res.getRoom()).isEmpty()) {
-			app.getDatabase().updateRoomState(res.getRoom(), RoomState.free);
+			database.deleteReservation(res);
+			// Updates room state. Room can be reserved by another person
+			// for another date.
+			if(database.findReservationByRoom(res.getRoom()).isEmpty()) {
+				database.updateRoomState(res.getRoom(), RoomState.free);
 			}else{
-			app.getDatabase().updateRoomState(res.getRoom(), RoomState.reserved);	
+				database.updateRoomState(res.getRoom(), RoomState.reserved);	
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -148,28 +136,31 @@ public class MainController extends Controller {
 		return true;
 	}
 	
+	/**
+	 * Returns reservations that are currently checked in
+	 * @return
+	 */
 	public ArrayList<Reservation> getCheckedInReservations() {
-		return app.getDatabase().findCheckedInReservations();
+		return database.findCheckedInReservations();
 	}
 
+	/**
+	 *  Performs check in by updating room state and updating database
+	 */
 	public void checkIn(Reservation res) {
-		ArrayList<Room> rooms = app.getDatabase().findRooms();
-		Room room = null;
-		if (!rooms.isEmpty()) {
-			for (int i =0; i < rooms.size(); i++) {
-				if (rooms.get(i).getRoomNum().equals(res.getRoom())) {
-					room = rooms.get(i);
-					break;
-				}
-			}
-		}
 		res.setCheckedIn(true);
-		app.getDatabase().updateRoomState(res.getRoom(), RoomState.allocated);
-		app.getDatabase().updateReservationState(res);
+		database.updateRoomState(res.getRoom(), RoomState.allocated);
+		database.updateReservationState(res);
 	}
 	
 	
-	
+	/**
+	 * Creates a bill information about guest's stay that is written into a file as a bill
+	 * @param res
+	 * @param cancellation if reservation is cancelled, set to true
+	 * @throws FileNotFoundException
+	 * @throws UnsupportedEncodingException
+	 */
 	public void printBill(Reservation res, Boolean cancellation) throws FileNotFoundException, UnsupportedEncodingException {
 	    Bill bill =  new Bill(res.getGuestName(), Integer.parseInt(res.getPrice()), res.getStartDate(), res.getEndDate(),cancellation);
 		String fileName = bill.getGuestName() + bill.getArrival().toString() + "-" + bill.getDeparture() + ".txt";
@@ -178,13 +169,16 @@ public class MainController extends Controller {
 		
 		writer.println("Bill for " + bill.getGuestName());
 		writer.println("-------------------------------------");
+		// If bill is printed for cancelled reservation
 		if(bill.isCancellation()) {
 			double temp = (double) cancellationFee*100;
 			writer.println("Cancelled Reservation from " + bill.getArrival().toString() + " to " + bill.getDeparture().toString()+ " in room " + res.getRoom());
 			writer.println("Room Price : " + bill.getRoomPrice());
 			writer.println("Cancellation fee ( "+temp+ "% of total room reservation price) : " + bill.calculateBill(cancellationFee));
 			writer.println("Total : " + bill.calculateBill(cancellationFee) + "SEK");
-		}else{
+		}
+		// If bill is printed after check out
+		else{
 			writer.println("Stay from " + bill.getArrival().toString() + " to " + bill.getDeparture().toString() + " in room " + res.getRoom());
 			writer.println("Room price : " + bill.getRoomPrice() + " SEK (per night)"); 
 			writer.println("Total Price : " + bill.calculateBill() + "SEK"); 
@@ -192,9 +186,29 @@ public class MainController extends Controller {
 		writer.close();
 	}
 
+	/**
+	 * Simply sets cancellation fee.
+	 * @param i
+	 */
 	public void setCancellationFee(double i) {
-		System.out.println((double)i/100);
 		 cancellationFee = (double) i/100; 
+	}
+	
+	/**
+	 * Generates array of guests that are not checked in and the room
+	 * they reserved is for this day
+	 * @param resvList
+	 * @return
+	 */
+	private ArrayList<Reservation> checkedOutRes(ArrayList<Reservation> resvList) {
+		ArrayList<Reservation> temp = new ArrayList<Reservation>(); 
+		if(!resvList.isEmpty())
+			for(int i = 0; i < resvList.size(); i++){
+				if(resvList.get(i).getCheckedIn() == false && resvList.get(i).getStartDate().equals(LocalDate.now())) {
+					temp.add(resvList.get(i));
+			}
+		}
+		return temp;
 	}
 }
 

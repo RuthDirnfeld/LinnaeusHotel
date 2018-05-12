@@ -12,24 +12,15 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 public class GuestView extends View {
-	@FXML
-	private TextField fullName;
-	@FXML
-	private TextField address;
-	@FXML
-	private TextField phoneNumber;
-	@FXML
-	private TextField passportNumber;
-	@FXML
-	private TextField creditCardNum;
-	@FXML
-	private CheckBox smoker;
-	@FXML
-	private TextField favRoom;
-	@FXML
-	private Button cancelButton;
-	@FXML
-	private Button submitButton;
+	@FXML private TextField fullName;
+	@FXML private TextField address;
+	@FXML private TextField phoneNumber;
+	@FXML private TextField passportNumber;
+	@FXML private TextField creditCardNum;
+	@FXML private CheckBox smoker;
+	@FXML private TextField favRoom;
+	@FXML private Button cancelButton;
+	@FXML private Button submitButton;
 
 
 	@Override
@@ -39,6 +30,7 @@ public class GuestView extends View {
 
 	@FXML
 	public void initialize() {
+		// Allows only digits to be input
 		phoneNumber.addEventFilter(KeyEvent.KEY_TYPED, new EventHandler<KeyEvent>() {
 			@Override
 			public void handle(KeyEvent keyEvent) {
@@ -47,6 +39,7 @@ public class GuestView extends View {
 				}
 			}
 		});
+		// Allows only digits to be input
 		creditCardNum.addEventFilter(KeyEvent.KEY_TYPED, new EventHandler<KeyEvent>() {
 			@Override
 			public void handle(KeyEvent keyEvent) {
@@ -58,23 +51,32 @@ public class GuestView extends View {
 
 	}
 
-	
+	@FXML
+	/**
+	 * When "confirm" button is clicked, passes information 
+	 * to GuestController and new guest is created.
+	 */
 	public void onClickConfirm(){
 		if(inputCheck()) {
 			((GuestController) controller).createGuest(fullName.getText(), address.getText(), phoneNumber.getText(), creditCardNum.getText(),
 					passportNumber.getText(), smoker.isSelected(), favRoom.getText());
+			((GuestController) controller).refreshGuestList();
+			clearAll();
+			stage.close();
 		}
-		((GuestController) controller).updateGuestList();
-		clearAll();
-		stage.close();
 	}
 
+	@FXML
 	public void onClickCancel() {
 		clearAll();
 		stage.close();
 	}
 
-	public boolean inputCheck() {
+	/**
+	 * Helper method to check whether input information is correct
+	 * @return
+	 */
+	private boolean inputCheck() {
 		if (fullName.getText().length() < 3) {
 			showError("Name is too short !", "Please enter a name that is longer than 3 characters");
 			return false;
@@ -94,7 +96,12 @@ public class GuestView extends View {
 		return true;
 	}
 
-	public static void showError(String title, String message) {
+	/**
+	 * Helped method to display an error
+	 * @param title
+	 * @param message
+	 */
+	private static void showError(String title, String message) {
 		Alert alert = new Alert(Alert.AlertType.ERROR);
 		alert.initStyle(StageStyle.UTILITY);
 		alert.setTitle("Error");
@@ -104,14 +111,17 @@ public class GuestView extends View {
 		alert.showAndWait();
 	}
 	
-	public void clearAll(){
-    fullName.clear();
-    address.clear();
-	phoneNumber.clear();
-	passportNumber.clear();
-    creditCardNum.clear();
-    favRoom.clear();
-	smoker.setSelected(false);
+	/**
+	 * Clears all the text fields
+	 */
+	private void clearAll(){
+	    fullName.clear();
+	    address.clear();
+		phoneNumber.clear();
+		passportNumber.clear();
+	    creditCardNum.clear();
+	    favRoom.clear();
+		smoker.setSelected(false);
 	}
 
 }

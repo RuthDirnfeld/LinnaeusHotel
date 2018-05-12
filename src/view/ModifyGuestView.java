@@ -17,24 +17,15 @@ import model.Guest;
 import model.Room;
 
 public class ModifyGuestView extends View {
-	@FXML
-	private TextField fullName;
-	@FXML
-	private TextField address;
-	@FXML
-	private TextField phoneNumber;
-	@FXML
-	private TextField passportNumber;
-	@FXML
-	private TextField creditCardNum;
-	@FXML
-	private CheckBox smoker;
-	@FXML
-	private ChoiceBox<String> favRoom;
-	@FXML
-	private Button cancelButton;
-	@FXML
-	private Button submitButton;
+	@FXML private TextField fullName;
+	@FXML private TextField address;
+	@FXML private TextField phoneNumber;
+	@FXML private TextField passportNumber;
+	@FXML private TextField creditCardNum;
+	@FXML private CheckBox smoker;
+	@FXML private ChoiceBox<String> favRoom;
+	@FXML private Button cancelButton;
+	@FXML private Button submitButton;
 	
 	private ObservableList<String> rooms = FXCollections.observableArrayList();
 	
@@ -43,38 +34,52 @@ public class ModifyGuestView extends View {
 		return stage;
 	}
 
+	/**
+	 * Method used to load information about the guest 
+	 * that will be modified
+	 * @param guest
+	 */
 	public void setUpGuest (Guest guest) {
+		rooms.clear();
+		// Load rooms
 		ArrayList<Room> foundRooms = ((GuestController) controller).getAllRooms();
 		for (Room r : foundRooms) {
 			rooms.add(r.getRoomNum());
 		}
+		// Load information about the guest
 		fullName.setText(guest.getName());
 		address.setText(guest.getAddress());
 		phoneNumber.setText(guest.getPhoneNum());
 		creditCardNum.setText(guest.getCreditNumber());
+		// If smoker, put a check mark
 		if (guest.isSmoker()) {
 			smoker.setSelected(true);
 		}
 		favRoom.setItems(rooms);
 	}
 	
+	/**
+	 * If input is correct, it updates information about the guest
+	 */
 	public void onClickConfirm(){
 		if(inputCheck()) {
 			((GuestController) controller).modifyGuest(fullName.getText(), address.getText(), phoneNumber.getText(), creditCardNum.getText(),
 					passportNumber.getText(), smoker.isSelected(), (String) favRoom.getSelectionModel().getSelectedItem());
+			((GuestController) controller).refreshGuestList();
+			clearAll();
+			stage.close();
 		}
-		((GuestController) controller).refreshGuestList();
-		clearAll();
-		stage.close();
-		
 	}
 
 	public void onClickCancel() {
-		clearAll();
 		stage.close();
 	}
 
-	public boolean inputCheck() {
+	/**
+	 * Helper method to check input
+	 * @return
+	 */
+	private boolean inputCheck() {
 		if (fullName.getText().length() < 3) {
 			showError("Name is too short !", "Please enter a name that is longer than 3 characters");
 			return false;
@@ -94,7 +99,12 @@ public class ModifyGuestView extends View {
 		return true;
 	}
 
-	public static void showError(String title, String message) {
+	/**
+	 * Helper method to show an error/information message
+	 * @param title
+	 * @param message
+	 */
+	private static void showError(String title, String message) {
 		Alert alert = new Alert(Alert.AlertType.ERROR);
 		alert.initStyle(StageStyle.UTILITY);
 		alert.setTitle("Error");
@@ -104,13 +114,16 @@ public class ModifyGuestView extends View {
 		alert.showAndWait();
 	}
 	
-	public void clearAll(){
+	/**
+	 * Clears all the text field
+	 */
+	private void clearAll(){
 	    fullName.clear();
 	    address.clear();
 		phoneNumber.clear();
 		passportNumber.clear();
 	    creditCardNum.clear();
-	    favRoom.getSelectionModel().clearSelection();
+	    favRoom = new ChoiceBox<String>();
 		smoker.setSelected(false);
 	}
 }

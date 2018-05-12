@@ -18,37 +18,22 @@ import model.Guest;
 import model.Room;
 
 public class GuestListView extends View {
-	@FXML
-	private Button searchBtn;
-	@FXML
-	private Button addGuestBtn;
-	@FXML
-	private Button loadBtn;
-	@FXML
-	private Button cancelBtn;
-	@FXML
-	private Button modify;
-	@FXML
-	private TableView<Guest> guestTable;
-	@FXML
-	private TableColumn<Guest, String> name;
-	@FXML
-	private TableColumn<Guest, String> address;
-	@FXML
-	private TableColumn<Guest, String> telephone;
-	@FXML
-	private TableColumn<Guest, String> creditCard;
-	@FXML
-	private TableColumn<Guest, String> passport;
-	@FXML
-	private TableColumn<Guest, Boolean> smoker;
-	@FXML
-	private TableColumn<Guest, String> favRoom;
-	@FXML
-	private TextField searchBox;
+	@FXML private Button searchBtn;
+	@FXML private Button addGuestBtn;
+	@FXML private Button loadBtn;
+	@FXML private Button cancelBtn;
+	@FXML private Button modify;
+	@FXML private TableView<Guest> guestTable;
+	@FXML private TableColumn<Guest, String> name;
+	@FXML private TableColumn<Guest, String> address;
+	@FXML private TableColumn<Guest, String> telephone;
+	@FXML private TableColumn<Guest, String> creditCard;
+	@FXML private TableColumn<Guest, String> passport;
+	@FXML private TableColumn<Guest, Boolean> smoker;
+	@FXML private TableColumn<Guest, String> favRoom;
+	@FXML private TextField searchBox;
 
-	public ArrayList<Guest> guests;
-	ReservationView resView = new ReservationView();
+	private ArrayList<Guest> guests;
 	
 	public Stage display() throws Exception {
 		return stage;
@@ -68,7 +53,10 @@ public class GuestListView extends View {
 	}
 
 	public void setTable() {
+		//If guest list has been initialized before
 		if (guests != null) {
+			// Set the table with the guests and add each of guest's information
+			// in table columns
 			ObservableList<Guest> guestList = FXCollections.observableList(guests);
 			guestTable.setItems(guestList);
 			name.setCellValueFactory(new PropertyValueFactory<Guest, String>("name"));
@@ -81,14 +69,23 @@ public class GuestListView extends View {
 		}
 	}
 
+	@FXML
 	public void searchClick() {
+		// If user is attempting to search a guest, try to retrieve a list
+		// with guests with that name
 		if (searchBox.getText().isEmpty()) {
-			((GuestController) controller).updateGuestList();
+			((GuestController) controller).refreshGuestList();
 		} else {
 			((GuestController) controller).updateGuestList(searchBox.getText());
 		}
 	}
+	
 
+	@FXML
+	/**
+	 * If user clicks "New" button, opens new window to allow user to 
+	 * create a new guest
+	 */
 	public void newClick() {
 		try {
 			((GuestController) controller).getGuestView().show();
@@ -97,10 +94,17 @@ public class GuestListView extends View {
 		}
 	}
 
+	@FXML
+	/**
+	 * This method is used to load information about the guest 
+	 * and their favorite room (and its price) into the reservation
+	 * window for the reservation.
+	 */
 	public void loadClick() {
 		if(guestTable.getSelectionModel().getSelectedItem() != null) {
 			Guest guest = guestTable.getSelectionModel().getSelectedItem();
 			((GuestController) controller).getApp().getResController().setSelectedGuest(guest.getName());
+			// If guest has a favorite room chosen
 			if (guest.getFavRoom() != null || !guest.getFavRoom().isEmpty()) {
 				ArrayList<Room> rooms = ((GuestController) controller).getAllRooms();
 				String price = "";
@@ -111,27 +115,28 @@ public class GuestListView extends View {
 					}
 				}
 			}
-			Stage stage = (Stage) loadBtn.getScene().getWindow();
 			stage.close();
 		}
 	}
 
-	/* Cant fetch the arraylist for some reason */
 	public void setTable(ArrayList<Guest> list) {
 		this.guests = list;
 	}
 
-	public void fetchGuestList() {
-		((GuestController) controller).updateGuestList();
-	}
-
+	@FXML
 	public void cancelClick() {
-		Stage stage = (Stage) cancelBtn.getScene().getWindow();
 		stage.close();
 	}
 	
+	@FXML
+	/**
+	 * Modify allows user to modify guest's favorite room, but
+	 * can be extended to modify entire information about guest
+	 * @throws Exception
+	 */
 	public void onModifyClick() throws Exception {
 		Guest guest = guestTable.getSelectionModel().getSelectedItem();
+		// Gets guest's info before opening window and loads it into text fields
 		((GuestController) controller).getModifyGuestController().setUpGuest(guest);
 		((GuestController) controller).getModifyGuestView().show();
 		modify.setDisable(true);

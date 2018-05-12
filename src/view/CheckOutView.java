@@ -11,7 +11,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
-import javafx.scene.control.ListView;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -23,20 +22,22 @@ public class CheckOutView extends View {
 	
 	@FXML private Button checkOut;
 	@FXML private Button cancel;
-	@SuppressWarnings("rawtypes")
 	@FXML private TableView<Reservation> table;
 	@FXML private TableColumn<Reservation, String> nameColumn;
 	@FXML private TableColumn<Reservation, String> roomColumn;
-	 
 	
-	ObservableList<Reservation> reservationList = FXCollections.observableArrayList(); 
+	private ObservableList<Reservation> reservationList = FXCollections.observableArrayList(); 
 	
-    @SuppressWarnings("unchecked")
+	/**
+	 * Sets up a list of checked in users to be checked out.
+	 */
 	private void setUpList() {
+		// Clears table before setting up new list
     	table.getItems().clear();
 		ArrayList<Reservation> checkedIns = ((MainController) controller).getCheckedInReservations();
 		if (!checkedIns.isEmpty()) {
 			for (Reservation r : checkedIns) {
+				// Loop makes sure that only guests in client's city is shown
 				if (((MainController)controller).getApp().getOptions().getCurrentCity() == City.VAXJO) {
 					if (r.getRoom().contains("V")) {
 						reservationList.add(r);
@@ -57,21 +58,27 @@ public class CheckOutView extends View {
 	@FXML
 	public void onCheckoutClick () throws FileNotFoundException, UnsupportedEncodingException {
 		Reservation reservation = table.getSelectionModel().getSelectedItem();
-		String name = reservation.getGuestName();
-		ArrayList<Reservation> checkedIns = ((MainController) controller).getCheckedInReservations();
-		Reservation res = null;
-		for (Reservation r : checkedIns) {
-			if (r.getGuestName().equals(name)) {
-				res = r;
+		if (reservation != null) {
+			String name = reservation.getGuestName();
+			ArrayList<Reservation> checkedIns = ((MainController) controller).getCheckedInReservations();
+			Reservation res = null;
+			for (Reservation r : checkedIns) {
+				// Finds a reservation in the database to check out
+				if (r.getGuestName().equals(name)) {
+					res = r;
+				}
 			}
-		}
-		if (res != null) {
-			if (((MainController) controller).checkOut(res)) {
-				alertBox("Guest successfully checked out!");
-				stage.close();
-			}
-			else {
-				alertBox("Something went wrong!");
+			// A guest with reservation was found in the database
+			if (res != null) {
+				// Check out method returns true, then all worked well.
+				// If false, possible issues while connecting to database
+				if (((MainController) controller).checkOut(res)) {
+					alertBox("Guest successfully checked out!");
+					stage.close();
+				}
+				else {
+					alertBox("Something went wrong!");
+				}
 			}
 		}
 	}
@@ -86,6 +93,10 @@ public class CheckOutView extends View {
 		return stage;
 	}
 	
+	/**
+	 * Method to show an information box
+	 * @param message
+	 */
 	private void alertBox(String message) {
         Alert alert = new Alert(AlertType.INFORMATION);
         alert.setContentText(message);

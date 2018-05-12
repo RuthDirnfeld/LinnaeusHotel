@@ -9,21 +9,36 @@ import utils.Database;
 import view.DatabaseLoginView;
 
 public class NetworkController extends Controller {
-	
+	//FXML controllers
 	private FXMLLoader fxmlDb = new FXMLLoader((getClass().getResource("../view/DatabaseLoginView.fxml")));
-	private Database db;
+	
+	// Views NetworkController is responsible for
 	private DatabaseLoginView dbLogin;
+	
+	// Parent objects to use when initializing each view's scenes
 	private Parent dbParent;
 	
+	// Variables for this class only
+	private Database db;
+	
 	public NetworkController() {
+		// Setting parents as fxml files
 		try {
 			dbParent = fxmlDb.load();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		dbLogin = fxmlDb.getController();;
+		// Connect fxml files with view classes
+		dbLogin = fxmlDb.getController();
+		
+		// Setting parent/root objects for each view
 		dbLogin.setParent(dbParent);
+		
+		// Setting this class to be a controller of each view this
+		// controller is responsible for
 		dbLogin.setController(this);
+		
+		// Setting names of stages for each view class
 		dbLogin.setStage("Login to Database");
 	}
 	
@@ -83,5 +98,4 @@ public class NetworkController extends Controller {
 	public Database getDatabase(){
 		return db; 
 	}
-
 }

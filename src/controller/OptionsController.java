@@ -9,20 +9,33 @@ import model.Options.City;
 import view.OptionsView;
 
 public class OptionsController extends Controller {
-	
+	//FXML controllers
 	private FXMLLoader fxmlOptions = new FXMLLoader((getClass().getResource("../view/OptionsView.fxml")));
+	
+	// Views OptionsController is responsible for
 	private OptionsView optionsView;
+	
+	// Parent objects to use when initializing each view's scenes
 	private Parent optionsParent;
 	
 	public OptionsController() {
+		// Setting parents as fxml files
 		try {
 			optionsParent = fxmlOptions.load();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		// Connect fxml files with view classes
 		optionsView = fxmlOptions.getController();
+		
+		// Setting parent/root objects for each view
 		optionsView.setParent(optionsParent);
+		
+		// Setting this class to be a controller of each view this
+		// controller is responsible for
 		optionsView.setController(this);
+		
+		// Setting names of stages for each view class
 		optionsView.setStage("Options");
 	}
 	
@@ -30,26 +43,42 @@ public class OptionsController extends Controller {
 		return optionsView.display();
 	}
 	
+	/**
+	 * Updates config file with new IP and city; and the database object
+	 * with new IP, if IP is correct.
+	 * @param city
+	 * @param ip
+	 */
 	public void updateConfigFile(String city,String ip) {
 		String[] fullIp = ip.split(":");
+		// If port was provided
 		if (fullIp.length == 2) {
 			app.getOptions().setDbAddress(ip);
 			app.getDatabase().setIp(fullIp[0]);
 			app.getDatabase().setPort(Integer.parseInt(fullIp[1]));
 			app.getOptions().setCurrentCity(City.valueOf(city.toUpperCase()));
+			// Write changes to file
 			app.getConfig().writeToFile();
 				
 		}
+		// If not port provided
 		else if (fullIp.length == 1){
+			// Add port, since user didn't add it and assume
+			// they are using default mongodb port
 			app.getOptions().setDbAddress(ip+":27017");
 			app.getDatabase().setIp(fullIp[0]);
 			app.getDatabase().setPort(27017);
 			app.getOptions().setCurrentCity(City.valueOf(city.toUpperCase()));
+			// Write changes to file
 			app.getConfig().writeToFile();
 		}
 	}
 	
-	// Check IP validity 
+	/**
+	 * Checks IP validity
+	 * @param ip
+	 * @return
+	 */
     public boolean isIpValid(String ip) {
     	String[] splitIp = ip.split( "\\.");
     	// IP consists of 4 decimals, separated by dots
@@ -74,7 +103,11 @@ public class OptionsController extends Controller {
     	return true;
     }
     
-    // Check port validity
+    /**
+     * Checks port validity
+     * @param port
+     * @return
+     */
     public boolean isPortValid(String port) {
     	try {
     	//Check if integer and if valid port

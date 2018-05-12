@@ -18,14 +18,11 @@ public class Bill {
 		this.cancellation = cancellation; 
 	}
 	
-/*	public String getBill() {
-		String bill = guestName + "\n"
-				+ "Arrival: " + arrival.toString()
-				+ "Departure: " + departure.toString()
-				+ "Price: " + calculateBill();
-		return bill;
-	} */
-	
+	/**
+	 * Calculates bill taking into consideration how much time
+	 * the guest has spent in the room (the day of check out)
+	 * @return
+	 */
 	public int calculateBill() {
 		long days = java.time.temporal.ChronoUnit.DAYS.between(arrival, departure);
 		if(!cancellation){
@@ -34,6 +31,12 @@ public class Bill {
 			return (int) ((int)(days * roomPrice) * 0.15);	
 		}
 	}
+	
+	/**
+	 * Calculates bill with cancellation fee
+	 * @param cancellationFee
+	 * @return
+	 */
 	public double calculateBill(double cancellationFee) {
 		long days = java.time.temporal.ChronoUnit.DAYS.between(arrival, departure);
 		if(!cancellation){

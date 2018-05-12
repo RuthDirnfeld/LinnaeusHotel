@@ -15,36 +15,22 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import model.Guest;
-import model.Reservation;
 import model.Room;
 import model.RoomState;
 
 public class RoomView extends View {
-	@FXML
-	private TableView<Room> roomTable;
-	@FXML
-	private TableColumn<Room, String> idCol;
-	@FXML
-	private TableColumn<Room, Boolean> singleBedCol;
-	@FXML
-	private TableColumn<Room, Boolean> doubleCol;
-	@FXML
-	private TableColumn<Room, Boolean> doubleKingCol;
-	@FXML
-	private TableColumn<Room, Boolean> apartmentCol;
-	@FXML
-	private TableColumn<Room, Boolean> largeRoomCol;
-	@FXML
-	private TableColumn<Room, Boolean> viewCol;
-	@FXML
-	private TableColumn<Room, Boolean> smokerCol;
-	@FXML
-	private TableColumn<Room, Integer> priceCol;
-	@FXML
-	private TableColumn<Room, RoomState> roomStateCol;
-	@FXML
-	private Button loadBtn;
+	@FXML private TableView<Room> roomTable;
+	@FXML private TableColumn<Room, String> idCol;
+	@FXML private TableColumn<Room, Boolean> singleBedCol;
+	@FXML private TableColumn<Room, Boolean> doubleCol;
+	@FXML private TableColumn<Room, Boolean> doubleKingCol;
+	@FXML private TableColumn<Room, Boolean> apartmentCol;
+	@FXML private TableColumn<Room, Boolean> largeRoomCol;
+	@FXML private TableColumn<Room, Boolean> viewCol;
+	@FXML private TableColumn<Room, Boolean> smokerCol;
+	@FXML private TableColumn<Room, Integer> priceCol;
+	@FXML private TableColumn<Room, RoomState> roomStateCol;
+	@FXML private Button loadBtn;
 
 	// Imported from database
 	private ArrayList<Room> roomArray;
@@ -58,12 +44,19 @@ public class RoomView extends View {
 		setTable();
 	}
 
+	/**
+	 * Sets table for the list of the available (not free, but existing) 
+	 * rooms in the hotel
+	 */
 	public void setTable() {
+		// If rooms have been imported before from the database
 		if (roomArray != null) {
 			ObservableList<Room> roomList = FXCollections.observableList(roomArray);
 			roomTable.setItems(roomList);
+			// Sets the names of the columns
 			idCol.setCellValueFactory(new PropertyValueFactory<Room, String>("roomNum"));
 			singleBedCol.setCellValueFactory(new PropertyValueFactory<Room, Boolean>("singleRoom"));
+			// Fills row with xxx if the room has certain qualities
 			singleBedCol.setCellFactory(tc -> new TableCell<Room, Boolean>() {
 			    @Override
 			    protected void updateItem(Boolean item, boolean empty) {
@@ -72,7 +65,10 @@ public class RoomView extends View {
 			            item.booleanValue() ? "XXX" : " ");
 			    }
 			});
+			// Sets the names of the columns
 			roomStateCol.setCellValueFactory(new PropertyValueFactory<Room, RoomState>("roomState"));
+			// Changes background of the row belonging to room depending 
+			// on their state (allocated, free or reserved)
 			roomStateCol.setCellFactory(tc -> new TableCell<Room, RoomState>() {
 			    @Override
 			    protected void updateItem(RoomState item, boolean empty) {
@@ -91,6 +87,7 @@ public class RoomView extends View {
 			});
 			
 			doubleCol.setCellValueFactory(new PropertyValueFactory<Room, Boolean>("doubleRoom"));
+			// Fills row with xxx if the room has certain qualities
 			doubleCol.setCellFactory(tc -> new TableCell<Room, Boolean>() {
 			    @Override
 			    protected void updateItem(Boolean item, boolean empty) {
@@ -100,6 +97,7 @@ public class RoomView extends View {
 			    }
 			});
 			doubleKingCol.setCellValueFactory(new PropertyValueFactory<Room, Boolean>("doubleKingRoom"));
+			// Fills row with xxx if the room has certain qualities
 			doubleKingCol.setCellFactory(tc -> new TableCell<Room, Boolean>() {
 			    @Override
 			    protected void updateItem(Boolean item, boolean empty) {
@@ -109,6 +107,7 @@ public class RoomView extends View {
 			    }
 			});
 			apartmentCol.setCellValueFactory(new PropertyValueFactory<Room, Boolean>("apartment"));
+			// Fills row with xxx if the room has certain qualities
 			apartmentCol.setCellFactory(tc -> new TableCell<Room, Boolean>() {
 			    @Override
 			    protected void updateItem(Boolean item, boolean empty) {
@@ -118,6 +117,7 @@ public class RoomView extends View {
 			    }
 			});
 			largeRoomCol.setCellValueFactory(new PropertyValueFactory<Room, Boolean>("largeRooms"));
+			// Fills row with xxx if the room has certain qualities
 			largeRoomCol.setCellFactory(tc -> new TableCell<Room, Boolean>() {
 			    @Override
 			    protected void updateItem(Boolean item, boolean empty) {
@@ -127,6 +127,7 @@ public class RoomView extends View {
 			    }
 			});
 			viewCol.setCellValueFactory(new PropertyValueFactory<Room, Boolean>("view"));
+			// Fills row with xxx if the room has certain qualities
 			viewCol.setCellFactory(tc -> new TableCell<Room, Boolean>() {
 			    @Override
 			    protected void updateItem(Boolean item, boolean empty) {
@@ -136,6 +137,7 @@ public class RoomView extends View {
 			    }
 			});
 			smokerCol.setCellValueFactory(new PropertyValueFactory<Room, Boolean>("smokerRoom"));
+			// Fills row with xxx if the room has certain qualities
 			smokerCol.setCellFactory(tc -> new TableCell<Room, Boolean>() {
 			    @Override
 			    protected void updateItem(Boolean item, boolean empty) {
@@ -149,6 +151,9 @@ public class RoomView extends View {
 		}
 	}
 
+	/**
+	 * Opens room preferences window
+	 */
 	public void preferencesClick() {
 		try {
 			((RoomController) controller).getRoomPrefView().show();
@@ -157,32 +162,22 @@ public class RoomView extends View {
 		}
 	}
 	
+	/**
+	 * When load button is clicked, room information is loaded
+	 * to reservation management window
+	 */
 	public void onLoadBtnClick() {
 		if(roomTable.getSelectionModel().getSelectedItem() != null) {
 			Room room = roomTable.getSelectionModel().getSelectedItem();
+			// Loads room name
 			((RoomController) controller).getApp().getResController().setSelectedRoom(room.getRoomNum());
+			// Loads room price
 			((RoomController) controller).getApp().getResController().setSelectedPrice(room.getPrice());
-			Stage stage = (Stage) loadBtn.getScene().getWindow();
 			stage.close();
-			
-			}
+		}
 	}
 
 	public void setTable(ArrayList<Room> list) {
 		this.roomArray = list;
-	}
-	
-	public static void showError(String title, String message) {
-		Alert alert = new Alert(Alert.AlertType.ERROR);
-		alert.initStyle(StageStyle.UTILITY);
-		alert.setTitle("Error");
-		alert.setHeaderText(title);
-		alert.setContentText(message);
-
-		alert.showAndWait();
-	}
-
-	public void getRoomList(boolean b) {
-		((RoomController) controller).updateRoomList(b);
 	}
 }

@@ -1,7 +1,6 @@
 package view;
 
 import controller.MainController;
-import controller.ReservationController;
 import javafx.stage.Stage;
 
 public class MainView extends View{
@@ -12,6 +11,9 @@ public class MainView extends View{
 		return stage;
 	}
 
+	/**
+	 * Opens guest list window
+	 */
 	public void onGuestManagementClick() {
 		try {
 			((MainController) controller).getApp().getGuestController().getGuestListView().show();
@@ -20,6 +22,9 @@ public class MainView extends View{
 		}
 	}
 
+	/**
+	 * Opens reservation window
+	 */
 	public void onReservationManagementClick() {
 		try {
 			((MainController) controller).getApp().getResController().getResView().show();
@@ -28,6 +33,9 @@ public class MainView extends View{
 		}
 	}
 
+	/**
+	 * Opens check in window
+	 */
 	public void onCheckInClick() {
 		try {
 			((MainController) controller).getCheckInView().show();
@@ -36,6 +44,9 @@ public class MainView extends View{
 		}
 	}
 
+	/**
+	 * Opens check out window
+	 */
 	public void onCheckOutClick() {
 		try {
 			((MainController) controller).getCheckOutView().show();
@@ -44,15 +55,21 @@ public class MainView extends View{
 		}
 	}
 	
+	/**
+	 * Opens room list window
+	 */
 	public void onRoomsClick() {
 		try {
 			((MainController) controller).getApp().getRoomController().getRoomView().show();
-			((MainController) controller).getApp().getRoomController().updateRoomList(true);
+			((MainController) controller).getApp().getRoomController().updateRoomList();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 	
+	/**
+	 * Opens preferences
+	 */
 	public void onPreferencesClick() {
 		try {
 			((MainController) controller).getApp().getOptionsController().setCity(((MainController) controller).getApp().getOptions().getCurrentCity().name());

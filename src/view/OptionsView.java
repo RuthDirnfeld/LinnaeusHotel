@@ -10,22 +10,15 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import controller.OptionsController;
-import controller.ReservationController;
 
 public class OptionsView extends View {
-	@FXML
-	private TextField address; 
-	@FXML 
-	private ChoiceBox<String> cityChoice; 
-	@FXML 
-	private Button acceptButton; 
-	@FXML 
-	private Button cancelButton; 
-	@FXML
-	private Button mngRooms;
-	
-	
-	ObservableList<String> cityList = FXCollections.observableArrayList("Vaxjo","Kalmar"); 
+	@FXML private TextField address; 
+	@FXML private ChoiceBox<String> cityChoice; 
+	@FXML private Button acceptButton; 
+	@FXML private Button cancelButton; 
+	@FXML private Button mngRooms;
+
+	private ObservableList<String> cityList = FXCollections.observableArrayList("Vaxjo","Kalmar"); 
 
 	public Stage display() throws Exception {
 		return stage; 
@@ -37,6 +30,11 @@ public class OptionsView extends View {
 		cityChoice.setItems(cityList);
 	}
 	
+	/**
+	 * If there is a chosen city in the config file,
+	 * the city will be selected when options window opens.
+	 * @param city
+	 */
 	public void setCity(String city) {
 		for (int i =0; i < cityList.size(); i++) {
 			if (cityList.get(i).toLowerCase().equals(city.toLowerCase())) {
@@ -45,10 +43,19 @@ public class OptionsView extends View {
 		}
 	}
 	
+	/**
+	 * Set text of the IP field if the IP
+	 * already exists in the config
+	 * @param ip
+	 */
 	public void setIp(String ip) {
 		address.setText(ip);
 	}
 	
+	@FXML
+	/**
+	 * Method called when "accept" button is clicked
+	 */
 	public void onAcceptClick() {
 		if(checkInput()){
 			// Check if provided input is correct
@@ -69,14 +76,24 @@ public class OptionsView extends View {
 			}
 		}
 	}
+	
 	public void onClickCancel() {
 		stage.close();
 	}
+	
+	/**
+	 * Opens room management list
+	 * @throws Exception
+	 */
 	public void onClickManageRooms() throws Exception {
 		((OptionsController) controller).getApp().getRoomController().getRoomView().show();
-		((OptionsController) controller).getApp().getRoomController().updateRoomList(true);
+		((OptionsController) controller).getApp().getRoomController().updateRoomList();
 	}
 	
+	/**
+	 * Helper method to check options input
+	 * @return
+	 */
 	private boolean checkInput() {
 		if(address.getText().isEmpty()) {
 		showError("No IP address", "Please specify IP address");
@@ -88,7 +105,13 @@ public class OptionsView extends View {
 		}
 		return true;
 	}
-	public static void showError(String title, String message) {
+	
+	/**
+	 * Helper method to show information/error message
+	 * @param title
+	 * @param message
+	 */
+	private static void showError(String title, String message) {
 		Alert alert = new Alert(Alert.AlertType.ERROR);
 		alert.initStyle(StageStyle.UTILITY);
 		alert.setTitle("Error");
