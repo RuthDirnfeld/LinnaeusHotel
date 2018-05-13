@@ -36,7 +36,7 @@ public class Config {
 	
 	// Checks if config file empty
 	private boolean isCreated() {
-		return (new java.io.File(filePath + "config.json").exists());
+		return (new java.io.File(filePath + "config.json").exists()) && (new java.io.File(filePath + "config.json").length() > 0);
 	}
 	
 	// Config file doesn't exist, create new one
