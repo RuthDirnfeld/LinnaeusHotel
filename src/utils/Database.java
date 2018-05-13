@@ -39,8 +39,11 @@ public class Database {
 		this.dbPort = port;
 	}
 	
+	/**
+	 * Initial set up of the database.
+	 * @return
+	 */
 	public boolean setUpDatabase() {
-		setUpOptions();
 		boolean connection = updateConnection();
 		if (!connection) {
 			return false;
@@ -48,19 +51,33 @@ public class Database {
 		return true;
 	}
 
+	/**
+	 * Can be used to attempt to connect to newly
+	 * provided IP
+	 * @return
+	 */
 	public boolean updateConnection() {
+		// Sets up timeout
+		setUpOptions();
+		// Creates URI string needed to connect to the database
 		String uriString = "mongodb://";
 		uriString = uriString + "admin"+":"+"group8" 
 				+"@"+dbAddress+":"+dbPort;
 		uri = new MongoClientURI(uriString, optionsBuilder);
+		// Inits new MongoClient with earlier created URI
 		client = new MongoClient(uri);
+		// Used to lessen the spam in the console
 		setUpLogger();
+		// If timeout is reached, can't connect to the 
+		// database
 		try {
 			client.getAddress();
 		}
 		catch (MongoTimeoutException e) {
 			return false;
 		}
+		
+		// Sets up collections
 		setUpDb();
 		return true;
 	}
@@ -73,40 +90,72 @@ public class Database {
 		this.dbAddress = ip;
 	}
 	
+	/**
+	 * Creates new guest in the database
+	 * @param guest
+	 */
 	public void writeGuest (model.Guest guest) {
 		Gson gson = new Gson();
 		BasicDBObject obj = (BasicDBObject)JSON.parse(gson.toJson(guest));
 		guests.insertOne(obj);
 	}
 	
+	/**
+	 * Creates new room in the database
+	 * @param room
+	 */
 	public void writeRoom (model.Room room) {
 		Gson gson = new Gson();
 		BasicDBObject obj = (BasicDBObject)JSON.parse(gson.toJson(room));
 		rooms.insertOne(obj);
 	}
 	
+	/**
+	 * Creates new reservation in the database
+	 * @param reservation
+	 */
 	public void writeReservation (model.Reservation reservation) {
 		Gson gson = new Gson();
 		BasicDBObject obj = (BasicDBObject)JSON.parse(gson.toJson(reservation));
 		reservations.insertOne(obj);
 	}
 	
-	//Update room status (free, allocated, reserved)
+	/**
+	 * Updates room status (free, allocated, reserved)
+	 * @param roomNr
+	 * @param state
+	 */
 	public void updateRoomState (String roomNr, model.RoomState state) {
 		Document old = new Document();
+		// query to find old room (only one with that number can exist)
 		old.put("roomNum", roomNr);
 		Document newRoom = new Document ("$set", new Document("roomState", state.name()));
 		rooms.updateOne(old, newRoom);
 	}
 	
+	/**
+	 * Updates guest's favorite room, but can be changed to updating
+	 * any guest's information
+	 * @param room
+	 * @param guest
+	 */
 	public void updateGuestFavRoom(String room, model.Guest guest) {
 		Document old = new Document();
+		// Finding guest by name and credit card number (in case there are
+		// several guests with same name)
 		old.put("name", guest.getName());
 		old.put("creditNumber", guest.getCreditNumber());
+		// Updating favorite room
 		Document newGuest = new Document("$set", new Document("favRoom", room));
+		// Push update
 		guests.updateOne(old, newGuest);
 	}
 	
+	/**
+	 * Reservation can have checkedIn set to true or false. This method
+	 * updates this variable.
+	 * @param res
+	 */
 	public void updateReservationState (model.Reservation res) {
 		findReservations();
 		Document old = new Document();
@@ -116,17 +165,26 @@ public class Database {
 		reservations.updateOne(old, newRes);
 	}
 	
-	// Returns list of guests with specified name
+	/**
+	 * Looks in the database for a guest with specified name
+	 * @param name
+	 * @return
+	 */
 	public ArrayList<model.Guest> findGuestByName(String name) {
+		//Result array
 		ArrayList<model.Guest> guestArray = new ArrayList<model.Guest>();
+		//Query
 	    FindIterable<BasicDBObject> cursor = guests.find(new Document("name", name));
+	    //Iterator to go through query matching results
 	    MongoCursor<BasicDBObject> it = cursor.iterator();
 	    try {
-		   while(it.hasNext()) {
-			   BasicDBObject dbobj = it.next();
-			   model.Guest foundGuest = (new Gson()).fromJson(dbobj.toString(), model.Guest.class);
-			   guestArray.add(foundGuest);
-	       }
+		    while(it.hasNext()) {
+		    	// Store found object in BasiDBObject with is Gson.
+		    	// Then turn it into an object
+			    BasicDBObject dbobj = it.next();
+			    model.Guest foundGuest = (new Gson()).fromJson(dbobj.toString(), model.Guest.class);
+			    guestArray.add(foundGuest);
+	        }
 	    }
 	    finally {
 	    	it.close();
@@ -134,32 +192,21 @@ public class Database {
 		return guestArray;
 	}
 	
-	// Returns list of reservation objects
-	public ArrayList<model.Reservation> findReservedRooms() {
-		ArrayList<model.Reservation> reservationArr = new ArrayList<model.Reservation>();
-	    FindIterable<BasicDBObject> cursor = reservations.find();
-	    MongoCursor<BasicDBObject> it = cursor.iterator();
-	    try {
-		   while(it.hasNext()) {
-			   BasicDBObject dbobj = it.next();
-			   model.Reservation foundReservation = (new Gson()).fromJson(dbobj.toString(), model.Reservation.class);
-			   reservationArr.add(foundReservation);
-	       }
-	    }
-	    finally {
-	    	it.close();
-	    }
-		return reservationArr;
-		
-	}
-	
-	//Finds checked in reservations for check-out 
+	/**
+	 * Finds checked in reservations, for check-out functionality implementation
+	 * @return
+	 */
 	public ArrayList<model.Reservation> findCheckedInReservations() {
+		//Result array
 		ArrayList<model.Reservation> reservationArr = new ArrayList<model.Reservation>();
+		//Query
 	    FindIterable<BasicDBObject> cursor = reservations.find(new Document("checkedIn", true));
+	    //Iterator to go through query matching results
 	    MongoCursor<BasicDBObject> it = cursor.iterator();
 	    try {
 		   while(it.hasNext()) {
+		    	// Store found object in BasiDBObject with is Gson.
+		    	// Then turn it into an object
 			   BasicDBObject dbobj = it.next();
 			   model.Reservation foundReservation = (new Gson()).fromJson(dbobj.toString(), model.Reservation.class);
 			   reservationArr.add(foundReservation);
@@ -172,41 +219,41 @@ public class Database {
 		
 	}
 	
-	// Returns list of free rooms
-	public ArrayList<model.Room> findFreeRoom() {
-		Document query = new Document();
-		query.append("roomState", "free");
-		ArrayList<model.Room> roomArray = new ArrayList<model.Room>();
-	    FindIterable<BasicDBObject> cursor = rooms.find(query);
-	    MongoCursor<BasicDBObject> it = cursor.iterator();
-	    while (it.hasNext()) {
-	    	BasicDBObject dbobj = it.next();
-			model.Room foundRoom = (new Gson()).fromJson(dbobj.toString(), model.Room.class);
-			roomArray.add(foundRoom);
-	    }
-		
-		return roomArray;
-	}
-	
-	// Returns all rooms
+	/**
+	 * Returns all rooms existing in the database
+	 * @return
+	 */
 	public ArrayList<model.Room> findRooms() {
+		// Result array
 		ArrayList<model.Room> foundRooms = new ArrayList<model.Room>();
+		// Query
 	    FindIterable<BasicDBObject> cursor = rooms.find();
 	    MongoCursor<BasicDBObject> it = cursor.iterator();
 	    while (it.hasNext()) {
+	    	// Store found object in BasiDBObject with is Gson.
+	    	// Then turn it into an object
 	    	BasicDBObject dbobj = it.next();
 			model.Room foundRoom = (new Gson()).fromJson(dbobj.toString(), model.Room.class);
 			foundRooms.add(foundRoom);			
 	    }
 	    
 		return foundRooms;
-	} 
+	}
 	
-	public ArrayList<model.Room> findRooms(String s) {
+	/**
+	 * Finds rooms by the number of room
+	 * @param roomNum
+	 * @return
+	 */
+	public ArrayList<model.Room> findRooms(String roomNum) {
+		// Results
 		ArrayList<model.Room> foundRooms = new ArrayList<model.Room>();
-	    FindIterable<BasicDBObject> cursor = rooms.find(new Document("roomNum", s));
+		// Query
+	    FindIterable<BasicDBObject> cursor = rooms.find(new Document("roomNum", roomNum));
 	    MongoCursor<BasicDBObject> it = cursor.iterator();
 	    while (it.hasNext()) {
+	    	// Store found object in BasiDBObject with is Gson.
+	    	// Then turn it into an object
 	    	BasicDBObject dbobj = it.next();
 			model.Room foundRoom = (new Gson()).fromJson(dbobj.toString(), model.Room.class);
 			foundRooms.add(foundRoom);			
@@ -216,12 +263,19 @@ public class Database {
 		return foundRooms;
 	} 
 	
-	
+	/**
+	 * Finds all the guests in a database
+	 * @return
+	 */
 	public ArrayList<model.Guest> findGuests() {
+		// Result array
 		ArrayList<model.Guest> foundGuests = new ArrayList<model.Guest>();
+		// Query
 	    FindIterable<BasicDBObject> cursor = guests.find();
 	    MongoCursor<BasicDBObject> it = cursor.iterator();
 	    while (it.hasNext()) {
+	    	// Store found object in BasiDBObject with is Gson.
+	    	// Then turn it into an object
 	    	BasicDBObject dbobj = it.next();
 			model.Guest foundGuest = (new Gson()).fromJson(dbobj.toString(), model.Guest.class);
 			foundGuests.add(foundGuest);			
@@ -230,11 +284,19 @@ public class Database {
 		return foundGuests;
 	} 
 	
+	/**
+	 * Finds all the reservations in the database
+	 * @return
+	 */
 	public ArrayList<model.Reservation> findReservations() {
+		//Results
 		ArrayList<model.Reservation> foundReservations = new ArrayList<model.Reservation>();
+		//Query
 	    FindIterable<BasicDBObject> cursor = reservations.find();
 	    MongoCursor<BasicDBObject> it = cursor.iterator();
 	    while (it.hasNext()) {
+	    	// Store found object in BasiDBObject with is Gson.
+	    	// Then turn it into an object
 	    	BasicDBObject dbobj = it.next();
 			model.Reservation foundReservation = (new Gson()).fromJson(dbobj.toString(), model.Reservation.class);
 			foundReservations.add(foundReservation);			
@@ -242,13 +304,72 @@ public class Database {
 	    
 		return foundReservations;
 	} 
+	
+	/**
+	 * Finds all the reservations by a certain guest in the database
+	 * @param guestName
+	 * @return
+	 */
+	public ArrayList<Reservation> findReservationByName(String guestName) {
+		// Results
+		ArrayList<model.Reservation> resArray = new ArrayList<model.Reservation>();
+		// Query
+	    FindIterable<BasicDBObject> cursor = reservations.find(new Document("guestName", guestName));
+	    MongoCursor<BasicDBObject> it = cursor.iterator();
+	    try {
+		   while(it.hasNext()) {
+		    	// Store found object in BasiDBObject with is Gson.
+		    	// Then turn it into an object
+			   BasicDBObject dbobj = it.next();
+			   model.Reservation reservation = (new Gson()).fromJson(dbobj.toString(), model.Reservation.class);
+			   resArray.add(reservation);
+	       }
+	    }
+	    finally {
+	    	it.close();
+	    }
+		return resArray;
+	}
+	
+	/**
+	 * Finds all the reservations made for a certain room. Uses room number to find them.
+	 * @param room
+	 * @return
+	 */
+	public ArrayList<Reservation> findReservationByRoom(String room) {
+		// Result
+		ArrayList<model.Reservation> resArray = new ArrayList<model.Reservation>();
+		// Query
+	    FindIterable<BasicDBObject> cursor = reservations.find(new Document("room", room));
+	    MongoCursor<BasicDBObject> it = cursor.iterator();
+	    try {
+	    	// Store found object in BasiDBObject with is Gson.
+	    	// Then turn it into an object
+		    while(it.hasNext()) {
+			    BasicDBObject dbobj = it.next();
+			    model.Reservation reservation = (new Gson()).fromJson(dbobj.toString(), model.Reservation.class);
+			    resArray.add(reservation);
+	        }
+	    }
+	    finally {
+	    	it.close();
+	    }
+		return resArray;
+	}
+	
+	/**
+	 * Deletes reservation from the database
+	 * @param reservation
+	 */
 	public void deleteReservation(model.Reservation reservation) {
 		Gson gson = new Gson();
 		BasicDBObject obj = (BasicDBObject)JSON.parse(gson.toJson(reservation));
 		reservations.deleteOne(obj);
-		
 	}
 	
+	/**
+	 * Helper method to set up collections
+	 */
 	private void setUpDb() {
 		//Get hotel database
 		database = client.getDatabase("hotel");
@@ -265,11 +386,17 @@ public class Database {
 		reservations = database.getCollection("reservations", BasicDBObject.class);
 	}
 	
+	/**
+	 * Helper method to set up connection timeout (originally 10 seconds, so too long)
+	 */
 	private void setUpOptions(){
 		// Makes sure it times out after 4 seconds of trying to connect to the server
 		optionsBuilder.serverSelectionTimeout(4000);
 	}
 	
+	/**
+	 * Helper method to lessen console spam
+	 */
 	private void setUpLogger() {
 		// Set to log only severe messages
 		logger = Logger.getLogger("org.mongodb.driver");
@@ -284,50 +411,13 @@ public class Database {
 	private boolean isDbEmpty() {
 		return !(client.listDatabaseNames().iterator().hasNext());
 	}
-	
-	// For whatever reason
-	public void closeConnection() {
-		client.close();
-	}
-
-	public ArrayList<Reservation> findReservationByName(String guestName) {
-		ArrayList<model.Reservation> resArray = new ArrayList<model.Reservation>();
-	    FindIterable<BasicDBObject> cursor = reservations.find(new Document("guestName", guestName));
-	    MongoCursor<BasicDBObject> it = cursor.iterator();
-	    try {
-		   while(it.hasNext()) {
-			   BasicDBObject dbobj = it.next();
-			   model.Reservation reservation = (new Gson()).fromJson(dbobj.toString(), model.Reservation.class);
-			   resArray.add(reservation);
-	       }
-	    }
-	    finally {
-	    	it.close();
-	    }
-		return resArray;
-	}
-	
-	public ArrayList<Reservation> findReservationByRoom(String room) {
-		ArrayList<model.Reservation> resArray = new ArrayList<model.Reservation>();
-	    FindIterable<BasicDBObject> cursor = reservations.find(new Document("room", room));
-	    MongoCursor<BasicDBObject> it = cursor.iterator();
-	    try {
-		   while(it.hasNext()) {
-			   BasicDBObject dbobj = it.next();
-			   model.Reservation reservation = (new Gson()).fromJson(dbobj.toString(), model.Reservation.class);
-			   resArray.add(reservation);
-	       }
-	    }
-	    finally {
-	    	it.close();
-	    }
-		return resArray;
-	}
 
 }
 
 
-
+/**
+ * Class used for sorting room list by the ir prices.
+ */
 class PriceComparator implements Comparator<model.Room> {
 
 	@Override
